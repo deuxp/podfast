@@ -1,3 +1,9 @@
+# Podfast
+
+---
+
+“Want to find good podcasts but don’t have the time to invest i n long podcasts? PodFast! It is a podcast publishing platform for short (5 min max) podcasts, which are broken down by category. Find your next fav podcaster. Or become a podcaster and upload your own.”
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
