@@ -9,7 +9,15 @@ import React from "react";
 function App() {
   const [state, setState] = useState({});
 
-  useEffect(() => {});
+  // initial get from the server (mocked for now from import "./db/mockData")
+  useEffect(() => {
+    setState({
+      ...state,
+      minicasts: minicasts, // [{}] array of objects
+    });
+  }, []);
+
+  /* ----------------------------- helper function ---------------------------- */
 
   return (
     <>
