@@ -1,7 +1,14 @@
 import "./App.css";
 
+// mocked article
+
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <Player />
+      <Minicast />
+    </>
+  );
 }
 
 export default App;
