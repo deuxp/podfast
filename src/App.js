@@ -1,4 +1,5 @@
-import "./App.css";
+import Player from "./Components/Player";
+import Minicast from "./Components/Minicast";
 
 // mocked article
 
