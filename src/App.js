@@ -10,7 +10,6 @@ function App() {
   const [state, setState] = useState({});
   // plays the next song on state change, feed it the next song
   const [playlist, setPlaylist] = useState([]);
-  const [song, setSong] = useState("");
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {

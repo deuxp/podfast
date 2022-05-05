@@ -23,6 +23,18 @@ const minicasts = [
     views: 0,
     created_at: "May 4, 2022 at 4:10:00 AM UTC-4",
   },
+  {
+    active: true,
+    audio_link:
+      "https://firebasestorage.googleapis.com/v0/b/podfast-432ab.appspot.com/o/ackeeTree.mp3?alt=media&amp;token=9efd3b6b-86d8-4474-b6be-ef6a6618e960",
+    banner_link: "",
+    category_id: "comedy",
+    description: "beats",
+    title: "tree_shaking",
+    user_id: "lmKhbyqPDL4ttyTNxsM6",
+    views: 0,
+    created_at: "May 4, 2022 at 4:10:00 AM UTC-4",
+  },
 ];
 
 export default minicasts;
