@@ -9,8 +9,8 @@ import React from "react";
 function App() {
   const [state, setState] = useState({});
   // plays the next song on state change, feed it the next song
-  const [playlist, setPlaylist] = useState([]);
-  const [song, setSong] = useState("");
+  const [playlist, setPlaylist] = useState([]); // ana rray of minicast objects
+  // const [song, setSong] = useState("");
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -44,10 +44,10 @@ function App() {
       });
   }, [state]);
 
-  const playNextSong = (list) => {
+  const playNextCast = (list) => {
     // needs to alter the list and set the playlist state
-    const newList = list.filter((article, index) => {
-      if (index) return article;
+    const newList = list.filter((minicast, index) => {
+      if (index) return minicast;
     });
     console.log("when the song is over -> ", newList);
     setPlaylist(newList);
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <>
-      <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
+      <Player play={playlist} playNextCast={() => playNextCast(playlist)} />
       <Minicast />
     </>
   );

@@ -1,10 +1,11 @@
-function Player({ play, playNextSong, helper }) {
+function Player({ play, playNextSong }) {
   const playsTheFirstOneOnly = (list) => {
     if (list[0]) {
       return list[0].audio_link;
     }
     return "";
   };
+
   const next = playsTheFirstOneOnly(play);
 
   return (
