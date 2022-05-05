@@ -9,7 +9,8 @@ import React from "react";
 function App() {
   const [state, setState] = useState({});
   // plays the next song on state change, feed it the next song
-  const [song, setSong] = useState();
+  const [playlist, setPlaylist] = useState([]);
+  const [song, setSong] = useState("");
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -20,49 +21,41 @@ function App() {
   }, []);
 
   /* ----------------------------- helper function ---------------------------- */
-  console.log(state);
+
   // function to build a short list of casts to listen to on the front page
   // as of now just makes a list, no filter, impose a limit 6
+  //implement lazy loading ...
   const buildList = (state, filter) => {
-    //implement lazy loading
     return new Promise((resolve, reject) => {
-      const shortList = state.minicasts; // used to build the articles
-      resolve(shortList);
-    }).catch((e) => console.log(e));
+      if (!state.minicasts) return [];
+      resolve(state.minicasts);
+    }).catch((e) => console.log(e.message));
   };
 
-  // list of urls for the player to consume
-  const ulrList = (shortList) => {
-    if (!shortList) return [];
-    return shortList.map((cast) => cast.audio_link); // audio_link refering to the url of song
-  };
+  useEffect(() => {
+    // expect array of article objects
+    buildList(state)
+      .then((shortlist) => {
+        return shortlist;
+      })
+      .then((shortList) => {
+        setPlaylist(shortList);
+        console.log("the current playlist -> ", playlist);
+      });
+  }, [state]);
 
-  // [].length = 8
-  // console;
-
-  const playNextSong = (next) => {
-    // destroy list entry of played
-
-    // set next play
-    setSong(next);
-  };
-
-  buildList(state)
-    .then((shortlist) => {
-      return shortlist;
-    })
-    .then((shortList) => {
-      return ulrList(shortList);
-    })
-    .then((urls) => {
-      // do something with the urls
-      playNextSong(urls[0]);
+  const playNextSong = (list) => {
+    // needs to alter the list and set the playlist state
+    const newList = list.filter((article, index) => {
+      if (index) return article;
     });
-  // expect array of two urls
+    console.log("when the song is over -> ", newList);
+    setPlaylist(newList);
+  };
 
   return (
     <>
-      <Player play={song} playNextSong={() => playNextSong()} />
+      <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
       <Minicast />
     </>
   );
