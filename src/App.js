@@ -3,6 +3,7 @@ import Player from "./Components/Player";
 import Minicast from "./Components/Minicast";
 import minicasts from "./db/mockData";
 import React from "react";
+import MinicastList from "./Components/MinicastList";
 
 // mocked article
 
@@ -56,7 +57,7 @@ function App() {
   return (
     <>
       <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
-      <Minicast />
+      <MinicastList minicasts={minicasts}  />
     </>
   );
 }

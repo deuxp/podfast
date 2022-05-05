@@ -20,7 +20,7 @@ const data = {
   banner_url: "../../assets/raindrop_bckgrnd.jpg"
 }
 
-function Minicast() {
+function Minicast(props) {
   return (
     <Card sx={{ maxWidth: 550}}>
     <CardMedia
@@ -31,13 +31,13 @@ function Minicast() {
     />
     <CardContent>
       <Typography variant="body2" color="text.secondary">
-        {data.description}
+        {props.description}
       </Typography>
     </CardContent>
     <CardActions>
      <Avatar>A</Avatar>
       <div style = {{ width: "400px" }}> 
-        {data.title}
+        {props.title}
       </div>
       <Button size="small">Like</Button>
       <Button size="small">Share</Button>
