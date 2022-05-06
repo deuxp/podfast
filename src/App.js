@@ -56,7 +56,7 @@ function App() {
   return (
     <>
       <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
-      <MinicastList minicasts={minicasts}  />
+      <MinicastList minicasts={minicasts} />
     </>
   );
 }
