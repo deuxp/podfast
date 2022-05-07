@@ -8,18 +8,28 @@ import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import UploadBanner from "../UploadBanner";
+import axios from "axios";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
-
+//TODO refactor async/await - test working
 function Recorder() {
+  const UPLOAD_URL = "http://localhost:8080/minicasts/upload";
   const [rec, setRec] = useState(true); // toggle views and buttons looks
   // instance of the microphone
 
   const [save, setSave] = useState({
     file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
+    banner: "",
   });
+  const setBanner = (banner) => {
+    setSave({
+      ...save,
+      banner,
+    });
+  };
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -45,6 +55,7 @@ function Recorder() {
       .getMp3()
       .then(([buffer, blob]) => {
         return new File(buffer, "ohBoy.mp3", {
+          //TODO replace name with uuid
           type: blob.type,
           lastModified: Date.now(),
         });
@@ -56,6 +67,7 @@ function Recorder() {
       .then(([file, playback]) => {
         console.log("the recorder has stopped");
         setSave({
+          ...save,
           file,
           playback,
         });
@@ -66,7 +78,6 @@ function Recorder() {
   };
 
   const onPlay = () => {
-    console.log(save.file);
     const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
   };
@@ -75,6 +86,26 @@ function Recorder() {
     console.log("pause");
     save.playback.pause();
   };
+
+  const onPost = () => {
+    console.log("posted the recording");
+    console.log(save.file);
+    return new Promise((resolve, reject) => {
+      // let formData = new FormData(save.file);
+      axios
+        .post(UPLOAD_URL, save.file, {
+          headers: {
+            "Content-Type": save.file.type,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((e) => e.message);
+    });
+  };
+  // expect browser console -> status to be 204
+  // expect server console ->  show the objects .. if not then parse the json
 
   return (
     <>
@@ -105,6 +136,8 @@ function Recorder() {
           variant="outlined"
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
+
+        <UploadBanner setBanner={setBanner} />
 
         {
           <Fab
@@ -160,7 +193,7 @@ function Recorder() {
         }
 
         <Button
-          onClick={() => console.log("posted the recording")}
+          onClick={() => onPost()}
           variant="contained"
           sx={{ backgroundColor: "rgba(0, 255, 240, 1)" }}
         >
