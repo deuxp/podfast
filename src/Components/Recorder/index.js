@@ -8,6 +8,7 @@ import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import UploadBanner from "../UploadBanner";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
@@ -105,6 +106,8 @@ function Recorder() {
           variant="outlined"
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
+
+        <UploadBanner />
 
         {
           <Fab
