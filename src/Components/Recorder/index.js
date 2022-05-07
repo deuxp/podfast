@@ -12,7 +12,7 @@ import UploadBanner from "../UploadBanner";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
-
+//TODO refactor async/await - test working
 function Recorder() {
   const [rec, setRec] = useState(true); // toggle views and buttons looks
   // instance of the microphone
@@ -20,7 +20,14 @@ function Recorder() {
   const [save, setSave] = useState({
     file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
+    banner: "",
   });
+  const setBanner = (banner) => {
+    setSave({
+      ...save,
+      banner,
+    });
+  };
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -46,6 +53,7 @@ function Recorder() {
       .getMp3()
       .then(([buffer, blob]) => {
         return new File(buffer, "ohBoy.mp3", {
+          //TODO replace name with uuid
           type: blob.type,
           lastModified: Date.now(),
         });
@@ -57,6 +65,7 @@ function Recorder() {
       .then(([file, playback]) => {
         console.log("the recorder has stopped");
         setSave({
+          ...save,
           file,
           playback,
         });
@@ -67,7 +76,6 @@ function Recorder() {
   };
 
   const onPlay = () => {
-    console.log(save.file);
     const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
   };
@@ -75,6 +83,11 @@ function Recorder() {
   const onPause = () => {
     console.log("pause");
     save.playback.pause();
+  };
+
+  const onPost = () => {
+    console.log("posted the recording");
+    console.log(save);
   };
 
   return (
@@ -107,7 +120,7 @@ function Recorder() {
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
 
-        <UploadBanner />
+        <UploadBanner setBanner={setBanner} />
 
         {
           <Fab
@@ -163,7 +176,7 @@ function Recorder() {
         }
 
         <Button
-          onClick={() => console.log("posted the recording")}
+          onClick={() => onPost()}
           variant="contained"
           sx={{ backgroundColor: "rgba(0, 255, 240, 1)" }}
         >

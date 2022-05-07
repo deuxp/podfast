@@ -2,25 +2,29 @@ import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import "./UploadBanner.scss";
 
-function UploadBanner({ banner, setBanner }) {
+function UploadBanner({ setBanner }) {
   const [files, setFiles] = useState([]);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
     },
+    maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map(
-          (
-            file //TODO refactor to sperad once working
-          ) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-        )
-      );
+      setBanner(acceptedFiles[0]);
+      // setFiles(
+      //   acceptedFiles.map(
+      //     (
+      //       file //TODO refactor to sperad once working
+      //     ) =>
+      //       Object.assign(file, {
+      //         preview: URL.createObjectURL(file),
+      //       })
+      //   )
+      // );
     },
   });
+
+  //TODO conditional render for accepted files/path ? set bg of recorder to img
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
