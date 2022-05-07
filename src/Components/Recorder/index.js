@@ -5,6 +5,8 @@ import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 
+import TextField from "@mui/material/TextField";
+
 // font-family: 'Goldman', cursive; <-- the typography css rule
 
 function Recorder() {
@@ -23,6 +25,13 @@ function Recorder() {
           },
         }}
       >
+        <TextField id="castTitle" label="Title" variant="standard" />
+        <TextField
+          id="castDescription"
+          label="Description"
+          variant="outlined"
+        />
+
         <Fab
           aria-label="add"
           sx={{
