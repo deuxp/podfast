@@ -1,18 +1,80 @@
+// import MicRecorder from "mic-recorder-to-mp3";
 import Box from "@mui/material/Box";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Fab from "@mui/material/Fab";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
-
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
 
 function Recorder() {
-  const [rec, setRec] = useState(true);
+  const [rec, setRec] = useState(true); // toggle views and buttons looks
+  // instance of the microphone
+
+  const [save, setSave] = useState({
+    file: "theres nothing here",
+    playback: new Audio(""), // URL.createObjectURL(file) // arg
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*                              recorder handlers                             */
+  /* -------------------------------------------------------------------------- */
+  const recorder = new MicRecorder({
+    bitRate: 128,
+  });
+
+  const onRecord = () => {
+    recorder
+      .start()
+      .then(() => {
+        console.log("the recorder has started");
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  const onStop = () => {
+    recorder
+      .stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        return new File(buffer, "ohBoy.mp3", {
+          type: blob.type,
+          lastModified: Date.now(),
+        });
+      })
+      .then((file) => {
+        const playback = new Audio(URL.createObjectURL(file));
+        return [file, playback];
+      })
+      .then(([file, playback]) => {
+        console.log("the recorder has stopped");
+        setSave({
+          file,
+          playback,
+        });
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+
+  const onPlay = () => {
+    console.log(save.file);
+    const player = new Audio(URL.createObjectURL(save.file));
+    save.playback.play();
+  };
+
+  const onPause = () => {
+    console.log("pause");
+    save.playback.pause();
+  };
 
   return (
     <>
@@ -44,10 +106,10 @@ function Recorder() {
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
 
-        {!rec && (
+        {
           <Fab
             aria-label="add"
-            onClick={() => console.log("the recorder has started")}
+            onClick={() => onRecord()}
             sx={{
               backgroundColor: "rgba(0, 255, 240, 1)",
               border: "solid rgba(147, 246, 223, 1)",
@@ -55,11 +117,24 @@ function Recorder() {
           >
             <SettingsVoiceIcon sx={{ color: "red" }} />
           </Fab>
-        )}
+        }
+
+        {
+          <Fab
+            aria-label="add"
+            onClick={() => onPause()}
+            sx={{
+              backgroundColor: "rgba(0, 255, 240, 1)",
+              border: "solid rgba(147, 246, 223, 1)",
+            }}
+          >
+            <PausePresentationIcon />
+          </Fab>
+        }
 
         {rec && (
           <Fab
-            onClick={() => console.log("the recorder has stopped")}
+            onClick={() => onStop()}
             aria-label="add"
             sx={{
               backgroundColor: "rgba(0, 255, 240, 1)",
@@ -72,7 +147,7 @@ function Recorder() {
 
         {
           <Fab
-            onClick={() => console.log("the mp3 is playing")}
+            onClick={() => onPlay()}
             aria-label="add"
             sx={{
               backgroundColor: "rgba(0, 255, 240, 1)",
