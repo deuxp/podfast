@@ -62,7 +62,7 @@ function App() {
           <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
         </section>
 
-        <section className="minicasts">
+        <section className="minicasts-dashboard">
           <MinicastList minicasts={playlist} />
         </section>
       </main>
