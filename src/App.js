@@ -1,17 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import Player from "./Components/Player";
-import Minicast from "./Components/Minicast";
+// import Minicast from "./Components/Minicast";
 import minicasts from "./db/mockData";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
-import { Grid } from "@mui/material";
+import Dashboard from "./Components/Dashboard";
 
 function App() {
   const [state, setState] = useState({});
-  // plays the next song on state change, feed it the next song
-  const [playlist, setPlaylist] = useState([]);
+  const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
+
+  /* ---------------------------- Dashboard toggle ---------------------------- */
+  const [dashboard, setDashboard] = useState(true); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -23,9 +25,9 @@ function App() {
 
   /* ----------------------------- helper function ---------------------------- */
 
-  // function to build a short list of casts to listen to on the front page
-  // as of now just makes a list, no filter, impose a limit 6
-  //implement lazy loading ...
+  // //function to build a short list of casts to listen to on the front page
+  // // as of now just makes a list, no filter, impose a limit 6
+  // //implement lazy loading ...
   const buildList = (state, filter) => {
     return new Promise((resolve, reject) => {
       if (!state.minicasts) return [];
@@ -55,7 +57,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className="App">
       <Nav />
       <main className="main-container">
         <section className="console">
@@ -63,10 +65,11 @@ function App() {
         </section>
 
         <section className="minicasts-dashboard">
-          <MinicastList minicasts={playlist} />
+          {!dashboard && <MinicastList minicasts={playlist} />}
+          {dashboard && <Dashboard />}
         </section>
       </main>
-    </>
+    </div>
   );
 }
 

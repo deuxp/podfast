@@ -1,4 +1,4 @@
-import "./Nav.css";
+import "./Nav.scss";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,15 +8,15 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import React from "react";
-import { blueGrey, red } from "@mui/material/colors";
+import { blueGrey, green, red } from "@mui/material/colors";
 
 export default function ButtonAppBar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "6811d8" }}>
       <AppBar
         className="navBar"
         position="fixed"
-        sx={{ backgroundColor: blueGrey }}
+        sx={{ backgroundColor: "6811d8" }}
       >
         <Toolbar>
           {/* <IconButton
