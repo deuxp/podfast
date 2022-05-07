@@ -17,7 +17,7 @@ function Recorder() {
   // instance of the microphone
 
   const [save, setSave] = useState({
-    file: "theres nothing here",
+    file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
   });
 
