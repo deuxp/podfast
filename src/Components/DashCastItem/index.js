@@ -1,7 +1,7 @@
 import React from "react";
 
-function DashCastItem() {
-  return <div>DashCastItem</div>;
+function DashCastItem({ casts }) {
+  return <div>{casts}</div>;
 }
 
 export default DashCastItem;
