@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import Player from "./Components/Player";
 // import Minicast from "./Components/Minicast";
 import minicasts from "./db/mockData";
