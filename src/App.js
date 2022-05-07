@@ -57,7 +57,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className="App">
       <Nav />
       <main className="main-container">
         <section className="console">
@@ -69,7 +69,7 @@ function App() {
           {dashboard && <Dashboard />}
         </section>
       </main>
-    </>
+    </div>
   );
 }
 
