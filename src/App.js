@@ -1,11 +1,12 @@
+import React from "react";
 import { useState, useEffect } from "react";
+import "./App.css";
 import Player from "./Components/Player";
 import Minicast from "./Components/Minicast";
 import minicasts from "./db/mockData";
-import React from "react";
 import MinicastList from "./Components/MinicastList";
-
-// mocked article
+import Nav from "./Components/Nav";
+import { Grid } from "@mui/material";
 
 function App() {
   const [state, setState] = useState({});
@@ -55,8 +56,16 @@ function App() {
 
   return (
     <>
-      <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
-      <MinicastList minicasts={minicasts} />
+      <Nav />
+      <main className="main-container">
+        <section className="console">
+          <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
+        </section>
+
+        <section className="minicasts-dashboard">
+          <MinicastList minicasts={playlist} />
+        </section>
+      </main>
     </>
   );
 }
