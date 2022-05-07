@@ -9,11 +9,13 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
+import axios from "axios";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
 //TODO refactor async/await - test working
 function Recorder() {
+  const UPLOAD_URL = "http://localhost:8080/minicasts/upload";
   const [rec, setRec] = useState(true); // toggle views and buttons looks
   // instance of the microphone
 
@@ -87,8 +89,23 @@ function Recorder() {
 
   const onPost = () => {
     console.log("posted the recording");
-    console.log(save);
+    console.log(save.file);
+    return new Promise((resolve, reject) => {
+      // let formData = new FormData(save.file);
+      axios
+        .post(UPLOAD_URL, save.file, {
+          headers: {
+            "Content-Type": save.file.type,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((e) => e.message);
+    });
   };
+  // expect browser console -> status to be 204
+  // expect server console ->  show the objects .. if not then parse the json
 
   return (
     <>
