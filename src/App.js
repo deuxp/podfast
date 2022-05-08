@@ -8,12 +8,36 @@ import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Button from '@mui/material/Button';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#6811d8',
+      light: '#a04bff',
+      dark: '#2700a5',
+      contrastText: '#fff',
+    },
+    secondary: {
+      main: '#32f7e6',
+      light: '#7cffff',
+      dark: '#00c3b4',
+      contrastText: '#000',
+    },
+  },
+});
+
 function App() {
   const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true); // needs
+  const [dashboard, setDashboard] = useState(false); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -58,7 +82,20 @@ function App() {
 
   return (
     <div className="App">
-      <Nav />
+
+      <ThemeProvider theme={theme}>
+      <Box sx={{ width: 1 }}>
+        <AppBar position="static">
+          <Toolbar variant="dense">
+            <Typography variant="h5" color="inherit" component="div" sx={{flexGrow: 1}}>
+              PodFast
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </ThemeProvider>
+
       <main className="main-container">
         <section className="console">
           <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
