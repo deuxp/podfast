@@ -7,6 +7,13 @@ import MinicastList from "./Components/MinicastList";
 //import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link as RouterLink
+} from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,6 +25,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import Link from '@mui/material/Link';
 
 const drawerWidth = 350;
 
@@ -43,7 +51,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(false); // needs
+  const [dashboard, setDashboard] = useState(true); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -86,57 +94,67 @@ function App() {
     setPlaylist(newList);
   };
 
+
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
+        <ThemeProvider theme={theme}>
+          <Box sx={{ width: 1 }}>
+            <AppBar position="static">
+              <Toolbar variant="dense">
+                <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
+                  PodFast
+                </Typography>
+                <Button  href='/dashboard' color="inherit">Dashboard</Button>
+                <Button  href='/' color="inherit">Login</Button>
+              </Toolbar>
+            </AppBar>
+          </Box>
+        </ThemeProvider>
 
-      <ThemeProvider theme={theme}>
-        <Box sx={{ width: 1 }}>
-          <AppBar position="static">
-            <Toolbar variant="dense">
-              <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
-                PodFast
-              </Typography>
-              <Button color="inherit">Login</Button>
-            </Toolbar>
-          </AppBar>
-        </Box>
-      </ThemeProvider>
-
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
+        <Drawer
+          sx={{
             width: drawerWidth,
-            boxSizing: "border-box",
-            zIndex: -10
-          }
-        }}
-        variant="permanent"
-        anchor="left"
-      >
-        <Toolbar />
-        <List>
-          {["Profile", "Dashboard", "Following"].map((text) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+              zIndex: -10
+            }
+          }}
+          variant="permanent"
+          anchor="left"
+        >
+          <Toolbar />
+          <List>
+            <ListItem button key="Profile" component={Link} to="/"  >
+              <ListItemText primary="Profile" />
             </ListItem>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
+            <ListItem button key="Dashboard" component={Link} to="/dashboard"  >
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+            <ListItem button key="Following" component={Link} to="/"  >
+              <ListItemText primary="Following" />
+            </ListItem>
+          </List>
+          <Divider />
+        </Drawer>
 
-      <main className="main-container">
-        <section className="console">
-          <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
-        </section>
+        <main className="main-container">
+          <section className="console">
+            <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
+          </section>
 
-        <section className="minicasts-dashboard">
-          {!dashboard && <MinicastList minicasts={playlist} />}
-          {dashboard && <Dashboard />}
-        </section>
-      </main>
-    </div>
+          <Routes>
+            <Route path="/" element={<MinicastList minicasts={playlist} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+
+        </main>
+
+      </div>
+    </Router>
+
   );
 }
 
