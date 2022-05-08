@@ -2,10 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "./App.scss";
 import Player from "./Components/Player";
-// import Minicast from "./Components/Minicast";
 import minicasts from "./db/mockData";
 import MinicastList from "./Components/MinicastList";
-import Nav from "./Components/Nav";
+//import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +13,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Button from '@mui/material/Button';
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+
+const drawerWidth = 350;
 
 const theme = createTheme({
   palette: {
@@ -84,17 +90,41 @@ function App() {
     <div className="App">
 
       <ThemeProvider theme={theme}>
-      <Box sx={{ width: 1 }}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <Typography variant="h5" color="inherit" component="div" sx={{flexGrow: 1}}>
-              PodFast
-            </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    </ThemeProvider>
+        <Box sx={{ width: 1 }}>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
+                PodFast
+              </Typography>
+              <Button color="inherit">Login</Button>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      </ThemeProvider>
+
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            zIndex: -10
+          }
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <List>
+          {["Profile", "Dashboard", "Following"].map((text) => (
+            <ListItem button key={text}>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+      </Drawer>
 
       <main className="main-container">
         <section className="console">
