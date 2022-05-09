@@ -144,7 +144,7 @@ function App() {
 
         <section className="minicasts-dashboard">
           {!dashboard && <MinicastList minicasts={playlist} />}
-          {dashboard && <Dashboard />}
+          {dashboard && <Dashboard dashboard={dashboard} />}
         </section>
       </main>
     </div>
