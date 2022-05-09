@@ -4,37 +4,22 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+//import IconButton from "@mui/material/IconButton";
+//import MenuIcon from "@mui/icons-material/Menu";
 
 import React from "react";
-import { blueGrey, green, red } from "@mui/material/colors";
 
-export default function ButtonAppBar() {
+export default function Nav() {
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "6811d8" }}>
-      <AppBar
-        className="navBar"
-        position="fixed"
-        sx={{ backgroundColor: "6811d8" }}
-      >
-        <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+    <Box sx={{ width: 1 }}>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
             PodFast
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button href='/' color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
-      <Toolbar />
     </Box>
   );
 }
