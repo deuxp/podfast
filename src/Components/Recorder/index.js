@@ -23,7 +23,11 @@ function Recorder() {
     file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
     banner: "",
+    miniCastForm: {},
   });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const setBanner = (banner) => {
     setSave({
       ...save,
@@ -90,10 +94,17 @@ function Recorder() {
   const onPost = () => {
     console.log("posted the recording");
     console.log(save.file);
+
+    const newMiniCast = {
+      ...save,
+      title,
+      description,
+    };
+
     return new Promise((resolve, reject) => {
       // let formData = new FormData(save.file);
       axios
-        .post(UPLOAD_URL, save.file, {
+        .post(UPLOAD_URL, newMiniCast, {
           headers: {
             "Content-Type": save.file.type,
           },
@@ -128,12 +139,16 @@ function Recorder() {
           id="castTitle"
           label="Title"
           variant="standard"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           sx={{ padding: "0.5rem", marginTop: "0.5rem", marginLeft: "0.5rem" }}
         />
         <TextField
           id="castDescription"
           label="Description"
           variant="outlined"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
 
