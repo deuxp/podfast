@@ -4,23 +4,19 @@ import "./App.scss";
 import Player from "./Components/Player";
 import minicasts from "./db/mockData";
 import MinicastList from "./Components/MinicastList";
-//import Nav from "./Components/Nav";
+import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+//import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Button from '@mui/material/Button';
-import Drawer from "@mui/material/Drawer";
+//import Button from '@mui/material/Button';
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Link from '@mui/material/Link';
 
-const drawerWidth = 350;
 
 const theme = createTheme({
   palette: {
@@ -87,68 +83,68 @@ function App() {
     setPlaylist(newList);
   };
 
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (_event, index) => {
+    setSelectedIndex(index);
+    if (index === 1)
+      setDashboard(true);
+    if (index === 0)
+      setDashboard(false);
+  };
 
   return (
-    
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <Box sx={{ width: 1 }}>
-            <AppBar position="static">
-              <Toolbar variant="dense">
-                <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
-                  PodFast
-                </Typography>
-                <Button  href='/' color="inherit">Login</Button>
-              </Toolbar>
-            </AppBar>
-          </Box>
-        </ThemeProvider>
 
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-              zIndex: -10
-            }
-          }}
-          variant="permanent"
-          anchor="left"
-        >
-          <Toolbar />
-          <List>
-            <ListItem button key="Profile" component={Link} to="/"  >
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <ListItem button key="Dashboard" component={Link} to="/dashboard"  >
-              <ListItemText primary="Dashboard" />
-            </ListItem>
-            <ListItem button key="Following" component={Link} to="/"  >
-              <ListItemText primary="Following" />
-            </ListItem>
-          </List>
-          <Divider />
-        </Drawer>
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Nav />
+      </ThemeProvider>
 
-        <main className="main-container">
+      <div className="main-grid">
+        <div className="player-box">
           <section className="console">
             <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
           </section>
+        </div>
 
-
+        <div className="menu-box">
           <section className="minicasts-dashboard">
-          {!dashboard && <MinicastList minicasts={playlist} />}
-          {dashboard && <Dashboard />}
-        </section>
+            {!dashboard && <MinicastList minicasts={playlist} />}
+            {dashboard && <Dashboard />}
+          </section>
+        </div>
 
-
-        </main>
-
+        <div className="main-box">
+          <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <Toolbar />
+            <List>
+              <ListItemButton
+                key="Profile"
+                selected={selectedIndex === 0}
+                onClick={(event) => handleListItemClick(event, 0)}
+              >
+                <ListItemText primary="Profile" />
+              </ListItemButton>
+              <ListItemButton
+                key="Dashboard"
+                selected={selectedIndex === 1}
+                onClick={(event) => handleListItemClick(event, 1)}
+              >
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+              <ListItemButton
+                key="Following"
+                selected={selectedIndex === 3}
+                onClick={(event) => handleListItemClick(event, 3)}
+              >
+                <ListItemText primary="Following" />
+              </ListItemButton>
+            </List>
+            <Divider />
+          </Box>
+        </div>
       </div>
-    
-
+    </div>
   );
 }
 
