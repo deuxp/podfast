@@ -12,29 +12,29 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 
 const drawerWidth = 350;
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#6811d8',
-      light: '#a04bff',
-      dark: '#2700a5',
-      contrastText: '#fff',
+      main: "#6811d8",
+      light: "#a04bff",
+      dark: "#2700a5",
+      contrastText: "#fff",
     },
     secondary: {
-      main: '#32f7e6',
-      light: '#7cffff',
-      dark: '#00c3b4',
-      contrastText: '#000',
+      main: "#32f7e6",
+      light: "#7cffff",
+      dark: "#00c3b4",
+      contrastText: "#000",
     },
   },
 });
@@ -44,7 +44,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(false); // needs
+  const [dashboard, setDashboard] = useState(true); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -87,68 +87,67 @@ function App() {
     setPlaylist(newList);
   };
 
-
   return (
-    
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <Box sx={{ width: 1 }}>
-            <AppBar position="static">
-              <Toolbar variant="dense">
-                <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
-                  PodFast
-                </Typography>
-                <Button  href='/' color="inherit">Login</Button>
-              </Toolbar>
-            </AppBar>
-          </Box>
-        </ThemeProvider>
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Box sx={{ width: 1 }}>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <Typography
+                variant="h5"
+                color="inherit"
+                component="div"
+                sx={{ flexGrow: 1 }}
+              >
+                PodFast
+              </Typography>
+              <Button href="/" color="inherit">
+                Login
+              </Button>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      </ThemeProvider>
 
-        <Drawer
-          sx={{
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-              zIndex: -10
-            }
-          }}
-          variant="permanent"
-          anchor="left"
-        >
-          <Toolbar />
-          <List>
-            <ListItem button key="Profile" component={Link} to="/"  >
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <ListItem button key="Dashboard" component={Link} to="/dashboard"  >
-              <ListItemText primary="Dashboard" />
-            </ListItem>
-            <ListItem button key="Following" component={Link} to="/"  >
-              <ListItemText primary="Following" />
-            </ListItem>
-          </List>
-          <Divider />
-        </Drawer>
+            boxSizing: "border-box",
+            zIndex: -10,
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <List>
+          <ListItem button key="Profile" component={Link} to="/">
+            <ListItemText primary="Profile" />
+          </ListItem>
+          <ListItem button key="Dashboard" component={Link} to="/dashboard">
+            <ListItemText primary="Dashboard" />
+          </ListItem>
+          <ListItem button key="Following" component={Link} to="/">
+            <ListItemText primary="Following" />
+          </ListItem>
+        </List>
+        <Divider />
+      </Drawer>
 
-        <main className="main-container">
-          <section className="console">
-            <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
-          </section>
+      <main className="main-container">
+        <section className="console">
+          <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
+        </section>
 
-
-          <section className="minicasts-dashboard">
+        <section className="minicasts-dashboard">
           {!dashboard && <MinicastList minicasts={playlist} />}
           {dashboard && <Dashboard />}
         </section>
-
-
-        </main>
-
-      </div>
-    
-
+      </main>
+    </div>
   );
 }
 
