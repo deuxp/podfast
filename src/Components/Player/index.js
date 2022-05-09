@@ -10,7 +10,7 @@ function Player({ play, playNextSong, helper }) {
   return (
     <>
       <h2>title: {"title"}</h2>
-      <audio controls src={next} autoPlay onEnded={playNextSong}></audio>
+      <audio controls src={next} onEnded={playNextSong}></audio>
     </>
   );
 }

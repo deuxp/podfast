@@ -21,16 +21,16 @@ import ListItemText from "@mui/material/ListItemText";
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#6811d8',
-      light: '#a04bff',
-      dark: '#2700a5',
-      contrastText: '#fff',
+      main: "#6811d8",
+      light: "#a04bff",
+      dark: "#2700a5",
+      contrastText: "#fff",
     },
     secondary: {
-      main: '#32f7e6',
-      light: '#7cffff',
-      dark: '#00c3b4',
-      contrastText: '#000',
+      main: "#32f7e6",
+      light: "#7cffff",
+      dark: "#00c3b4",
+      contrastText: "#000",
     },
   },
 });
@@ -40,7 +40,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(false); // needs
+  const [dashboard, setDashboard] = useState(true); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
