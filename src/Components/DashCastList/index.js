@@ -1,18 +1,29 @@
 import DashCastItem from "../DashCastItem";
 import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
+import axios from "axios";
 
 import Container from "@mui/material/Container";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const dashList = ["1", "2", "3", "4", "5"];
+// // TODO Bring in the data:
 
-//TODO Bring in the data:
-
-function DashCastList() {
+function DashCastList({ dashboard }) {
   const [userMiniCasts, setUserMiniCasts] = useState([]);
+  const GET_URL = "http://localhost:8080/users/dashboard";
 
-  const renderItem = dashList.map((cast, index) => (
+  useEffect(() => {
+    axios
+      .get(GET_URL)
+      .then((res) => {
+        setUserMiniCasts(res.data);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, [dashboard]);
+
+  const renderItem = userMiniCasts.map((cast, index) => (
     <ListItem key={index}>
       <DashCastItem cast={cast} />
     </ListItem>
