@@ -7,13 +7,6 @@ import MinicastList from "./Components/MinicastList";
 //import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link as RouterLink
-} from "react-router-dom";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -51,7 +44,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true); // needs
+  const [dashboard, setDashboard] = useState(false); // needs
 
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
@@ -96,7 +89,7 @@ function App() {
 
 
   return (
-    <Router>
+    
       <div className="App">
         <ThemeProvider theme={theme}>
           <Box sx={{ width: 1 }}>
@@ -105,7 +98,6 @@ function App() {
                 <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
                   PodFast
                 </Typography>
-                <Button  href='/dashboard' color="inherit">Dashboard</Button>
                 <Button  href='/' color="inherit">Login</Button>
               </Toolbar>
             </AppBar>
@@ -145,15 +137,17 @@ function App() {
             <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
           </section>
 
-          <Routes>
-            <Route path="/" element={<MinicastList minicasts={playlist} />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
+
+          <section className="minicasts-dashboard">
+          {!dashboard && <MinicastList minicasts={playlist} />}
+          {dashboard && <Dashboard />}
+        </section>
+
 
         </main>
 
       </div>
-    </Router>
+    
 
   );
 }
