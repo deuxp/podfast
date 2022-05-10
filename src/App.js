@@ -96,6 +96,7 @@ function App() {
         <Nav />
       </ThemeProvider>
 
+
       <div className="main-grid">
         <div className="player-box">
           <section className="console">
