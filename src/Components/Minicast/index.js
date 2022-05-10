@@ -7,6 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import { Avatar, CardActionArea, CardHeader } from "@mui/material";
 
+
 function Minicast(props) {
 
   return (
@@ -20,6 +21,7 @@ function Minicast(props) {
       <CardHeader
         avatar={<Avatar src={props.avatar_link}></Avatar>}
         title={<Typography variant="h5">{props.title}</Typography>}
+        subheader={props.handle}
       >
       </CardHeader>
       <CardMedia
