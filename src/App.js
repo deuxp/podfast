@@ -39,10 +39,10 @@ const theme = createTheme({
 function App() {
   const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
+  const [currentCast, setCurrentCast] = useState([]);
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
-
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -51,7 +51,6 @@ function App() {
     axios
     .get(GET_URL)
     .then((res) => {
-      console.log('MINICASTS', res.data);
       return res.data
     })
     .then((res) => {
@@ -113,12 +112,12 @@ function App() {
         <Nav />
       </ThemeProvider>
 
-
       <div className="main-grid">
         <div className="player-box">
           <section className="console">
             <Player
               play={playlist}
+              currentCast={currentCast}
               playNextSong={() => playNextSong(playlist)}
             />
           </section>
@@ -126,7 +125,7 @@ function App() {
 
         <div className="menu-box">
           <section className="minicasts-dashboard">
-            {!dashboard && <MinicastList minicasts={playlist} />}
+            {!dashboard && <MinicastList minicasts={playlist} onChange={setCurrentCast} />}
             {dashboard && <Dashboard />}
           </section>
         </div>
