@@ -10,6 +10,9 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import axios from "axios";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen";
+// require("dotenv").config();
 const MicRecorder = require("mic-recorder-to-mp3");
 
 // font-family: 'Goldman', cursive; <-- the typography css rule
@@ -30,6 +33,20 @@ function Recorder() {
       banner,
     });
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 cloudinary                                 */
+  /* -------------------------------------------------------------------------- */
+
+  const CLOUD_NAME = "dovmhs5nm";
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: CLOUD_NAME,
+    },
+  });
+
+  const myImage = cld.image("sample");
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -88,18 +105,20 @@ function Recorder() {
   };
 
   const onPost = () => {
-    console.log("posted the recording");
-    console.log(save.file);
+    console.log("posted the banner to clouinary");
+    console.log(save.banner);
     return new Promise((resolve, reject) => {
       // let formData = new FormData(save.file);
-      axios
-        .post(UPLOAD_URL, save.file, {
-          headers: {
-            "Content-Type": save.file.type,
-          },
-        })
+      const data = new FormData();
+      data.append("file", save.banner);
+      data.append("upload_preset", "banner");
+      data.append("cloud_name", "dovmhs5nm");
+      fetch(`https://apu.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: "post",
+        body: data,
+      })
         .then((res) => {
-          console.log(res.data);
+          console.log(res.json());
         })
         .catch((e) => e.message);
     });
@@ -200,6 +219,7 @@ function Recorder() {
           Post
         </Button>
       </Box>
+      {/* <AdvancedImage cldImg={myImage} /> */}
     </>
   );
 }

@@ -17,7 +17,6 @@ import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -87,14 +86,11 @@ function App() {
 
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
-    if (index === 1)
-      setDashboard(true);
-    if (index === 0)
-      setDashboard(false);
+    if (index === 1) setDashboard(true);
+    if (index === 0) setDashboard(false);
   };
 
   return (
-
     <div className="App">
       <ThemeProvider theme={theme}>
         <Nav />
@@ -103,7 +99,10 @@ function App() {
       <div className="main-grid">
         <div className="player-box">
           <section className="console">
-            <Player play={playlist} playNextSong={() => playNextSong(playlist)} />
+            <Player
+              play={playlist}
+              playNextSong={() => playNextSong(playlist)}
+            />
           </section>
         </div>
 
@@ -115,7 +114,9 @@ function App() {
         </div>
 
         <div className="main-box">
-          <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <Box
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
             <Toolbar />
             <List>
               <ListItemButton
