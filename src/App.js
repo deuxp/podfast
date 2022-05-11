@@ -5,6 +5,7 @@ import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
+import Poodle from "../src/assets/PoodleGraphic.png"
 
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,6 +14,11 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import ListItem from '@mui/material/ListItem';
+import Switch from '@mui/material/Switch';
 
 import axios from "axios";
 import { Container } from "@mui/material";
@@ -39,6 +45,7 @@ function App() {
   const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
   const [currentCast, setCurrentCast] = useState([]);
+  const [open, setOpen] = React.useState(false);
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
@@ -63,7 +70,7 @@ function App() {
       });
   }, []);
 
- 
+
   /* ----------------------------- helper function ---------------------------- */
 
   // //function to build a short list of casts to listen to on the front page
@@ -105,6 +112,15 @@ function App() {
     if (index === 0) setDashboard(false);
   };
 
+  let castsLoaded = false;
+  if (state.minicasts) {
+    castsLoaded = true;
+  }
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
 
     <div className="App">
@@ -131,18 +147,25 @@ function App() {
             </section>
           </div>
 
-          <div className="menu-box">
+          <div className="side-bar">
             <Box
               sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
             >
               <Toolbar />
               <List>
+                <ListItem>
+                  {!dashboard && <><ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
+                    <Switch>
+
+                    </Switch> </>}
+                </ListItem>
+                <Divider />
                 <ListItemButton
-                  key="Profile"
+                  key="Home"
                   selected={selectedIndex === 0}
                   onClick={(event) => handleListItemClick(event, 0)}
                 >
-                  <ListItemText primary="Profile" />
+                  <ListItemText primary="Home" />
                 </ListItemButton>
                 <ListItemButton
                   key="Dashboard"
@@ -152,23 +175,35 @@ function App() {
                   <ListItemText primary="Dashboard" />
                 </ListItemButton>
                 <ListItemButton
-                  key="Following"
+                  key="Profile"
                   selected={selectedIndex === 2}
                   onClick={(event) => handleListItemClick(event, 2)}
                 >
-                  <ListItemText primary="Following" />
+                  <ListItemText primary="Profile" />
                 </ListItemButton>
               </List>
               <Divider />
+              {!dashboard ? (<><ListItemButton onClick={handleClick}>
+                <ListItemText primary="Playlist" />
+                {open ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+                <Collapse in={open} unmountOnExit>
+                  <ul>
+                    {castsLoaded ? (state.minicasts.map((item, index) => {
+                      return (<li key={index}>{item.title}</li>)
+                    })) : ""}
+                  </ul>
+                </Collapse>
+                <ListItemButton>
+                  <ListItemText primary="History" />
+                </ListItemButton>
+                <ListItemButton>
+                  <ListItemText primary="Liked" />
+                </ListItemButton> </>) : ""}
             </Box>
-            <Box>
-              <strong>Playlist</strong>
-              <ul>
-                {state.minicasts && !dashboard ? (state.minicasts.map((item, index) => {
-                  return (<li key={index}>{item.title}</li>)
-                })) : "" }
-              </ul>
-            </Box>
+            <Container>
+              <img src={Poodle} />
+            </Container>
           </div>
         </div>
       </Container>
