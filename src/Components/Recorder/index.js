@@ -72,6 +72,7 @@ function Recorder() {
     bitRate: 128,
   });
 
+  /* --------------------------------- RECORD --------------------------------- */
   const onRecord = () => {
     recorder
       .start()
@@ -83,6 +84,7 @@ function Recorder() {
       });
   };
 
+  /* ---------------------------------- STOP ---------------------------------- */
   const onStop = () => {
     recorder
       .stop()
@@ -111,6 +113,7 @@ function Recorder() {
       });
   };
 
+  /* ---------------------------------- PLAY ---------------------------------- */
   const onPlay = () => {
     const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
@@ -121,6 +124,7 @@ function Recorder() {
     save.playback.pause();
   };
 
+  /* ---------------------------------- POST ---------------------------------- */
   const onPost = () => {
     console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
     // 'file' comes from the Blob or File API
@@ -131,46 +135,13 @@ function Recorder() {
     });
   };
 
-  // gert photo and set to display
+  // set photo on page load || log file name of mp3
   useEffect(() => {
     const pathReference = ref(storage, "imgs/test_upload");
     getDownloadURL(pathReference).then((url) => {
       setImgLink(url);
     });
   }, []);
-
-  // const onPost = () => {
-  //   const config = {
-  //     headers: {
-  //       "content-type": "multipart/form-data",
-  //       "Access-Control-Allow-Origin": "*",
-  //     },
-  //   };
-  //   console.log("posted the banner to clouinary");
-  //   console.log(save.banner);
-  //   return new Promise((resolve, reject) => {
-  //     const data = new FormData();
-  //     data.append("file", save.banner);
-  //     data.append("upload_preset", "banner");
-  //     data.append("cloud_name", "dovmhs5nm");
-  //     fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-  //       method: "POST",
-  //       body: data,
-  //       with_credentials: false,
-  //       headers: {
-  //         "content-type": "multipart/form-data",
-  //         "Access-Control-Allow-Headers": "Content-Type, X-Auth-Token, Origin",
-  //         "Access-Control-Allow-Origin":
-  //           "Cache-Control, Content-Disposition, Content-MD5, Content-Range, Content-Type, DPR, Viewport-Width, X-CSRF-Token, X-Prototype-Version, X-Requested-With, X-Unique-Upload-Id",
-  //         "Access-Control-Allow-Methods": "PUT, POST, GET, OPTIONS",
-  //       },
-  //     })
-  //       .then((res) => {
-  //         console.log("-`-`-`--`-`-`-`-`--`-`-`-`-`", res);
-  //       })
-  //       .catch((e) => e.message);
-  //   });
-  // };
 
   return (
     <>
@@ -181,7 +152,8 @@ function Recorder() {
           width: "40vw",
           height: 300,
           transition: "background-color 1s, box-shadow 0.5s",
-          backgroundColor: "rgba(209, 150, 255, 1)",
+          // backgroundColor: "rgba(209, 150, 255, 1)",
+          backgroundImage: `url(${imgLink})`,
           "&:hover": {
             backgroundColor: "rgba(226, 166, 255, 1)",
             boxShadow: "5px 5px #383434",
@@ -269,7 +241,6 @@ function Recorder() {
           Post
         </Button>
       </Box>
-      <img src={imgLink} />
     </>
   );
 }
