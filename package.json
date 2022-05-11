@@ -47,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "proxy": "https://api.cloudinary.com",
+  "devDependencies": {
+    "dotenv": "^16.0.1"
   }
 }
