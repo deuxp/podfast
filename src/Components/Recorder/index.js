@@ -11,14 +11,11 @@ import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-// import { AdvancedImage } from "@cloudinary/react";
-// import { Cloudinary, CloudinaryFile } from "@cloudinary/url-gen";
 
 import { initializeApp } from "firebase/app";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { async } from "@firebase/util";
 const MicRecorder = require("mic-recorder-to-mp3");
-// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -114,16 +111,6 @@ function Recorder() {
     save.playback.pause();
   };
 
-  // //(a) path = minicasts || imgs (b)
-  // function postRef(path, file) {
-  //   const resourceRef = ref(storage, `${path}/${uuidv4()}`);
-  //   try {
-  //     uploadBytes(resourceRef, file);
-  //   } catch (error) {
-  //     console.log(`didnt post to ${path}`, error);
-  //   }
-  // }
-
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
     console.log("+++++++++++++++ upload started ++++++++++++");
@@ -135,7 +122,6 @@ function Recorder() {
     try {
       const castSnap = await uploadBytes(minicastRef, save.file);
       const bannerSnap = await uploadBytes(bannerRef, save.banner);
-      // console.log("\t\t\tcasst snap --->", castSnap);
       const bannerURL = await getDownloadURL(bannerRef);
       const minicastURL = await getDownloadURL(minicastRef);
       data = { bannerURL, minicastURL };
@@ -143,38 +129,17 @@ function Recorder() {
       console.log("\t\t\t\t\tsomething happenned when uploading", e);
     }
     const sendData = { ...data, title, description };
+    axios
+      .post("http://localhost:8080/minicasts/upload", sendData)
+      .then((response) => {
+        if (response.status !== 201) {
+          throw new Error("the server was not updated");
+        }
+        console.log(response);
+      });
   };
 
-  // const onPost = () => {
-  //   console.log("+++++++++++++++ upload started ++++++++++++");
-  //   //create refs
-  //   const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
-  //   const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-
-  //   Promise.all([
-  //     uploadBytes(minicastRef, save.file),
-  //     uploadBytes(bannerRef, save.banner),
-  //   ])
-  //     .then((snapshot) => {
-  //       const [castSnap, bannerSnap] = snapshot;
-  //       return snapshot;
-  //     })
-  //     .then((snapshot) => {
-  //       const [castSnap, bannerSnap] = snapshot;
-  //     });
-  // };
-
-  // const onPost = () => {
-  //   console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
-  //   // 'file' comes from the Blob or File API
-  //   uploadBytes(storageRef, save.banner).then((snapshot) => {
-  //     console.log("Uploaded a blob or file!");
-  //     console.log("\t\t\t\t", snapshot);
-  //     // take the snap shot or from here send to express
-  //   });
-  // };
-
-  // set photo on page load || log file name of mp3
+  // set bg image  on page load
   useEffect(() => {
     const pathReference = ref(storage, "imgs/test_upload");
     getDownloadURL(pathReference).then((url) => {
@@ -182,6 +147,9 @@ function Recorder() {
     });
   }, []);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                 THE RENDER                                 */
+  /* -------------------------------------------------------------------------- */
   return (
     <>
       <h2>Record a mini-cast</h2>
