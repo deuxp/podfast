@@ -114,42 +114,61 @@ function Recorder() {
     save.playback.pause();
   };
 
-  // (a) path = minicasts || imgs (b)
-  function postRef(path, file) {
-    const resourceRef = ref(storage, `${path}/${uuidv4()}`);
-    try {
-      uploadBytes(resourceRef, file);
-    } catch (error) {
-      console.log(`didnt post to ${path}`, error);
-    }
-  }
+  // //(a) path = minicasts || imgs (b)
+  // function postRef(path, file) {
+  //   const resourceRef = ref(storage, `${path}/${uuidv4()}`);
+  //   try {
+  //     uploadBytes(resourceRef, file);
+  //   } catch (error) {
+  //     console.log(`didnt post to ${path}`, error);
+  //   }
+  // }
 
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
     console.log("+++++++++++++++ upload started ++++++++++++");
     // await postRef('minicasts', save.file)
     // await postRef('imgs', save.banner)
-    const castRef = ref(storage, `minicasts/${uuidv4()}`);
+    const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
     const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-    const castSnap = await uploadBytes(castRef, save.file);
+
+    // new form data
+    const data = new FormData();
+    data.append("user_id", "1");
+    data.append("title", title);
+    data.append("description", description);
+
+    //TODO error handling with nested error handling? do errors bubble up
+    const castSnap = await uploadBytes(minicastRef, save.file);
     const bannerSnap = await uploadBytes(bannerRef, save.banner);
     console.log("\t\t\tcasst snap --->", castSnap);
-    getDownloadURL(bannerRef).then((url) => {
-      console.log(url);
-    });
-    getDownloadURL(castRef).then((url) => {
-      console.log(url);
-    });
+    await getDownloadURL(bannerRef)
+      .then((url) => {
+        console.log(url); // append to form data
+        data.append("banner_link", url);
+      })
+      .catch((e) => {
+        console.log("#getDownloadUrl did not work: ", e);
+      });
+    await getDownloadURL(minicastRef)
+      .then((url) => {
+        console.log(url); // append to form data
+        data.append("minicast_link", url);
+      })
+      .catch((e) => {
+        console.log("#getDownloadUrl did not work: ", e);
+      });
+    console.log("\t\t --------- the final data to send: ", data);
   };
 
   // const onPost = () => {
   //   console.log("+++++++++++++++ upload started ++++++++++++");
   //   //create refs
-  //   const castRef = ref(storage, `minicasts/${uuidv4()}`);
+  //   const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
   //   const bannerRef = ref(storage, `imgs/${uuidv4()}`);
 
   //   Promise.all([
-  //     uploadBytes(castRef, save.file),
+  //     uploadBytes(minicastRef, save.file),
   //     uploadBytes(bannerRef, save.banner),
   //   ])
   //     .then((snapshot) => {
