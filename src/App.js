@@ -156,7 +156,7 @@ function App() {
                 <ListItem>
                   {!dashboard && <><ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
                     <Switch>
-
+                        {/*will need to apply toggle logic to actual start autoplay feature */}
                     </Switch> </>}
                 </ListItem>
                 <Divider />
@@ -201,9 +201,9 @@ function App() {
                   <ListItemText primary="Liked" />
                 </ListItemButton> </>) : ""}
             </Box>
-            <Container>
+            <div>
               <img src={Poodle} />
-            </Container>
+            </div>
           </div>
         </div>
       </Container>
