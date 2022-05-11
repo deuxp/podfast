@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { Avatar } from "@mui/material";
 //import IconButton from "@mui/material/IconButton";
 //import MenuIcon from "@mui/icons-material/Menu";
 
@@ -17,7 +18,7 @@ export default function Nav() {
           <Typography variant="h5" color="inherit" component="div" sx={{ flexGrow: 1 }}>
             PodFast
           </Typography>
-          <Button href='/' color="inherit">Login</Button>
+          <Button href='/' color="inherit"><Avatar>A</Avatar></Button>
         </Toolbar>
       </AppBar>
     </Box>

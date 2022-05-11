@@ -17,7 +17,7 @@ function Player({ play, playNextSong, currentCast, helper }) {
   return (
     <>
       <h2>{play[currentCast] ? play[currentCast].title : ""}</h2>
-      <audio controls autoPlay src={playsSelectedCast(play, currentCast)} onEnded={playNextSong}></audio>
+      <audio controls autoPlay src={playsSelectedCast(play, currentCast)} ></audio>
     </>
   );
 }
