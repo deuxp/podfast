@@ -17,6 +17,8 @@ import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
+import axios from "axios";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -37,21 +39,34 @@ const theme = createTheme({
 function App() {
   const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
+  const [currentCast, setCurrentCast] = useState([]);
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
 
+  const GET_URL = "http://localhost:8080/minicasts";
+
   // initial get from the server (mocked for now from import "./db/mockData")
   useEffect(() => {
-    setState({
-      ...state,
-      minicasts: minicasts, // [{}] array of objects
+    axios
+    .get(GET_URL)
+    .then((res) => {
+      return res.data
+    })
+    .then((res) => {
+      setState({
+        ...state,
+        minicasts: res, // [{}] array of objects
+      });
+    })
+    .catch((e) => {
+      console.log(e.message);
     });
   }, []);
-  // console.log(
-  //   "++++++++++++++++++++++++++++++++++++++",
-  //   process.env.REACT_APP_APP_ID
-  // );
+
+
+ 
+
   /* ----------------------------- helper function ---------------------------- */
 
   // //function to build a short list of casts to listen to on the front page
@@ -85,7 +100,7 @@ function App() {
     setPlaylist(newList);
   };
 
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
@@ -104,6 +119,7 @@ function App() {
           <section className="console">
             <Player
               play={playlist}
+              currentCast={currentCast}
               playNextSong={() => playNextSong(playlist)}
             />
           </section>
@@ -111,7 +127,7 @@ function App() {
 
         <div className="menu-box">
           <section className="minicasts-dashboard">
-            {!dashboard && <MinicastList minicasts={playlist} />}
+            {!dashboard && <MinicastList minicasts={playlist} onChange={setCurrentCast} />}
             {dashboard && <Dashboard />}
           </section>
         </div>
