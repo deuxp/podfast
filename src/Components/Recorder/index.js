@@ -41,7 +41,7 @@ function Recorder() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [save, setSave] = useState({
-    file: "",
+    file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
     banner: "",
   });
@@ -113,22 +113,25 @@ function Recorder() {
 
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
+    if (!save.file) throw new Error("the audio file is blank");
     console.log("+++++++++++++++ upload started ++++++++++++");
     const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
     const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-    let data;
+    let data, bannerURL, minicastURL;
 
     //TODO error handling with nested error handling? do errors bubble up
     try {
       const castSnap = await uploadBytes(minicastRef, save.file);
       const bannerSnap = await uploadBytes(bannerRef, save.banner);
-      const bannerURL = await getDownloadURL(bannerRef);
-      const minicastURL = await getDownloadURL(minicastRef);
+      minicastURL = await getDownloadURL(minicastRef);
+      if (save.banner) {
+        bannerURL = await getDownloadURL(bannerRef);
+      }
       data = { bannerURL, minicastURL };
     } catch (e) {
       console.log("\t\t\t\t\tsomething happenned when uploading", e);
     }
-    const sendData = { ...data, title, description };
+    const sendData = { ...data, title, description, user_id: "1" };
     axios
       .post("http://localhost:8080/minicasts/upload", sendData)
       .then((response) => {
@@ -141,10 +144,10 @@ function Recorder() {
 
   // set bg image  on page load
   useEffect(() => {
-    const pathReference = ref(storage, "imgs/test_upload");
-    getDownloadURL(pathReference).then((url) => {
-      setImgLink(url);
-    });
+    // const pathReference = ref(storage, "imgs/test_upload");
+    // getDownloadURL(pathReference).then((url) => {
+    //   setImgLink(url);
+    // });
   }, []);
 
   /* -------------------------------------------------------------------------- */
@@ -159,7 +162,7 @@ function Recorder() {
           width: "40vw",
           height: 300,
           transition: "background-color 1s, box-shadow 0.5s",
-          // backgroundColor: "rgba(209, 150, 255, 1)",
+          backgroundColor: "rgba(209, 150, 255, 1)",
           backgroundImage: `url(${imgLink})`,
           "&:hover": {
             backgroundColor: "rgba(226, 166, 255, 1)",
