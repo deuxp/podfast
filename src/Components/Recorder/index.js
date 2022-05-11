@@ -6,45 +6,34 @@ import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
-import { initializeApp } from "firebase/app";
-import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
-import { async } from "@firebase/util";
-const MicRecorder = require("mic-recorder-to-mp3");
-// https://firebase.google.com/docs/web/setup#available-libraries
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
-};
+import app from "../../fireBase-config";
 
-const app = initializeApp(firebaseConfig);
-// Points to the root reference
+import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+const MicRecorder = require("mic-recorder-to-mp3");
 
 //TODO refactor async/await - test working
 function Recorder() {
   const storage = getStorage();
-  const storageRef = ref(storage, "imgs/test_upload"); // pointer for uploading and file name
 
-  const [imgLink, setImgLink] = useState(null);
-
-  // const [rec, setRec] = useState(true); // toggle views and buttons looks
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [save, setSave] = useState({
+  const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
     banner: "",
-  });
+  };
+  // const [rec, setRec] = useState(true); // toggle views and buttons looks
+
+  // from control
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const [save, setSave] = useState(defaultRecorderState);
+  // alias to set banner from dropzone
   const setBanner = (banner) => {
     setSave({
       ...save,
@@ -102,7 +91,7 @@ function Recorder() {
 
   /* ---------------------------------- PLAY ---------------------------------- */
   const onPlay = () => {
-    const player = new Audio(URL.createObjectURL(save.file));
+    // const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
   };
 
@@ -139,16 +128,11 @@ function Recorder() {
           throw new Error("the server was not updated");
         }
         console.log(response);
+      })
+      .then(() => {
+        // setSave(() => defaultRecorderState);
       });
   };
-
-  // set bg image  on page load
-  useEffect(() => {
-    // const pathReference = ref(storage, "imgs/test_upload");
-    // getDownloadURL(pathReference).then((url) => {
-    //   setImgLink(url);
-    // });
-  }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */
@@ -163,7 +147,6 @@ function Recorder() {
           height: 300,
           transition: "background-color 1s, box-shadow 0.5s",
           backgroundColor: "rgba(209, 150, 255, 1)",
-          backgroundImage: `url(${imgLink})`,
           "&:hover": {
             backgroundColor: "rgba(226, 166, 255, 1)",
             boxShadow: "5px 5px #383434",
