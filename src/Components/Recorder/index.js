@@ -11,14 +11,11 @@ import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-// import { AdvancedImage } from "@cloudinary/react";
-// import { Cloudinary, CloudinaryFile } from "@cloudinary/url-gen";
 
 import { initializeApp } from "firebase/app";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { async } from "@firebase/util";
 const MicRecorder = require("mic-recorder-to-mp3");
-// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -44,7 +41,7 @@ function Recorder() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [save, setSave] = useState({
-    file: "",
+    file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
     banner: "",
   });
@@ -114,71 +111,48 @@ function Recorder() {
     save.playback.pause();
   };
 
-  // (a) path = minicasts || imgs (b)
-  function postRef(path, file) {
-    const resourceRef = ref(storage, `${path}/${uuidv4()}`);
-    try {
-      uploadBytes(resourceRef, file);
-    } catch (error) {
-      console.log(`didnt post to ${path}`, error);
-    }
-  }
-
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
+    if (!save.file) throw new Error("the audio file is blank");
     console.log("+++++++++++++++ upload started ++++++++++++");
-    // await postRef('minicasts', save.file)
-    // await postRef('imgs', save.banner)
-    const castRef = ref(storage, `minicasts/${uuidv4()}`);
+    const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
     const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-    const castSnap = await uploadBytes(castRef, save.file);
-    const bannerSnap = await uploadBytes(bannerRef, save.banner);
-    console.log("\t\t\tcasst snap --->", castSnap);
-    getDownloadURL(bannerRef).then((url) => {
-      console.log(url);
-    });
-    getDownloadURL(castRef).then((url) => {
-      console.log(url);
-    });
+    let data, bannerURL, minicastURL;
+
+    //TODO error handling with nested error handling? do errors bubble up
+    try {
+      const castSnap = await uploadBytes(minicastRef, save.file);
+      const bannerSnap = await uploadBytes(bannerRef, save.banner);
+      minicastURL = await getDownloadURL(minicastRef);
+      if (save.banner) {
+        bannerURL = await getDownloadURL(bannerRef);
+      }
+      data = { bannerURL, minicastURL };
+    } catch (e) {
+      console.log("\t\t\t\t\tsomething happenned when uploading", e);
+    }
+    const sendData = { ...data, title, description, user_id: "1" };
+    axios
+      .post("http://localhost:8080/minicasts/upload", sendData)
+      .then((response) => {
+        if (response.status !== 201) {
+          throw new Error("the server was not updated");
+        }
+        console.log(response);
+      });
   };
 
-  // const onPost = () => {
-  //   console.log("+++++++++++++++ upload started ++++++++++++");
-  //   //create refs
-  //   const castRef = ref(storage, `minicasts/${uuidv4()}`);
-  //   const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-
-  //   Promise.all([
-  //     uploadBytes(castRef, save.file),
-  //     uploadBytes(bannerRef, save.banner),
-  //   ])
-  //     .then((snapshot) => {
-  //       const [castSnap, bannerSnap] = snapshot;
-  //       return snapshot;
-  //     })
-  //     .then((snapshot) => {
-  //       const [castSnap, bannerSnap] = snapshot;
-  //     });
-  // };
-
-  // const onPost = () => {
-  //   console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
-  //   // 'file' comes from the Blob or File API
-  //   uploadBytes(storageRef, save.banner).then((snapshot) => {
-  //     console.log("Uploaded a blob or file!");
-  //     console.log("\t\t\t\t", snapshot);
-  //     // take the snap shot or from here send to express
-  //   });
-  // };
-
-  // set photo on page load || log file name of mp3
+  // set bg image  on page load
   useEffect(() => {
-    const pathReference = ref(storage, "imgs/test_upload");
-    getDownloadURL(pathReference).then((url) => {
-      setImgLink(url);
-    });
+    // const pathReference = ref(storage, "imgs/test_upload");
+    // getDownloadURL(pathReference).then((url) => {
+    //   setImgLink(url);
+    // });
   }, []);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                 THE RENDER                                 */
+  /* -------------------------------------------------------------------------- */
   return (
     <>
       <h2>Record a mini-cast</h2>
@@ -188,7 +162,7 @@ function Recorder() {
           width: "40vw",
           height: 300,
           transition: "background-color 1s, box-shadow 0.5s",
-          // backgroundColor: "rgba(209, 150, 255, 1)",
+          backgroundColor: "rgba(209, 150, 255, 1)",
           backgroundImage: `url(${imgLink})`,
           "&:hover": {
             backgroundColor: "rgba(226, 166, 255, 1)",
