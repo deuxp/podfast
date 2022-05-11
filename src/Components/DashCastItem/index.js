@@ -12,7 +12,6 @@ function DashCastItem({ cast }) {
       sx={{
         width: "100%",
         // height: 300,
-        backgroundImage: banner_link,
         border: "dashed",
         borderRadius: "10px",
         padding: "1rem",
@@ -35,7 +34,6 @@ function DashCastItem({ cast }) {
       </Button>
       <br />
       <audio controls={true} src="{audio_link}"></audio>
-      {banner_link}
     </Box>
   );
 
