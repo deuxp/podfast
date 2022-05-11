@@ -97,7 +97,7 @@ function Recorder() {
         });
       })
       .then((file) => {
-        const playback = new Audio(URL.createObjectURL(file));
+        const playback = new Audio(URL.createObjectURL(file)); //TODO redundant ?
         return [file, playback];
       })
       .then(([file, playback]) => {
