@@ -6,12 +6,12 @@ import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import axios from "axios";
-import { AdvancedImage } from "@cloudinary/react";
-import { Cloudinary, CloudinaryFile, C } from "@cloudinary/url-gen";
+// import { AdvancedImage } from "@cloudinary/react";
+// import { Cloudinary, CloudinaryFile } from "@cloudinary/url-gen";
 
 import { initializeApp } from "firebase/app";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
@@ -36,6 +36,8 @@ function Recorder() {
   const storage = getStorage();
   const storageRef = ref(storage, "imgs/test_upload"); // pointer for uploading and file name
 
+  const [imgLink, setImgLink] = useState(null);
+
   const [rec, setRec] = useState(true); // toggle views and buttons looks
   const [save, setSave] = useState({
     file: "",
@@ -49,19 +51,19 @@ function Recorder() {
     });
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*                                 cloudinary                                 */
-  /* -------------------------------------------------------------------------- */
+  // /* -------------------------------------------------------------------------- */
+  // /*                                 cloudinary                                 */
+  // /* -------------------------------------------------------------------------- */
 
-  const CLOUD_NAME = "dovmhs5nm";
+  // const CLOUD_NAME = "dovmhs5nm";
 
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: CLOUD_NAME,
-    },
-  });
+  // const cld = new Cloudinary({
+  //   cloud: {
+  //     cloudName: CLOUD_NAME,
+  //   },
+  // });
 
-  const myImage = cld.image("sample");
+  // const myImage = cld.image("sample");
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -129,7 +131,13 @@ function Recorder() {
     });
   };
 
-  const pathReference = ref(storage, "imgs/test_upload");
+  // gert photo and set to display
+  useEffect(() => {
+    const pathReference = ref(storage, "imgs/test_upload");
+    getDownloadURL(pathReference).then((url) => {
+      setImgLink(url);
+    });
+  }, []);
 
   // const onPost = () => {
   //   const config = {
@@ -261,7 +269,7 @@ function Recorder() {
           Post
         </Button>
       </Box>
-      <img src={pathReference} />
+      <img src={imgLink} />
     </>
   );
 }
