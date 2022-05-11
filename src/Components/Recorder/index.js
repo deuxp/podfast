@@ -10,6 +10,8 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Recorder() {
   const defaultRecorderState = {
@@ -18,6 +20,7 @@ function Recorder() {
     banner: "",
   };
 
+  // useRecorder Hook
   const {
     save,
     setSave,
@@ -31,7 +34,16 @@ function Recorder() {
     onPlay,
     onPause,
     onPost,
+    open,
   } = useRecorder(defaultRecorderState);
+
+  // mode selectors
+  const LOADING = "LOADING",
+    UPLOADING = "UPLOADING",
+    SHOW = "SHOW",
+    ERROR = "ERROR",
+    RECORDING = "RECORDING",
+    PLAYING = "PLAYING";
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */
@@ -136,6 +148,14 @@ function Recorder() {
         >
           Post
         </Button>
+
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          // onClick={handleBackdrop}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
     </>
   );
