@@ -9,12 +9,14 @@ import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 // import { AdvancedImage } from "@cloudinary/react";
 // import { Cloudinary, CloudinaryFile } from "@cloudinary/url-gen";
 
 import { initializeApp } from "firebase/app";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { async } from "@firebase/util";
 const MicRecorder = require("mic-recorder-to-mp3");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -52,20 +54,6 @@ function Recorder() {
       banner,
     });
   };
-
-  // /* -------------------------------------------------------------------------- */
-  // /*                                 cloudinary                                 */
-  // /* -------------------------------------------------------------------------- */
-
-  // const CLOUD_NAME = "dovmhs5nm";
-
-  // const cld = new Cloudinary({
-  //   cloud: {
-  //     cloudName: CLOUD_NAME,
-  //   },
-  // });
-
-  // const myImage = cld.image("sample");
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -126,16 +114,62 @@ function Recorder() {
     save.playback.pause();
   };
 
+  // (a) path = minicasts || imgs (b)
+  function postRef(path, file) {
+    const resourceRef = ref(storage, `${path}/${uuidv4()}`);
+    try {
+      uploadBytes(resourceRef, file);
+    } catch (error) {
+      console.log(`didnt post to ${path}`, error);
+    }
+  }
+
   /* ---------------------------------- POST ---------------------------------- */
-  const onPost = () => {
-    console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
-    // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, save.banner).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
-      console.log("\t\t\t\t", snapshot);
-      // take the snap shot or from here send to express
+  const onPost = async () => {
+    console.log("+++++++++++++++ upload started ++++++++++++");
+    // await postRef('minicasts', save.file)
+    // await postRef('imgs', save.banner)
+    const castRef = ref(storage, `minicasts/${uuidv4()}`);
+    const bannerRef = ref(storage, `imgs/${uuidv4()}`);
+    const castSnap = await uploadBytes(castRef, save.file);
+    const bannerSnap = await uploadBytes(bannerRef, save.banner);
+    console.log("\t\t\tcasst snap --->", castSnap);
+    getDownloadURL(bannerRef).then((url) => {
+      console.log(url);
+    });
+    getDownloadURL(castRef).then((url) => {
+      console.log(url);
     });
   };
+
+  // const onPost = () => {
+  //   console.log("+++++++++++++++ upload started ++++++++++++");
+  //   //create refs
+  //   const castRef = ref(storage, `minicasts/${uuidv4()}`);
+  //   const bannerRef = ref(storage, `imgs/${uuidv4()}`);
+
+  //   Promise.all([
+  //     uploadBytes(castRef, save.file),
+  //     uploadBytes(bannerRef, save.banner),
+  //   ])
+  //     .then((snapshot) => {
+  //       const [castSnap, bannerSnap] = snapshot;
+  //       return snapshot;
+  //     })
+  //     .then((snapshot) => {
+  //       const [castSnap, bannerSnap] = snapshot;
+  //     });
+  // };
+
+  // const onPost = () => {
+  //   console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
+  //   // 'file' comes from the Blob or File API
+  //   uploadBytes(storageRef, save.banner).then((snapshot) => {
+  //     console.log("Uploaded a blob or file!");
+  //     console.log("\t\t\t\t", snapshot);
+  //     // take the snap shot or from here send to express
+  //   });
+  // };
 
   // set photo on page load || log file name of mp3
   useEffect(() => {
