@@ -38,7 +38,9 @@ function Recorder() {
 
   const [imgLink, setImgLink] = useState(null);
 
-  const [rec, setRec] = useState(true); // toggle views and buttons looks
+  // const [rec, setRec] = useState(true); // toggle views and buttons looks
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [save, setSave] = useState({
     file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -165,6 +167,8 @@ function Recorder() {
           id="castTitle"
           label="Title"
           variant="standard"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           sx={{
             padding: "0.5rem",
             marginTop: "0.5rem",
@@ -175,6 +179,8 @@ function Recorder() {
           id="castDescription"
           label="Description"
           variant="outlined"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
         />
 
@@ -206,7 +212,7 @@ function Recorder() {
           </Fab>
         }
 
-        {rec && (
+        {
           <Fab
             onClick={() => onStop()}
             aria-label="add"
@@ -217,7 +223,7 @@ function Recorder() {
           >
             <StopCircleIcon />
           </Fab>
-        )}
+        }
 
         {
           <Fab
