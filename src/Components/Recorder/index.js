@@ -1,4 +1,7 @@
-// import MicRecorder from "mic-recorder-to-mp3";
+import { useState } from "react";
+import { useRecorder } from "../../hooks/useRecorder";
+import UploadBanner from "../UploadBanner";
+
 import Box from "@mui/material/Box";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Fab from "@mui/material/Fab";
@@ -6,133 +9,29 @@ import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
 import Button from "@mui/material/Button";
-import UploadBanner from "../UploadBanner";
-import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
 
-import app from "../../fireBase-config";
-
-import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
-const MicRecorder = require("mic-recorder-to-mp3");
-
-//TODO refactor async/await - test working
 function Recorder() {
-  const storage = getStorage();
-
   const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
     banner: "",
   };
-  // const [rec, setRec] = useState(true); // toggle views and buttons looks
 
-  // from control
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  const [save, setSave] = useState(defaultRecorderState);
-  // alias to set banner from dropzone
-  const setBanner = (banner) => {
-    setSave({
-      ...save,
-      banner,
-    });
-  };
-
-  /* -------------------------------------------------------------------------- */
-  /*                              recorder handlers                             */
-  /* -------------------------------------------------------------------------- */
-  const recorder = new MicRecorder({
-    bitRate: 128,
-  });
-
-  /* --------------------------------- RECORD --------------------------------- */
-  const onRecord = () => {
-    recorder
-      .start()
-      .then(() => {
-        console.log("the recorder has started");
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
-
-  /* ---------------------------------- STOP ---------------------------------- */
-  const onStop = () => {
-    recorder
-      .stop()
-      .getMp3()
-      .then(([buffer, blob]) => {
-        return new File(buffer, "ohBoy.mp3", {
-          //TODO replace name with uuid
-          type: blob.type,
-          lastModified: Date.now(),
-        });
-      })
-      .then((file) => {
-        const playback = new Audio(URL.createObjectURL(file)); //TODO redundant ?
-        return [file, playback];
-      })
-      .then(([file, playback]) => {
-        console.log("the recorder has stopped");
-        setSave({
-          ...save,
-          file,
-          playback,
-        });
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  };
-
-  /* ---------------------------------- PLAY ---------------------------------- */
-  const onPlay = () => {
-    // const player = new Audio(URL.createObjectURL(save.file));
-    save.playback.play();
-  };
-
-  const onPause = () => {
-    console.log("pause");
-    save.playback.pause();
-  };
-
-  /* ---------------------------------- POST ---------------------------------- */
-  const onPost = async () => {
-    if (!save.file) throw new Error("the audio file is blank");
-    console.log("+++++++++++++++ upload started ++++++++++++");
-    const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
-    const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-    let data, bannerURL, minicastURL;
-
-    //TODO error handling with nested error handling? do errors bubble up
-    try {
-      const castSnap = await uploadBytes(minicastRef, save.file);
-      const bannerSnap = await uploadBytes(bannerRef, save.banner);
-      minicastURL = await getDownloadURL(minicastRef);
-      if (save.banner) {
-        bannerURL = await getDownloadURL(bannerRef);
-      }
-      data = { bannerURL, minicastURL };
-    } catch (e) {
-      console.log("\t\t\t\t\tsomething happenned when uploading", e);
-    }
-    const sendData = { ...data, title, description, user_id: "1" };
-    axios
-      .post("http://localhost:8080/minicasts/upload", sendData)
-      .then((response) => {
-        if (response.status !== 201) {
-          throw new Error("the server was not updated");
-        }
-        console.log(response);
-      })
-      .then(() => {
-        // setSave(() => defaultRecorderState);
-      });
-  };
+  const {
+    save,
+    setSave,
+    setBanner,
+    title,
+    setTitle,
+    description,
+    setDescription,
+    onRecord,
+    onStop,
+    onPlay,
+    onPause,
+    onPost,
+  } = useRecorder(defaultRecorderState);
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */
