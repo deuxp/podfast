@@ -48,7 +48,10 @@ function App() {
       minicasts: minicasts, // [{}] array of objects
     });
   }, []);
-
+  // console.log(
+  //   "++++++++++++++++++++++++++++++++++++++",
+  //   process.env.REACT_APP_APP_ID
+  // );
   /* ----------------------------- helper function ---------------------------- */
 
   // //function to build a short list of casts to listen to on the front page
@@ -95,7 +98,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <Nav />
       </ThemeProvider>
-
 
       <div className="main-grid">
         <div className="player-box">
