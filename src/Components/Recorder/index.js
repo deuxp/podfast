@@ -127,38 +127,22 @@ function Recorder() {
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
     console.log("+++++++++++++++ upload started ++++++++++++");
-    // await postRef('minicasts', save.file)
-    // await postRef('imgs', save.banner)
     const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
     const bannerRef = ref(storage, `imgs/${uuidv4()}`);
-
-    // new form data
-    const data = new FormData();
-    data.append("user_id", "1");
-    data.append("title", title);
-    data.append("description", description);
+    let data;
 
     //TODO error handling with nested error handling? do errors bubble up
-    const castSnap = await uploadBytes(minicastRef, save.file);
-    const bannerSnap = await uploadBytes(bannerRef, save.banner);
-    console.log("\t\t\tcasst snap --->", castSnap);
-    await getDownloadURL(bannerRef)
-      .then((url) => {
-        console.log(url); // append to form data
-        data.append("banner_link", url);
-      })
-      .catch((e) => {
-        console.log("#getDownloadUrl did not work: ", e);
-      });
-    await getDownloadURL(minicastRef)
-      .then((url) => {
-        console.log(url); // append to form data
-        data.append("minicast_link", url);
-      })
-      .catch((e) => {
-        console.log("#getDownloadUrl did not work: ", e);
-      });
-    console.log("\t\t --------- the final data to send: ", data);
+    try {
+      const castSnap = await uploadBytes(minicastRef, save.file);
+      const bannerSnap = await uploadBytes(bannerRef, save.banner);
+      // console.log("\t\t\tcasst snap --->", castSnap);
+      const bannerURL = await getDownloadURL(bannerRef);
+      const minicastURL = await getDownloadURL(minicastRef);
+      data = { bannerURL, minicastURL };
+    } catch (e) {
+      console.log("\t\t\t\t\tsomething happenned when uploading", e);
+    }
+    const sendData = { ...data, title, description };
   };
 
   // const onPost = () => {
