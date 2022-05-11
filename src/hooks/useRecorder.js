@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import app from "../fireBase-config";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { getSuggestedQuery } from "@testing-library/react";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 export function useRecorder(initialState) {
@@ -11,6 +12,7 @@ export function useRecorder(initialState) {
   // from control
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [open, setOpen] = useState(false); // loading backdrop
 
   const [save, setSave] = useState(initialState);
   // alias to set banner from dropzone
@@ -82,6 +84,7 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- POST ---------------------------------- */
   const onPost = async () => {
+    setOpen(true);
     if (!save.file) throw new Error("the audio file is blank");
     console.log("+++++++++++++++ upload started ++++++++++++");
     const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
@@ -109,10 +112,16 @@ export function useRecorder(initialState) {
         }
         console.log(response);
       })
+      .then(() => {
+        setOpen(() => false);
+      })
+      .then(() => {
+        setTitle("");
+      })
+      .then(() => {
+        setDescription("");
+      })
       .catch((e) => console.log("something went wrong with the server", e));
-    // .then(() => {
-    // setSave(() => defaultRecorderState);
-    // });
   };
 
   return {
@@ -128,5 +137,6 @@ export function useRecorder(initialState) {
     onPlay,
     onPause,
     onPost,
+    open,
   };
 }
