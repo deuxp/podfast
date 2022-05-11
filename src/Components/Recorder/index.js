@@ -11,17 +11,32 @@ import Button from "@mui/material/Button";
 import UploadBanner from "../UploadBanner";
 import axios from "axios";
 import { AdvancedImage } from "@cloudinary/react";
-import { Cloudinary } from "@cloudinary/url-gen";
-// require("dotenv").config();
-const MicRecorder = require("mic-recorder-to-mp3");
+import { Cloudinary, CloudinaryFile, C } from "@cloudinary/url-gen";
 
-// font-family: 'Goldman', cursive; <-- the typography css rule
+import { initializeApp } from "firebase/app";
+import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+const MicRecorder = require("mic-recorder-to-mp3");
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+// Points to the root reference
+
 //TODO refactor async/await - test working
 function Recorder() {
-  const UPLOAD_URL = "http://localhost:8080/minicasts/upload";
-  const [rec, setRec] = useState(true); // toggle views and buttons looks
-  // instance of the microphone
+  const storage = getStorage();
+  const storageRef = ref(storage, "imgs/test_upload"); // pointer for uploading and file name
 
+  const [rec, setRec] = useState(true); // toggle views and buttons looks
   const [save, setSave] = useState({
     file: "",
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -105,26 +120,49 @@ function Recorder() {
   };
 
   const onPost = () => {
-    console.log("posted the banner to clouinary");
-    console.log(save.banner);
-    return new Promise((resolve, reject) => {
-      // let formData = new FormData(save.file);
-      const data = new FormData();
-      data.append("file", save.banner);
-      data.append("upload_preset", "banner");
-      data.append("cloud_name", "dovmhs5nm");
-      fetch(`https://apu.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-        method: "post",
-        body: data,
-      })
-        .then((res) => {
-          console.log(res.json());
-        })
-        .catch((e) => e.message);
+    console.log("+++++++++++++++ banner uploaded: ", save.banner.path);
+    // 'file' comes from the Blob or File API
+    uploadBytes(storageRef, save.banner).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+      console.log("\t\t\t\t", snapshot);
+      // take the snap shot or from here send to express
     });
   };
-  // expect browser console -> status to be 204
-  // expect server console ->  show the objects .. if not then parse the json
+
+  const pathReference = ref(storage, "imgs/test_upload");
+
+  // const onPost = () => {
+  //   const config = {
+  //     headers: {
+  //       "content-type": "multipart/form-data",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //   };
+  //   console.log("posted the banner to clouinary");
+  //   console.log(save.banner);
+  //   return new Promise((resolve, reject) => {
+  //     const data = new FormData();
+  //     data.append("file", save.banner);
+  //     data.append("upload_preset", "banner");
+  //     data.append("cloud_name", "dovmhs5nm");
+  //     fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+  //       method: "POST",
+  //       body: data,
+  //       with_credentials: false,
+  //       headers: {
+  //         "content-type": "multipart/form-data",
+  //         "Access-Control-Allow-Headers": "Content-Type, X-Auth-Token, Origin",
+  //         "Access-Control-Allow-Origin":
+  //           "Cache-Control, Content-Disposition, Content-MD5, Content-Range, Content-Type, DPR, Viewport-Width, X-CSRF-Token, X-Prototype-Version, X-Requested-With, X-Unique-Upload-Id",
+  //         "Access-Control-Allow-Methods": "PUT, POST, GET, OPTIONS",
+  //       },
+  //     })
+  //       .then((res) => {
+  //         console.log("-`-`-`--`-`-`-`-`--`-`-`-`-`", res);
+  //       })
+  //       .catch((e) => e.message);
+  //   });
+  // };
 
   return (
     <>
@@ -147,7 +185,11 @@ function Recorder() {
           id="castTitle"
           label="Title"
           variant="standard"
-          sx={{ padding: "0.5rem", marginTop: "0.5rem", marginLeft: "0.5rem" }}
+          sx={{
+            padding: "0.5rem",
+            marginTop: "0.5rem",
+            marginLeft: "0.5rem",
+          }}
         />
         <TextField
           id="castDescription"
@@ -219,7 +261,7 @@ function Recorder() {
           Post
         </Button>
       </Box>
-      {/* <AdvancedImage cldImg={myImage} /> */}
+      <img src={pathReference} />
     </>
   );
 }
