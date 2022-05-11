@@ -14,6 +14,7 @@ function DashCastItem({ cast }) {
         // height: 300,
         border: "dashed",
         borderRadius: "10px",
+        backgroundImage: `url(${banner_link})`,
         padding: "1rem",
         "&:hover": {
           backgroundColor: "grey",
@@ -33,7 +34,7 @@ function DashCastItem({ cast }) {
         delete post
       </Button>
       <br />
-      <audio controls={true} src="{audio_link}"></audio>
+      <audio controls={true} src={audio_link}></audio>
     </Box>
   );
 
