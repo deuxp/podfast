@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import "./UploadBanner.scss";
 
@@ -11,16 +11,6 @@ function UploadBanner({ setBanner }) {
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       setBanner(acceptedFiles[0]);
-      // setFiles(
-      //   acceptedFiles.map(
-      //     (
-      //       file //TODO refactor to sperad once working
-      //     ) =>
-      //       Object.assign(file, {
-      //         preview: URL.createObjectURL(file),
-      //       })
-      //   )
-      // );
     },
   });
 
@@ -36,25 +26,9 @@ function UploadBanner({ setBanner }) {
       <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
         {<p>Drag 'n' drop your banner file here</p>}
-        {/* {files && <p>{files}</p>} */}
       </div>
     </section>
   );
 }
 
 export default UploadBanner;
-
-// function Dropzone({ banner, setBanner }) {
-//   const onDrop = useCallback((acceptedFiles) => {
-//     // save the file
-//     const file = new File(acceptedFiles[0], "banner.jpg", {
-//       type: acceptedFiles[0].type,
-//       lastModified: Date.now(),
-//     });
-//   }, []);
-//   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-//   return <div>Dropzone</div>;
-// }
-
-// export default Dropzone;

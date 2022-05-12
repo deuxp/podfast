@@ -10,12 +10,13 @@ function DashCastItem({ cast }) {
     <Box
       component="span"
       sx={{
-        width: "100%",
+        width: "40vw",
         // height: 300,
+        marginLeft: "-10px",
         border: "dashed",
         borderRadius: "10px",
         backgroundImage: `url(${banner_link})`,
-        padding: "1rem",
+        // padding: "1rem",
         "&:hover": {
           backgroundColor: "grey",
           opacity: [0.9, 0.8, 0.7],
