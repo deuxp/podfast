@@ -1,12 +1,14 @@
-import React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 
-function DashCastItem({ cast }) {
+function DashCastItem({ cast, updateCasts }) {
   //TODO (a) build the article (b) destroy button (c) confirmation
 
   const { title, description, audio_link, banner_link, id } = cast;
+
   const renderedArticle = (
     <Box
       component="span"
@@ -18,7 +20,7 @@ function DashCastItem({ cast }) {
         backgroundImage: `url(${banner_link})`,
         "&:hover": {
           backgroundColor: "grey",
-          opacity: [0.9, 0.8, 0.7],
+          // opacity: [0.9, 0.8, 0.7],
         },
       }}
     >
@@ -96,7 +98,22 @@ function DashCastItem({ cast }) {
   );
 
   const handleClick = () => {
-    console.log("post deleted");
+    console.log("+++ post deleting +++");
+    // setOpen(true);
+    axios
+      .delete(`http://localhost:8080/minicasts/${id}/destroy`)
+      .then((response) => {
+        console.log(response.data.status);
+        if (response.data.status !== 204) {
+          throw new Error("The server did not destroy the article");
+        }
+      })
+      .then(() => {
+        updateCasts(id);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   };
 
   return <>{renderedArticle}</>;
