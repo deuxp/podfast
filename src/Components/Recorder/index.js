@@ -39,7 +39,6 @@ function Recorder() {
     onPost,
     open,
     mode,
-    setRecState,
   } = useRecorder(defaultRecorderState);
 
   /* -------------------------------------------------------------------------- */
