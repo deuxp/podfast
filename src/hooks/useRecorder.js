@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import app from "../fireBase-config";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
-import { getSuggestedQuery } from "@testing-library/react";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 export function useRecorder(initialState) {
@@ -14,6 +13,8 @@ export function useRecorder(initialState) {
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false); // loading backdrop
 
+  const [userMiniCasts, setUserMiniCasts] = useState([]);
+
   const [save, setSave] = useState(initialState);
   // alias to set banner from dropzone
   const setBanner = (banner) => {
@@ -22,6 +23,24 @@ export function useRecorder(initialState) {
       banner,
     });
   };
+
+  const GET_URL = "http://localhost:8080/users/dashboard";
+
+  const displayNewList = (item, list) => {
+    const newList = [item, ...list];
+    setUserMiniCasts(newList);
+  };
+
+  useEffect(() => {
+    axios
+      .get(GET_URL)
+      .then((res) => {
+        setUserMiniCasts(res.data);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, [setUserMiniCasts]);
 
   /* -------------------------------------------------------------------------- */
   /*                              recorder handlers                             */
@@ -86,7 +105,7 @@ export function useRecorder(initialState) {
   const onPost = async () => {
     setOpen(true);
     if (!save.file) throw new Error("the audio file is blank");
-    console.log("+++++++++++++++ upload started ++++++++++++");
+    console.log("+++ upload started +++");
     const minicastRef = ref(storage, `minicasts/${uuidv4()}`);
     const bannerRef = ref(storage, `imgs/${uuidv4()}`);
     let data, bannerURL, minicastURL;
@@ -101,9 +120,10 @@ export function useRecorder(initialState) {
       }
       data = { bannerURL, minicastURL };
     } catch (e) {
-      console.log("\t\t\t\t\tsomething happenned when uploading", e);
+      console.log("something happenned when uploading", e);
     }
     const sendData = { ...data, title, description, user_id: "1" };
+
     axios
       .post("http://localhost:8080/minicasts/upload", sendData)
       .then((response) => {
@@ -121,10 +141,16 @@ export function useRecorder(initialState) {
       .then(() => {
         setDescription("");
       })
+      // .then(() => {
+      // setUserMiniCasts(() => [sendData, ...userMiniCasts]);
+      // displayNewList(sendData, userMiniCasts);
+      // })
       .catch((e) => console.log("something went wrong with the server", e));
   };
 
   return {
+    userMiniCasts,
+    setUserMiniCasts,
     save,
     setSave,
     setBanner,

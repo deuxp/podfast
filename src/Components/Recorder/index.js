@@ -13,17 +13,11 @@ import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function Recorder() {
-  const defaultRecorderState = {
-    file: null,
-    playback: new Audio(""), // URL.createObjectURL(file) // arg
-    banner: "",
-  };
-
+function Recorder({ rec }) {
   // useRecorder Hook
   const {
-    save,
-    setSave,
+    userMiniCasts,
+    setUserMiniCasts,
     setBanner,
     title,
     setTitle,
@@ -35,7 +29,7 @@ function Recorder() {
     onPause,
     onPost,
     open,
-  } = useRecorder(defaultRecorderState);
+  } = rec;
 
   // mode selectors
   const LOADING = "LOADING",
