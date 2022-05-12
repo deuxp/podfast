@@ -135,11 +135,14 @@ export function useRecorder(initialState) {
       .then(() => {
         setOpen(() => false);
       })
+      // .then(() => {
+      //   setTitle("");
+      // })
+      // .then(() => {
+      //   setDescription("");
+      // })
       .then(() => {
-        setTitle("");
-      })
-      .then(() => {
-        setDescription("");
+        window.location.reload(true);
       })
       // .then(() => {
       // setUserMiniCasts(() => [sendData, ...userMiniCasts]);
