@@ -2,15 +2,15 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   padding: 10px;
   border-width: 2px;
   border-radius: 12px;
   border-color: #eeeeee;
   border-style: dashed;
-  background-color: #fafafa;
-  color: #bdbdbd;
+  background-color: #b378de;
+  color: #e9ddad;
   outline: none;
   transition: border .24s ease-in-out;
-  margin: 1rem;
+  margin: 0.5rem;
 }

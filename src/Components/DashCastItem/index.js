@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 function DashCastItem({ cast }) {
   //TODO (a) build the article (b) destroy button (c) confirmation
@@ -10,31 +11,87 @@ function DashCastItem({ cast }) {
     <Box
       component="span"
       sx={{
-        width: "100%",
-        // height: 300,
+        width: "40vw",
+        marginLeft: "-10px",
         border: "dashed",
         borderRadius: "10px",
         backgroundImage: `url(${banner_link})`,
-        padding: "1rem",
         "&:hover": {
           backgroundColor: "grey",
           opacity: [0.9, 0.8, 0.7],
         },
       }}
     >
-      <p>Minicast ID: {id}</p>
-      <p>Title: {title}</p>
-      <h5>Description</h5>
-      <p>{description}</p>
+      <Typography
+        variant="body1"
+        gutterBottom
+        sx={{
+          backgroundColor: "rgba(241, 236, 227, 1)",
+          display: "inline-block",
+          padding: "0.3rem",
+          opacity: "0.9",
+          borderRadius: "8px",
+          marginLeft: "0.3rem",
+          marginTop: "0.3rem",
+        }}
+      >
+        Minicast ID: {id}
+      </Typography>
+      <br></br>
+      <Typography
+        variant="body1"
+        gutterBottom
+        sx={{
+          backgroundColor: "rgba(241, 236, 227, 1)",
+          display: "inline-block",
+          padding: "0.3rem",
+          opacity: "0.9",
+          borderRadius: "8px",
+          marginLeft: "0.3rem",
+        }}
+      >
+        Title: {title}
+      </Typography>
+      <br></br>
+      <Typography
+        variant="body1"
+        gutterBottom
+        sx={{
+          backgroundColor: "rgba(241, 236, 227, 1)",
+          display: "inline-block",
+          padding: "0.3rem",
+          opacity: "0.9",
+          borderRadius: "8px",
+          marginLeft: "0.3rem",
+        }}
+      >
+        Description:
+      </Typography>
+      <br></br>
+      <Typography
+        variant="body1"
+        gutterBottom
+        sx={{
+          backgroundColor: "rgba(241, 236, 227, 1)",
+          display: "inline-block",
+          padding: "0.3rem",
+          opacity: "0.9",
+          borderRadius: "8px",
+          marginLeft: "0.3rem",
+        }}
+      >
+        {description}
+      </Typography>
+      <br></br>
       <Button
-        variant="outlined"
+        variant="contained"
         onClick={() => handleClick()}
-        sx={{ marginBottom: "1rem" }}
+        sx={{ margin: "0.3rem" }}
       >
         delete post
       </Button>
       <br />
-      <audio controls={true} src={audio_link}></audio>
+      <audio controls={true} src={audio_link} controlsList="nodownload"></audio>
     </Box>
   );
 
