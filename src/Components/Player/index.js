@@ -1,11 +1,4 @@
-function Player({ play, playNextSong, currentCast, helper }) {
-  const playsTheFirstOneOnly = (list) => {
-    if (list[0]) {
-      return list[0].audio_link;
-    }
-    return "";
-  };
-  const next = playsTheFirstOneOnly(play);
+function Player({ playlist, currentCast, autoplay, onEnded }) {
 
   const playsSelectedCast = (list, index) => {
     if (list[index]) {
@@ -16,8 +9,8 @@ function Player({ play, playNextSong, currentCast, helper }) {
 
   return (
     <>
-      <h2>{play[currentCast] ? play[currentCast].title : ""}</h2>
-      <audio controls autoPlay src={playsSelectedCast(play, currentCast)} ></audio>
+      <h2>{playlist[currentCast] ? playlist[currentCast].title : ""}</h2>
+      <audio controls autoPlay={autoplay} src={playsSelectedCast(playlist, currentCast)} onEnded={onEnded} ></audio>
     </>
   );
 }

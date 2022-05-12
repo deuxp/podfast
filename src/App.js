@@ -1,28 +1,32 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
+/*************************Poodle Logo Pic*************************** */
+import Poodle from "../src/assets/PoodleGraphic.png"
+/****************************** CSS *********************************** */
 import "./App.scss";
+/*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
-import Poodle from "../src/assets/PoodleGraphic.png"
-
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import ListItem from '@mui/material/ListItem';
-import Switch from '@mui/material/Switch';
-
-import axios from "axios";
-import { Container } from "@mui/material";
-import { InsertEmoticonRounded, InsertEmoticonTwoTone } from "@mui/icons-material";
+/************************** MUI Components***************************************** */
+import {
+  Box,
+  Toolbar,
+  ThemeProvider,
+  createTheme,
+  List,
+  Divider,
+  ListItemButton,
+  ListItemText,
+  ExpandLess,
+  ExpandMore,
+  Collapse,
+  ListItem,
+  Switch,
+  Container
+} from './mui';
 
 const theme = createTheme({
   palette: {
@@ -42,13 +46,14 @@ const theme = createTheme({
 });
 
 function App() {
-  const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
-  const [currentCast, setCurrentCast] = useState([]);
-  const [open, setOpen] = React.useState(false);
-
+  const [currentCast, setCurrentCast] = useState([0]);
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
+  /* ---------------------------- Menu state  ---------------------------- */
+  const [selectedIndex, setSelectedIndex] = useState();
+  const [open, setOpen] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -57,13 +62,7 @@ function App() {
     axios
       .get(GET_URL)
       .then((res) => {
-        return res.data
-      })
-      .then((res) => {
-        setState({
-          ...state,
-          minicasts: res, // [{}] array of objects
-        });
+        setPlaylist(res.data)
       })
       .catch((e) => {
         console.log(e.message);
@@ -71,55 +70,15 @@ function App() {
   }, []);
 
 
-  /* ----------------------------- helper function ---------------------------- */
-
-  // //function to build a short list of casts to listen to on the front page
-  // // as of now just makes a list, no filter, impose a limit 6
-  // //implement lazy loading ...
-  const buildList = (state, filter) => {
-    return new Promise((resolve, reject) => {
-      if (!state.minicasts) return [];
-      resolve(state.minicasts);
-    }).catch((e) => console.log(e.message));
-  };
-
-  useEffect(() => {
-    // expect array of article objects
-    buildList(state)
-      .then((shortlist) => {
-        return shortlist;
-      })
-      .then((shortList) => {
-        setPlaylist(shortList);
-        console.log("the current playlist -> ", playlist);
-      });
-  }, [state]);
-
-  const playNextSong = (list) => {
-    // needs to alter the list and set the playlist state
-    const newList = list.filter((article, index) => {
-      if (index) return article;
-    });
-    console.log("when the song is over -> ", newList);
-    setPlaylist(newList);
-  };
-
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
     if (index === 1) setDashboard(true);
     if (index === 0) setDashboard(false);
   };
 
-  let castsLoaded = false;
-  if (state.minicasts) {
-    castsLoaded = true;
+  const handleAutoPlaySwitch = event => {
+    setAutoplay(event.target.checked);
   }
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
 
   return (
 
@@ -133,9 +92,10 @@ function App() {
           <div className="player-box">
             <section className="console">
               <Player
-                play={playlist}
+                playlist={playlist}
+                autoplay={autoplay}
                 currentCast={currentCast}
-                playNextSong={() => playNextSong(playlist)}
+                onEnded={() => setCurrentCast(currentCast + 1)}
               />
             </section>
           </div>
@@ -148,18 +108,20 @@ function App() {
           </div>
 
           <div className="side-bar">
-            <Box
-              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-            >
+            <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
               <Toolbar />
               <List>
+
                 <ListItem>
-                  {!dashboard && <><ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
-                    <Switch>
-                        {/*will need to apply toggle logic to actual start autoplay feature */}
-                    </Switch> </>}
+                  <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
+                  <Switch
+                    checked={autoplay}
+                    onChange={handleAutoPlaySwitch}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
                 </ListItem>
                 <Divider />
+
                 <ListItemButton
                   key="Home"
                   selected={selectedIndex === 0}
@@ -167,6 +129,7 @@ function App() {
                 >
                   <ListItemText primary="Home" />
                 </ListItemButton>
+
                 <ListItemButton
                   key="Dashboard"
                   selected={selectedIndex === 1}
@@ -174,32 +137,24 @@ function App() {
                 >
                   <ListItemText primary="Dashboard" />
                 </ListItemButton>
-                <ListItemButton
-                  key="Profile"
-                  selected={selectedIndex === 2}
-                  onClick={(event) => handleListItemClick(event, 2)}
-                >
-                  <ListItemText primary="Profile" />
+                <Divider />
+
+                {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
+                  <ListItemText primary="Playlist" />
+                  {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
+                  <Collapse in={open} unmountOnExit>
+                    <ul>
+                      { playlist.map((item, index) => {
+                        return (<li key={index}>{item.title}</li>)
+                      }) }
+                    </ul>
+                  </Collapse>
+                  <ListItemButton>
+                    <ListItemText primary="Favorites" />
+                  </ListItemButton> </>) : ""}
+                <Divider />
               </List>
-              <Divider />
-              {!dashboard ? (<><ListItemButton onClick={handleClick}>
-                <ListItemText primary="Playlist" />
-                {open ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-                <Collapse in={open} unmountOnExit>
-                  <ul>
-                    {castsLoaded ? (state.minicasts.map((item, index) => {
-                      return (<li key={index}>{item.title}</li>)
-                    })) : ""}
-                  </ul>
-                </Collapse>
-                <ListItemButton>
-                  <ListItemText primary="History" />
-                </ListItemButton>
-                <ListItemButton>
-                  <ListItemText primary="Liked" />
-                </ListItemButton> </>) : ""}
             </Box>
             <div>
               <img src={Poodle} />
@@ -212,3 +167,26 @@ function App() {
 }
 
 export default App;
+
+
+/* ----------------------------- helper function ----------------------------
+
+// //function to build a short list of casts to listen to on the front page
+// // as of now just makes a list, no filter, impose a limit 6
+// //implement lazy loading ...
+const buildList = (state, filter) => {
+  return new Promise((resolve, reject) => {
+    if (!playlist) return [];
+    resolve(playlist);
+  }).catch((e) => console.log(e.message));
+};
+
+const playNextSong = (list) => {
+  // needs to alter the list and set the playlist state
+  const newList = list.filter((article, index) => {
+    if (index) return article;
+  });
+  console.log("when the song is over -> ", newList);
+  setPlaylist(newList);
+};
+*/
