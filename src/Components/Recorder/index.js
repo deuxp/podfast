@@ -54,7 +54,6 @@ function Recorder() {
           borderRadius: "15px",
           border: "dashed 6px rgba(208, 179, 255, 1)",
           width: "40vw",
-          // height: 300,
           transition: "background-color 2s, box-shadow 0.5s",
           backgroundColor: "rgba(209, 150, 255, 1)",
           boxShadow: "5px 5px #383434",
@@ -63,26 +62,31 @@ function Recorder() {
           },
         }}
       >
-        <UploadBanner setBanner={setBanner} />
-        <TextField
-          id="castTitle"
-          label="Title"
-          variant="standard"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          sx={{
-            padding: "0.5rem",
-            marginTop: "0.5rem",
-            marginLeft: "0.5rem",
-          }}
-        />
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <TextField
+            id="castTitle"
+            label="Title"
+            variant="standard"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            sx={{
+              padding: "0.5rem",
+              width: "70%",
+              marginTop: "0.5rem",
+              marginLeft: "0.5rem",
+            }}
+          />
+          <UploadBanner setBanner={setBanner} />
+        </Box>
+
         <TextField
           id="castDescription"
+          multiline
           label="Description"
           variant="outlined"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          sx={{ padding: "0.5rem", marginTop: "0.5rem" }}
+          sx={{ padding: "0.5rem", marginTop: "0.5rem", width: "90%" }}
         />
 
         <Container
