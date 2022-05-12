@@ -116,10 +116,7 @@ export function useRecorder(initialState) {
         setOpen(() => false);
       })
       .then(() => {
-        setTitle("");
-      })
-      .then(() => {
-        setDescription("");
+        window.location.reload(true);
       })
       .catch((e) => console.log("something went wrong with the server", e));
   };
