@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 /*************************Poodle Logo Pic*************************** */
-import Poodle from "../src/assets/PoodleGraphic.png"
+import Poodle from "../src/assets/PoodleGraphic.png";
 /****************************** CSS *********************************** */
 import "./App.scss";
 /*************************Custom Components*************************** */
@@ -25,8 +25,8 @@ import {
   Collapse,
   ListItem,
   Switch,
-  Container
-} from './mui';
+  Container,
+} from "./mui";
 
 const theme = createTheme({
   palette: {
@@ -49,7 +49,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
   const [currentCast, setCurrentCast] = useState([0]);
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true); // needs
+  const [dashboard, setDashboard] = useState(false);
   /* ---------------------------- Menu state  ---------------------------- */
   const [selectedIndex, setSelectedIndex] = useState();
   const [open, setOpen] = useState(false);
@@ -57,18 +57,17 @@ function App() {
 
   const GET_URL = "http://localhost:8080/minicasts";
 
-  // initial get from the server 
+  // initial get from the server
   useEffect(() => {
     axios
       .get(GET_URL)
       .then((res) => {
-        setPlaylist(res.data)
+        setPlaylist(res.data);
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
 
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
@@ -76,14 +75,12 @@ function App() {
     if (index === 0) setDashboard(false);
   };
 
-  const handleAutoPlaySwitch = event => {
+  const handleAutoPlaySwitch = (event) => {
     setAutoplay(event.target.checked);
-  }
+  };
 
   return (
-
     <div className="App">
-
       <ThemeProvider theme={theme}>
         <Nav />
       </ThemeProvider>
@@ -102,22 +99,28 @@ function App() {
 
           <div className="main-box">
             <section className="minicasts-dashboard">
-              {!dashboard && <MinicastList minicasts={playlist} onChange={setCurrentCast} />}
+              {!dashboard && (
+                <MinicastList minicasts={playlist} onChange={setCurrentCast} />
+              )}
               {dashboard && <Dashboard />}
             </section>
           </div>
 
           <div className="side-bar">
-            <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
+            <Box
+              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            >
               <Toolbar />
               <List>
-
                 <ListItem>
-                  <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
+                  <ListItemText
+                    id="switch-list-label-autoplay"
+                    primary="Autoplay"
+                  />
                   <Switch
                     checked={autoplay}
                     onChange={handleAutoPlaySwitch}
-                    inputProps={{ 'aria-label': 'controlled' }}
+                    inputProps={{ "aria-label": "controlled" }}
                   />
                 </ListItem>
                 <Divider />
@@ -139,20 +142,26 @@ function App() {
                 </ListItemButton>
                 <Divider />
 
-                {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
-                  <ListItemText primary="Playlist" />
-                  {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                  <Collapse in={open} unmountOnExit>
-                    <ul>
-                      { playlist.map((item, index) => {
-                        return (<li key={index}>{item.title}</li>)
-                      }) }
-                    </ul>
-                  </Collapse>
-                  <ListItemButton>
-                    <ListItemText primary="Favorites" />
-                  </ListItemButton> </>) : ""}
+                {!dashboard ? (
+                  <>
+                    <ListItemButton onClick={() => setOpen(!open)}>
+                      <ListItemText primary="Playlist" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} unmountOnExit>
+                      <ul>
+                        {playlist.map((item, index) => {
+                          return <li key={index}>{item.title}</li>;
+                        })}
+                      </ul>
+                    </Collapse>
+                    <ListItemButton>
+                      <ListItemText primary="Favorites" />
+                    </ListItemButton>{" "}
+                  </>
+                ) : (
+                  ""
+                )}
                 <Divider />
               </List>
             </Box>
@@ -167,7 +176,6 @@ function App() {
 }
 
 export default App;
-
 
 /* ----------------------------- helper function ----------------------------
 
