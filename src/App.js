@@ -44,11 +44,14 @@ const theme = createTheme({
 function App() {
   const [state, setState] = useState({});
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
-  const [currentCast, setCurrentCast] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [currentCast, setCurrentCast] = useState([0]);
+  const [open, setOpen] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
 
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
+/* ---------------------------- Menu selector ---------------------------- */
+  const [selectedIndex, setSelectedIndex] = useState();
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -57,13 +60,7 @@ function App() {
     axios
       .get(GET_URL)
       .then((res) => {
-        return res.data
-      })
-      .then((res) => {
-        setState({
-          ...state,
-          minicasts: res, // [{}] array of objects
-        });
+        setPlaylist(res.data)
       })
       .catch((e) => {
         console.log(e.message);
@@ -78,22 +75,10 @@ function App() {
   // //implement lazy loading ...
   const buildList = (state, filter) => {
     return new Promise((resolve, reject) => {
-      if (!state.minicasts) return [];
-      resolve(state.minicasts);
+      if (!playlist) return [];
+      resolve(playlist);
     }).catch((e) => console.log(e.message));
   };
-
-  useEffect(() => {
-    // expect array of article objects
-    buildList(state)
-      .then((shortlist) => {
-        return shortlist;
-      })
-      .then((shortList) => {
-        setPlaylist(shortList);
-        console.log("the current playlist -> ", playlist);
-      });
-  }, [state]);
 
   const playNextSong = (list) => {
     // needs to alter the list and set the playlist state
@@ -104,7 +89,20 @@ function App() {
     setPlaylist(newList);
   };
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const playNextCast = () => {
+    if (!castsLoaded)
+      return;
+    if (playlist[currentCast + 1]) {
+      // move to next miniCast
+      setCurrentCast(currentCast + 1)
+    }
+    else {
+      // set autoplay to off
+      setAutoplay(false);
+    }
+  };
+
+ 
 
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
@@ -113,13 +111,13 @@ function App() {
   };
 
   let castsLoaded = false;
-  if (state.minicasts) {
+  if (playlist) {
     castsLoaded = true;
   }
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+  const handleAutoPlaySwitch = event => {
+    setAutoplay(event.target.checked);
+  }
 
   return (
 
@@ -134,8 +132,11 @@ function App() {
             <section className="console">
               <Player
                 play={playlist}
+                autoplay={autoplay}
                 currentCast={currentCast}
                 playNextSong={() => playNextSong(playlist)}
+                playNextCast={() => playNextCast}
+                onEnded={() => setCurrentCast(currentCast + 1)}
               />
             </section>
           </div>
@@ -154,10 +155,12 @@ function App() {
               <Toolbar />
               <List>
                 <ListItem>
-                  {!dashboard && <><ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
-                    <Switch>
-                        {/*will need to apply toggle logic to actual start autoplay feature */}
-                    </Switch> </>}
+                  <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
+                  <Switch
+                    checked={autoplay}
+                    onChange={handleAutoPlaySwitch}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
                 </ListItem>
                 <Divider />
                 <ListItemButton
@@ -174,31 +177,21 @@ function App() {
                 >
                   <ListItemText primary="Dashboard" />
                 </ListItemButton>
-                <ListItemButton
-                  key="Profile"
-                  selected={selectedIndex === 2}
-                  onClick={(event) => handleListItemClick(event, 2)}
-                >
-                  <ListItemText primary="Profile" />
-                </ListItemButton>
               </List>
               <Divider />
-              {!dashboard ? (<><ListItemButton onClick={handleClick}>
+              {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
                 <ListItemText primary="Playlist" />
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
                 <Collapse in={open} unmountOnExit>
                   <ul>
-                    {castsLoaded ? (state.minicasts.map((item, index) => {
+                    {castsLoaded ? (playlist.map((item, index) => {
                       return (<li key={index}>{item.title}</li>)
                     })) : ""}
                   </ul>
                 </Collapse>
                 <ListItemButton>
-                  <ListItemText primary="History" />
-                </ListItemButton>
-                <ListItemButton>
-                  <ListItemText primary="Liked" />
+                  <ListItemText primary="Favorites" />
                 </ListItemButton> </>) : ""}
             </Box>
             <div>
