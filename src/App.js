@@ -6,7 +6,7 @@ import Poodle from "../src/assets/PoodleGraphic.png"
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
-import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, Link as RouterLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation ,Link as RouterLink } from "react-router-dom";
 import { StaticRouter } from 'react-router-dom/server';
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
@@ -64,26 +64,9 @@ function Router(props) {
   return <MemoryRouter>{children}</MemoryRouter>;
 }
 
-function ListItemLink(props) {
-  const { icon, primary, to, button } = props;
+let dashboardToggle = false;
 
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef(function Link(itemProps, ref) {
-        return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
-      }),
-    [to],
-  );
 
-  return (
-    <li>
-      <ListItem button={button} component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
-}
 
 function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
@@ -109,6 +92,26 @@ function App() {
       });
   }, []);
 
+  function ListItemLink(props) {
+    const { icon, primary, to, button } = props;
+  
+    const renderLink = React.useMemo(
+      () =>
+        React.forwardRef(function Link(itemProps, ref) {
+          return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
+        }),
+      [to],
+    );
+  
+    return (
+      <li>
+        <ListItem button={button} component={renderLink}>
+          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+          <ListItemText primary={primary} />
+        </ListItem>
+      </li>
+    );
+  }
 
   const renderLink = React.useMemo(
     () =>
@@ -121,12 +124,15 @@ function App() {
   const handleListItemClick = (_event, index) => {
     setSelectedIndex(index);
     if (index === 1) setDashboard(true);
+    console.log('here?')
     if (index === 0) setDashboard(false);
   };
 
   const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
   }
+
+  
 
   return (
 
@@ -148,8 +154,13 @@ function App() {
               </div>
               <div className="main-box">
                 <Routes>
-                  <Route path="*" element={<MinicastList minicasts={playlist} onChange={setCurrentCast} />} />
-                  <Route exact path="/dashboard" element={<Dashboard />} />
+                  <Route path="*" element={<MinicastList minicasts={playlist} 
+                  onChange={setCurrentCast}
+                  setDashboard={setDashboard} />} />
+                  <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />}  />
+                  <Route path="/minicasts/:id" element={<MinicastList minicasts={playlist} 
+                  onChange={setCurrentCast}
+                  setDashboard={setDashboard} />} />
                 </Routes>
               </div>
 
@@ -174,32 +185,26 @@ function App() {
                     </ListItem>
                     <Divider />
 
-                    <ListItemButton
+                    <ListItemLink
+                      to="/minicasts"
+                      primary="Home"
+                      icon={null}
+                      button={true}
                       key="Home"
                       selected={selectedIndex === 0}
-                      onClick={(event) => handleListItemClick(event, 0)}
-                    >
-                      <ListItemText primary="Home" />
-                    </ListItemButton>
+                      onClick={() => setDashboard(false)}
+                    />
 
                     <ListItemLink
                       to="/dashboard"
-                      primary="Dashboard2"
+                      primary="Dashboard"
                       icon={null}
                       button={true}
-                      key="Dashboard2"
-                      selected={selectedIndex === 1}
-                      onClick={(event) => handleListItemClick(event, 1)}
-                    />
-
-                    <ListItemButton
                       key="Dashboard"
                       selected={selectedIndex === 1}
-                      onClick={(event) => handleListItemClick(event, 1)}
-                      component={renderLink}
-                    >
-                      <ListItemText primary="Dashboard" />
-                    </ListItemButton>
+                      onClick={() => setDashboard(true)}
+                    />
+
                     <Divider />
                     {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
                       <ListItemText primary="Playlist" />
@@ -208,7 +213,13 @@ function App() {
                       <Collapse in={open} unmountOnExit>
                         <ul>
                           {playlist.map((item, index) => {
-                            return (<li key={index}>{item.title}</li>)
+                           // return (<li key={index}>{item.title}</li>)
+                           return <ListItemLink
+                              to={`/minicasts/${index}`}
+                              primary={item.title}
+                              button={false}
+                              key={index}
+                           />
                           })}
                         </ul>
                       </Collapse>
