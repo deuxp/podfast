@@ -77,6 +77,17 @@ function Recorder() {
           />
           <UploadBanner setBanner={setBanner} />
         </Box>
+        <p
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            paddingRight: "1rem",
+            transition: "2s",
+            color: "grey",
+          }}
+        >
+          {save.banner.path || ""}
+        </p>
 
         <TextField
           id="castDescription"
@@ -189,7 +200,8 @@ function Recorder() {
               sx={{
                 backgroundColor: "rgba(208, 179, 255, 1)",
                 color: "rgba(120, 38, 254, 1)",
-                transition: "background-color 0.2s, box-shadow 0.1s",
+                transition: "0.3s",
+                // transition: "background-color 0.2s, box-shadow 0.1s",
                 "&:hover": {
                   backgroundColor: "rgba(226, 166, 255, 1)",
                   opacity: [0.9, 0.8, 0.7],

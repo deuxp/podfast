@@ -9,6 +9,25 @@ function DashCastItem({ cast, updateCasts }) {
 
   const { title, description, audio_link, banner_link, id } = cast;
 
+  const handleClick = () => {
+    console.log("+++ post deleting +++");
+    // setOpen(true);
+    axios
+      .delete(`http://localhost:8080/minicasts/${id}/destroy`)
+      .then((response) => {
+        console.log(response.data.status);
+        if (response.data.status !== 204) {
+          throw new Error("The server did not destroy the article");
+        }
+      })
+      .then(() => {
+        updateCasts(id);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+
   const renderedArticle = (
     <Box
       component="span"
@@ -18,9 +37,9 @@ function DashCastItem({ cast, updateCasts }) {
         border: "dashed",
         borderRadius: "10px",
         backgroundImage: `url(${banner_link})`,
+        trasition: "2s",
         "&:hover": {
           backgroundColor: "grey",
-          // opacity: [0.9, 0.8, 0.7],
         },
       }}
     >
@@ -108,25 +127,6 @@ function DashCastItem({ cast, updateCasts }) {
       <audio controls={true} src={audio_link} controlsList="nodownload"></audio>
     </Box>
   );
-
-  const handleClick = () => {
-    console.log("+++ post deleting +++");
-    // setOpen(true);
-    axios
-      .delete(`http://localhost:8080/minicasts/${id}/destroy`)
-      .then((response) => {
-        console.log(response.data.status);
-        if (response.data.status !== 204) {
-          throw new Error("The server did not destroy the article");
-        }
-      })
-      .then(() => {
-        updateCasts(id);
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  };
 
   return <>{renderedArticle}</>;
 }
