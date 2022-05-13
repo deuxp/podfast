@@ -24,67 +24,79 @@ function DashCastItem({ cast, updateCasts }) {
         },
       }}
     >
-      <Typography
-        variant="body1"
-        gutterBottom
+      <Box
         sx={{
-          backgroundColor: "rgba(241, 236, 227, 1)",
-          display: "inline-block",
+          backgroundColor: "white",
+          margin: "0.5rem",
           padding: "0.3rem",
+          borderRadius: "9px",
           opacity: "0.9",
-          borderRadius: "8px",
-          marginLeft: "0.3rem",
-          marginTop: "0.3rem",
+          backgroundColor: "rgba(241, 236, 227, 1)",
         }}
       >
-        Minicast ID: {id}
-      </Typography>
-      <br></br>
-      <Typography
-        variant="body1"
-        gutterBottom
-        sx={{
-          backgroundColor: "rgba(241, 236, 227, 1)",
-          display: "inline-block",
-          padding: "0.3rem",
-          opacity: "0.9",
-          borderRadius: "8px",
-          marginLeft: "0.3rem",
-        }}
-      >
-        Title: {title}
-      </Typography>
-      <br></br>
-      <Typography
-        variant="body1"
-        gutterBottom
-        sx={{
-          backgroundColor: "rgba(241, 236, 227, 1)",
-          display: "inline-block",
-          padding: "0.3rem",
-          opacity: "0.9",
-          borderRadius: "8px",
-          marginLeft: "0.3rem",
-        }}
-      >
-        Description:
-      </Typography>
-      <br></br>
-      <Typography
-        variant="body1"
-        gutterBottom
-        sx={{
-          backgroundColor: "rgba(241, 236, 227, 1)",
-          display: "inline-block",
-          padding: "0.3rem",
-          opacity: "0.9",
-          borderRadius: "8px",
-          marginLeft: "0.3rem",
-        }}
-      >
-        {description}
-      </Typography>
-      <br></br>
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{
+            backgroundColor: "rgba(241, 236, 227, 1)",
+            display: "inline-block",
+            padding: "0.3rem",
+            opacity: "0.9",
+            borderRadius: "8px",
+            marginLeft: "0.3rem",
+            marginTop: "0.3rem",
+          }}
+        >
+          <strong>Minicast ID:</strong> {id}
+        </Typography>
+        <br></br>
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{
+            backgroundColor: "rgba(241, 236, 227, 1)",
+            display: "inline-block",
+            padding: "0.3rem",
+            opacity: "0.9",
+            borderRadius: "8px",
+            marginLeft: "0.3rem",
+          }}
+        >
+          <strong>Title:</strong> {title}
+        </Typography>
+        <br></br>
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{
+            backgroundColor: "rgba(241, 236, 227, 1)",
+            display: "inline-block",
+            padding: "0.3rem",
+            opacity: "0.9",
+            borderRadius: "8px",
+            marginLeft: "0.3rem",
+          }}
+        >
+          <strong>Description:</strong>
+        </Typography>
+        <br></br>
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{
+            backgroundColor: "rgba(241, 236, 227, 1)",
+            display: "inline-block",
+            padding: "0.3rem",
+            opacity: "0.9",
+            borderRadius: "8px",
+            marginLeft: "0.3rem",
+          }}
+        >
+          {description}
+        </Typography>
+        <br></br>
+      </Box>
+
       <Button
         variant="contained"
         onClick={() => handleClick()}
