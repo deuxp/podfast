@@ -5,7 +5,10 @@ import { Container } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
 
-function Dashboard() {
+import { useLocation } from 'react-router-dom';
+
+
+function Dashboard({ setDashboard }) {
   const [userMiniCasts, setUserMiniCasts] = useState([]);
   const GET_URL = "http://localhost:8080/users/dashboard";
 
@@ -19,6 +22,14 @@ function Dashboard() {
         console.log(e.message);
       });
   }, []);
+
+
+  const location = useLocation();
+  useEffect(() => {
+    //console.log(location.pathname);
+    setDashboard(true);
+  }, [location]);
+
 
   return (
     <Container maxWidth="sm">
