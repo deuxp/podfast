@@ -6,13 +6,14 @@ import Poodle from "../src/assets/PoodleGraphic.png"
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
-import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation ,Link as RouterLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
 import { StaticRouter } from 'react-router-dom/server';
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
+import DynamicMinicast from "./Components/DynamicMinicast.js";
 /************************** MUI Components***************************************** */
 import ListItemIcon from '@mui/material/ListItemIcon';
 import {
@@ -33,7 +34,6 @@ import {
 } from './mui';
 
 
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -50,22 +50,6 @@ const theme = createTheme({
     },
   },
 });
-
-const LinkBehavior = React.forwardRef((props, ref) => (
-  <RouterLink ref={ref} to="/" {...props} role={undefined} />
-));
-
-function Router(props) {
-  const { children } = props;
-  if (typeof window === 'undefined') {
-    return <StaticRouter location="/">{children}</StaticRouter>;
-  }
-
-  return <MemoryRouter>{children}</MemoryRouter>;
-}
-
-let dashboardToggle = false;
-
 
 
 function App() {
@@ -94,7 +78,7 @@ function App() {
 
   function ListItemLink(props) {
     const { icon, primary, to, button } = props;
-  
+
     const renderLink = React.useMemo(
       () =>
         React.forwardRef(function Link(itemProps, ref) {
@@ -102,7 +86,7 @@ function App() {
         }),
       [to],
     );
-  
+
     return (
       <li>
         <ListItem button={button} component={renderLink}>
@@ -113,26 +97,10 @@ function App() {
     );
   }
 
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef(function Link(itemProps, ref) {
-        return <RouterLink to="/dashboard" ref={ref} {...itemProps} role={undefined} />;
-      }),
-    ["/dashboard"],
-  );
-
-  const handleListItemClick = (_event, index) => {
-    setSelectedIndex(index);
-    if (index === 1) setDashboard(true);
-    console.log('here?')
-    if (index === 0) setDashboard(false);
-  };
 
   const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
   }
-
-  
 
   return (
 
@@ -152,23 +120,17 @@ function App() {
                   onEnded={() => setCurrentCast(currentCast + 1)}
                 />
               </div>
+              {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
               <div className="main-box">
                 <Routes>
-                  <Route path="*" element={<MinicastList minicasts={playlist} 
-                  onChange={setCurrentCast}
-                  setDashboard={setDashboard} />} />
-                  <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />}  />
-                  <Route path="/minicasts/:id" element={<MinicastList minicasts={playlist} 
-                  onChange={setCurrentCast}
-                  setDashboard={setDashboard} />} />
+                  <Route path="*" element={<MinicastList minicasts={playlist}
+                    onChange={setCurrentCast}
+                    setDashboard={setDashboard} />} />
+                  <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />} />
+                  <Route path="/minicasts/:id" element={<DynamicMinicast minicasts={playlist}
+                    onChange={setCurrentCast} />} />
                 </Routes>
               </div>
-
-              {/* <div className="main-box">
-                {!dashboard && <MinicastList minicasts={playlist} onChange={setCurrentCast} />}
-                {dashboard && <Dashboard />}
-  </div> */}
-
 
               <div className="side-bar">
                 <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
@@ -191,8 +153,6 @@ function App() {
                       icon={null}
                       button={true}
                       key="Home"
-                      selected={selectedIndex === 0}
-                      onClick={() => setDashboard(false)}
                     />
 
                     <ListItemLink
@@ -201,8 +161,6 @@ function App() {
                       icon={null}
                       button={true}
                       key="Dashboard"
-                      selected={selectedIndex === 1}
-                      onClick={() => setDashboard(true)}
                     />
 
                     <Divider />
@@ -213,13 +171,12 @@ function App() {
                       <Collapse in={open} unmountOnExit>
                         <ul>
                           {playlist.map((item, index) => {
-                           // return (<li key={index}>{item.title}</li>)
-                           return <ListItemLink
+                            return <ListItemLink
                               to={`/minicasts/${index}`}
                               primary={item.title}
                               button={false}
                               key={index}
-                           />
+                            />
                           })}
                         </ul>
                       </Collapse>
