@@ -86,82 +86,79 @@ function App() {
 
       <ThemeProvider theme={theme}>
         <Nav />
-      </ThemeProvider>
-      <Container>
-        <div className="main-grid">
-          <div className="player-box">
-            <section className="console">
+
+        <Container>
+          <div className="main-grid">
+            <div className="player-box">
               <Player
                 playlist={playlist}
                 autoplay={autoplay}
                 currentCast={currentCast}
                 onEnded={() => setCurrentCast(currentCast + 1)}
               />
-            </section>
-          </div>
+            </div>
 
-          <div className="main-box">
-            <section className="minicasts-dashboard">
+            <div className="main-box">
               {!dashboard && <MinicastList minicasts={playlist} onChange={setCurrentCast} />}
               {dashboard && <Dashboard />}
-            </section>
-          </div>
+            </div>
 
-          <div className="side-bar">
-            <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
-              <Toolbar />
-              <List>
+            <div className="side-bar">
+              <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
+                <Toolbar />
+                <List>
 
-                <ListItem>
-                  <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
-                  <Switch
-                    checked={autoplay}
-                    onChange={handleAutoPlaySwitch}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                </ListItem>
-                <Divider />
+                  <ListItem>
+                    <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
+                    <Switch
+                      checked={autoplay}
+                      onChange={handleAutoPlaySwitch}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  </ListItem>
+                  <Divider />
 
-                <ListItemButton
-                  key="Home"
-                  selected={selectedIndex === 0}
-                  onClick={(event) => handleListItemClick(event, 0)}
-                >
-                  <ListItemText primary="Home" />
-                </ListItemButton>
+                  <ListItemButton
+                    key="Home"
+                    selected={selectedIndex === 0}
+                    onClick={(event) => handleListItemClick(event, 0)}
+                  >
+                    <ListItemText primary="Home" />
+                  </ListItemButton>
 
-                <ListItemButton
-                  key="Dashboard"
-                  selected={selectedIndex === 1}
-                  onClick={(event) => handleListItemClick(event, 1)}
-                >
-                  <ListItemText primary="Dashboard" />
-                </ListItemButton>
-                <Divider />
+                  <ListItemButton
+                    key="Dashboard"
+                    selected={selectedIndex === 1}
+                    onClick={(event) => handleListItemClick(event, 1)}
+                  >
+                    <ListItemText primary="Dashboard" />
+                  </ListItemButton>
+                  <Divider />
 
-                {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
-                  <ListItemText primary="Playlist" />
-                  {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                  <Collapse in={open} unmountOnExit>
-                    <ul>
-                      { playlist.map((item, index) => {
-                        return (<li key={index}>{item.title}</li>)
-                      }) }
-                    </ul>
-                  </Collapse>
-                  <ListItemButton>
-                    <ListItemText primary="Favorites" />
-                  </ListItemButton> </>) : ""}
-                <Divider />
-              </List>
-            </Box>
-            <div>
-              <img src={Poodle} />
+                  {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
+                    <ListItemText primary="Playlist" />
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                    <Collapse in={open} unmountOnExit>
+                      <ul>
+                        {playlist.map((item, index) => {
+                          return (<li key={index}>{item.title}</li>)
+                        })}
+                      </ul>
+                    </Collapse>
+                    <ListItemButton>
+                      <ListItemText primary="Favorites" />
+                    </ListItemButton> </>) : ""}
+                  <Divider />
+                </List>
+              </Box>
+              <div>
+                <img src={Poodle} />
+              </div>
             </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </ThemeProvider>
     </div>
   );
 }
