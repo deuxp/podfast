@@ -58,7 +58,6 @@ function App() {
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
   /* ---------------------------- Menu state  ---------------------------- */
-  const [selectedIndex, setSelectedIndex] = useState();
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
@@ -76,7 +75,7 @@ function App() {
       });
   }, []);
 
-  
+
 
   const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
@@ -91,17 +90,17 @@ function App() {
           <Nav />
 
           <Container>
-            <div className="main-grid">
-              <div className="player-box">
+            <main className="main-grid">
+              <section className="player-box">
                 <Player
                   playlist={playlist}
                   autoplay={autoplay}
                   currentCast={currentCast}
                   onEnded={() => setCurrentCast(currentCast + 1)}
                 />
-              </div>
-              {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
-              <div className="main-box">
+              </section>
+              {/***new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***/}
+              <section className="main-box">
                 <Routes>
                   <Route path="*" element={<MinicastList minicasts={playlist}
                     onChange={setCurrentCast}
@@ -110,9 +109,9 @@ function App() {
                   <Route path="/minicasts/:id" element={<DynamicMinicast minicasts={playlist}
                     onChange={setCurrentCast} />} />
                 </Routes>
-              </div>
+              </section>
 
-              <div className="side-bar">
+              <section className="side-menu">
                 <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
                   <Toolbar />
                   <List>
@@ -169,8 +168,8 @@ function App() {
                 <div>
                   <img src={Poodle} />
                 </div>
-              </div>
-            </div>
+              </section>
+            </main>
           </Container>
         </ThemeProvider>
       </div>
