@@ -14,12 +14,14 @@ import { useState, useEffect } from "react";
 function Minicast(props) {
 
   const [copiedText, setCopiedText] = useState("");
+  // give for URL as shown in browser
   let currentURL = window.location.href;
   // need to make sure the link to be copied starts with the form http://localhost:XXXX/minicasts
   // sometimes the current url can be http://localhost:XXXX/minicasts/0 for example
   const index = currentURL.indexOf("/minicasts")
-  currentURL = currentURL.slice(0, index)
+  currentURL = currentURL.slice(0, index + 10)
 
+  let linkURL = `${currentURL}/${props.id}`
 
   // copiedText needs to be reset after user copies to Clipboard, in case they wish to copy the link again
   // added artificial delay so it does not reset right away and user can be told "Link Copied!"
@@ -28,7 +30,6 @@ function Minicast(props) {
       setCopiedText("")
     }, 2000)
   }, [copiedText])
-
 
   return (
     <Card
@@ -59,14 +60,14 @@ function Minicast(props) {
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Button size="small">Add to Favorites</Button>
         <CopyToClipboard
-          text={`${currentURL}/${props.id}`}
-          onCopy={() => setCopiedText(`${currentURL}/${props.id}`)}
+          text={linkURL}
+          onCopy={() => setCopiedText(linkURL)}
         >
           <Tooltip
             title={
-              copiedText === `${currentURL}/${props.id}`
+              copiedText == linkURL
                 ? "Link Copied!"
-                : `${currentURL}/${props.id}`
+                : linkURL
             }
             placement="bottom"
           >
