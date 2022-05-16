@@ -12,3 +12,4 @@ export { default as Collapse } from '@mui/material/Collapse';
 export { default as ListItem } from '@mui/material/ListItem';
 export { default as Switch } from '@mui/material/Switch';
 export { default as Container } from "@mui/material/Container";
+export { default as ListItemIcon } from '@mui/material/ListItemIcon';
