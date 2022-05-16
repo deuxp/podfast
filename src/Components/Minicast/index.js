@@ -23,7 +23,7 @@ function Minicast(props) {
 
   let linkURL = `${currentURL}/${props.id}`
 
-  // copiedText needs to be reset after user copies to Clipboard, in case they wish to copy the link again
+  // copiedText needs to be reset after user copies to Clipboard, in case they wish to copy the link again from same cast
   // added artificial delay so it does not reset right away and user can be told "Link Copied!"
   useEffect(() => {
     setTimeout(() => {
