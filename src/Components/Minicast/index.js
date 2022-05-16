@@ -26,7 +26,7 @@ function Minicast(props) {
       </CardHeader>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt="banner background"
         height="140"
         image={props.banner_link}
       />
@@ -36,10 +36,9 @@ function Minicast(props) {
           {props.description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Like</Button>
-        <Button size="small">Share</Button>
-        <Button size="small">Follow</Button>
+      <CardActions sx={{justifyContent: "space-between" }}>
+        <Button size="small">Add to Favorites</Button>
+        <Button size="small"  >Copy Link</Button>
       </CardActions>
     </Card>
   )
