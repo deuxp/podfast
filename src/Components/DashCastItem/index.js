@@ -34,7 +34,7 @@ function DashCastItem({ cast, updateCasts }) {
       sx={{
         width: "40vw",
         marginLeft: "-10px",
-        border: "dashed",
+        border: "dotted white",
         borderRadius: "10px",
         backgroundImage: `url(${banner_link})`,
         trasition: "2s",
