@@ -4,10 +4,9 @@ import axios from "axios";
 import { Container } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
-
-function Dashboard() {
+function Dashboard({ setDashboard }) {
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
   const [data, setData] = useState({
