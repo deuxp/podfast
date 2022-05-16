@@ -4,24 +4,22 @@ import axios from "axios";
 import { Container } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
+import { useLocation } from 'react-router-dom';
+
 
 function Dashboard() {
-  // const [userMiniCasts, setUserMiniCasts] = useState([]);
-  // const [category, setCategory] = useState("");
+  const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
+  const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
   const [data, setData] = useState({
     userMiniCasts: [],
     categories: [{ id: 999, tag: "bbq" }],
   });
-
   const setUserMiniCasts = (newCasts) => {
     setData((prev) => ({
       ...prev,
       userMiniCasts: newCasts,
     }));
   };
-
-  const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
-  const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
 
   useEffect(() => {
     Promise.all([axios.get(GET_URL_USER_MINICASTS), axios.get(GET_URL_TAGS)])
@@ -37,9 +35,11 @@ function Dashboard() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   console.log("\t\tthis is the data -> ", data.categories);
-  // });
+  const location = useLocation();
+  useEffect(() => {
+    //console.log(location.pathname);
+    setDashboard(true);
+  }, [location]);
 
   return (
     <Container maxWidth="sm">
