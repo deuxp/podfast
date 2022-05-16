@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import app from "../fireBase-config";
@@ -12,6 +12,9 @@ export function useRecorder(initialState) {
   // from control
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  // category select
+  const [tag, setTag] = useState("");
+  // loading screen
   const [open, setOpen] = useState(false); // loading backdrop
 
   const [save, setSave] = useState(initialState);
@@ -21,6 +24,10 @@ export function useRecorder(initialState) {
       ...save,
       banner,
     });
+  };
+
+  const handleChange = (event) => {
+    setTag(event.target.value);
   };
 
   /* -------------------------------------------------------------------------- */
@@ -44,31 +51,35 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- STOP ---------------------------------- */
   const onStop = () => {
-    recorder
-      .stop()
-      .getMp3()
-      .then(([buffer, blob]) => {
-        return new File(buffer, "ohBoy.mp3", {
-          //TODO replace name with uuid
-          type: blob.type,
-          lastModified: Date.now(),
+    try {
+      recorder
+        .stop()
+        .getMp3()
+        .then(([buffer, blob]) => {
+          return new File(buffer, "ohBoy.mp3", {
+            //TODO replace name with uuid
+            type: blob.type,
+            lastModified: Date.now(),
+          });
+        })
+        .then((file) => {
+          const playback = new Audio(URL.createObjectURL(file)); //TODO redundant ?
+          return [file, playback];
+        })
+        .then(([file, playback]) => {
+          console.log("the recorder has stopped");
+          setSave({
+            ...save,
+            file,
+            playback,
+          });
+        })
+        .catch((e) => {
+          console.log(e.message);
         });
-      })
-      .then((file) => {
-        const playback = new Audio(URL.createObjectURL(file)); //TODO redundant ?
-        return [file, playback];
-      })
-      .then(([file, playback]) => {
-        console.log("the recorder has stopped");
-        setSave({
-          ...save,
-          file,
-          playback,
-        });
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+    } catch (e) {
+      console.log("\t\t The recorder is blank", e);
+    }
   };
 
   /* ---------------------------------- PLAY ---------------------------------- */
@@ -103,7 +114,7 @@ export function useRecorder(initialState) {
     } catch (e) {
       console.log("\t\t\t\t\tsomething happenned when uploading", e);
     }
-    const sendData = { ...data, title, description, user_id: "1" };
+    const sendData = { ...data, title, description, tag, user_id: "1" };
     axios
       .post("http://localhost:8080/minicasts/upload", sendData)
       .then((response) => {
@@ -135,5 +146,7 @@ export function useRecorder(initialState) {
     onPause,
     onPost,
     open,
+    tag,
+    handleChange,
   };
 }

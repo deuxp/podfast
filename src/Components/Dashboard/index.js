@@ -4,25 +4,36 @@ import axios from "axios";
 import { Container } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
-
 import { useLocation } from 'react-router-dom';
 
 
-function Dashboard({ setDashboard }) {
-  const [userMiniCasts, setUserMiniCasts] = useState([]);
-  const GET_URL = "http://localhost:8080/users/dashboard";
+function Dashboard() {
+  const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
+  const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
+  const [data, setData] = useState({
+    userMiniCasts: [],
+    categories: [{ id: 999, tag: "bbq" }],
+  });
+  const setUserMiniCasts = (newCasts) => {
+    setData((prev) => ({
+      ...prev,
+      userMiniCasts: newCasts,
+    }));
+  };
 
   useEffect(() => {
-    axios
-      .get(GET_URL)
+    Promise.all([axios.get(GET_URL_USER_MINICASTS), axios.get(GET_URL_TAGS)])
       .then((res) => {
-        setUserMiniCasts(res.data);
+        const [userMiniCasts, categories] = res;
+        setData({
+          userMiniCasts: userMiniCasts.data,
+          categories: categories.data,
+        });
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
 
   const location = useLocation();
   useEffect(() => {
@@ -30,12 +41,11 @@ function Dashboard({ setDashboard }) {
     setDashboard(true);
   }, [location]);
 
-
   return (
     <Container maxWidth="sm">
-      <Recorder />
+      <Recorder categories={data.categories} />
       <DashCastList
-        userMiniCasts={userMiniCasts}
+        userMiniCasts={data.userMiniCasts}
         setUserMiniCasts={setUserMiniCasts}
       />
     </Container>

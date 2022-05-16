@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRecorder } from "../../hooks/useRecorder";
 import UploadBanner from "../UploadBanner";
 
@@ -13,10 +13,16 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DashboardRounded } from "@mui/icons-material";
+
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { ConstructionOutlined } from "@mui/icons-material";
+
 const MicRecorder = require("mic-recorder-to-mp3");
 
-function Recorder() {
+function Recorder({ categories }) {
   const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -39,6 +45,8 @@ function Recorder() {
     onPost,
     open,
     mode,
+    tag,
+    handleChange,
   } = useRecorder(defaultRecorderState);
 
   /* -------------------------------------------------------------------------- */
@@ -77,6 +85,27 @@ function Recorder() {
           />
           <UploadBanner setBanner={setBanner} />
         </Box>
+
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-standard-label">
+            Category
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={tag}
+            onChange={handleChange}
+            label="Category"
+          >
+            {categories &&
+              categories.map((category, i) => (
+                <MenuItem key={i} value={category.id}>
+                  {category.tag}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
         <p
           style={{
             display: "flex",
