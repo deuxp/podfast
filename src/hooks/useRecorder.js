@@ -4,6 +4,8 @@ import axios from "axios";
 import app from "../fireBase-config";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { getSuggestedQuery } from "@testing-library/react";
+import { UserContext } from "../App";
+import { useContext } from "react";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 export function useRecorder(initialState) {
@@ -25,6 +27,9 @@ export function useRecorder(initialState) {
       banner,
     });
   };
+
+  // Session id
+  const userObject = useContext(UserContext);
 
   const handleChange = (event) => {
     setTag(event.target.value);
@@ -114,7 +119,13 @@ export function useRecorder(initialState) {
     } catch (e) {
       console.log("\t\t\t\t\tsomething happenned when uploading", e);
     }
-    const sendData = { ...data, title, description, tag, user_id: "1" };
+    const sendData = {
+      ...data,
+      title,
+      description,
+      tag,
+      user_id: userObject.id,
+    };
     axios
       .post("http://localhost:8080/minicasts/upload", sendData)
       .then((response) => {

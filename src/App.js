@@ -1,12 +1,15 @@
 import * as React from "react";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 /*************************Poodle Logo Pic*************************** */
-import Poodle from "../src/assets/PoodleGraphic.png"
+import Poodle from "../src/assets/PoodleGraphic.png";
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
+
 import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
+
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
@@ -15,6 +18,7 @@ import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
 import ListItemLink from "./Components/ListItemLink";
 /************************** MUI Components***************************************** */
+import ListItemIcon from "@mui/material/ListItemIcon";
 
 import {
   Box,
@@ -30,9 +34,10 @@ import {
   Collapse,
   ListItem,
   Switch,
-  Container
-} from './mui';
+  Container,
+} from "./mui";
 
+export const UserContext = React.createContext();
 
 const theme = createTheme({
   palette: {
@@ -51,7 +56,6 @@ const theme = createTheme({
   },
 });
 
-
 function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
   const [currentCast, setCurrentCast] = useState([0]);
@@ -61,142 +65,180 @@ function App() {
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
+  const [userID, setUserID] = useState("1");
+
   const GET_URL = "http://localhost:8080/minicasts";
 
-  // initial get from the server 
+  // initial get from the server
   useEffect(() => {
     axios
       .get(GET_URL)
       .then((res) => {
-        setPlaylist(res.data)
-        console.log(res.data)
+        setPlaylist(res.data);
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
 
-  const handleAutoPlaySwitch = event => {
-    setAutoplay(event.target.checked);
+
+  function ListItemLink(props) {
+    const { icon, primary, to, button } = props;
+
+    const renderLink = React.useMemo(
+      () =>
+        React.forwardRef(function Link(itemProps, ref) {
+          return (
+            <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
+          );
+        }),
+      [to]
+    );
+
+    return (
+      <li>
+        <ListItem button={button} component={renderLink}>
+          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+          <ListItemText primary={primary} />
+        </ListItem>
+      </li>
+    );
   }
 
+  const handleAutoPlaySwitch = (event) => {
+    setAutoplay(event.target.checked);
+  };
+
   return (
+    <UserContext.Provider value={userID}>
+      <BrowserRouter>
+        <div className="App">
+          <ThemeProvider theme={theme}>
+            <Nav setUserID={setUserID} />
 
-    <BrowserRouter>
-      <div className="App">
 
-        <ThemeProvider theme={theme}>
-          <Nav />
-
-          <Container>
-            <main className="main-grid">
-              <section className="player-box">
-                <Player
-                  playlist={playlist}
-                  autoplay={autoplay}
-                  currentCast={currentCast}
-                  onEnded={() => setCurrentCast(currentCast + 1)}
-                />
-              </section>
-              {/***new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***/}
-              <section className="main-box">
-                <Routes>
-                  <Route path="*" element={<MinicastList minicasts={playlist}
-                    onChange={setCurrentCast}
-                    setDashboard={setDashboard} />} />
-                  <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />} />
-                  <Route path="/minicasts/:id" element={<DynamicMinicast 
-                    onChange={setCurrentCast} />} />
-                </Routes>
-              </section>
-
-              <section className="side-menu">
-                <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
-                  <Toolbar />
-                  <List>
-
-                    <ListItem>
-                      <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
-                      <Switch
-                        checked={autoplay}
-                        onChange={handleAutoPlaySwitch}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                      />
-                    </ListItem>
-                    <Divider />
-
-                    <ListItemLink
-                      to="/minicasts"
-                      primary="Home"
-                      icon={null}
-                      button={true}
-                      key="Home"
-                    />
-
-                    <ListItemLink
-                      to="/dashboard"
-                      primary="Dashboard"
-                      icon={null}
-                      button={true}
-                      key="Dashboard"
-                    />
-
-                    <Divider />
-                    {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
-                      <ListItemText primary="Playlist" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                      <Collapse in={open} unmountOnExit>
-                        <ul>
-                          {playlist.map((item, index) => {
-                            return <ListItemLink
-                              to={`/minicasts/${index}`}
-                              primary={item.title}
-                              button={false}
-                              key={item.id}
-                            />
-                          })}
-                        </ul>
-                      </Collapse>
-                      <ListItemButton>
-                        <ListItemText primary="Favorites" />
-                      </ListItemButton> </>) : ""}
-                    <Divider />
-                  </List>
-                </Box>
-                <div>
-                  <img src={Poodle} />
+            <Container>
+              <div className="main-grid">
+                <div className="player-box">
+                  <Player
+                    playlist={playlist}
+                    autoplay={autoplay}
+                    currentCast={currentCast}
+                    onEnded={() => setCurrentCast(currentCast + 1)}
+                  />
                 </div>
-              </section>
-            </main>
-          </Container>
-        </ThemeProvider>
-      </div>
-    </BrowserRouter>
+                {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
+                <div className="main-box">
+                  <Routes>
+                    <Route
+                      path="*"
+                      element={
+                        <MinicastList
+                          minicasts={playlist}
+                          onChange={setCurrentCast}
+                          setDashboard={setDashboard}
+                        />
+                      }
+                    />
+                    <Route
+                      exact
+                      path="/dashboard"
+                      element={<Dashboard setDashboard={setDashboard} />}
+                    />
+                    <Route
+                      path="/minicasts/:id"
+                      element={
+                        <DynamicMinicast
+                          onChange={setCurrentCast}
+                        />
+                      }
+                    />
+                  </Routes>
+                </div>
+
+                <div className="side-bar">
+                  <Box
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    <Toolbar />
+                    <List>
+                      <ListItem>
+                        <ListItemText
+                          id="switch-list-label-autoplay"
+                          primary="Autoplay"
+                        />
+                        <Switch
+                          checked={autoplay}
+                          onChange={handleAutoPlaySwitch}
+                          inputProps={{ "aria-label": "controlled" }}
+                        />
+                      </ListItem>
+                      <Divider />
+
+                      <ListItemLink
+                        to="/minicasts"
+                        primary="Home"
+                        icon={null}
+                        button={true}
+                        key="Home"
+                      />
+
+                      <ListItemLink
+                        to="/dashboard"
+                        primary="Dashboard"
+                        icon={null}
+                        button={true}
+                        key="Dashboard"
+                      />
+
+
+                      <Divider />
+                      {!dashboard ? (
+                        <>
+                          <ListItemButton onClick={() => setOpen(!open)}>
+                            <ListItemText primary="Playlist" />
+                            {open ? <ExpandLess /> : <ExpandMore />}
+                          </ListItemButton>
+                          <Collapse in={open} unmountOnExit>
+                            <ul>
+                              {playlist.map((item, index) => {
+                                return (
+                                  <ListItemLink
+                                    to={`/minicasts/${index}`}
+                                    primary={item.title}
+                                    button={false}
+                                    key={index}
+                                  />
+                                );
+                              })}
+                            </ul>
+                          </Collapse>
+                          <ListItemButton>
+                            <ListItemText primary="Favorites" />
+                          </ListItemButton>{" "}
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <Divider />
+                    </List>
+                  </Box>
+                  <div>
+                    <img src={Poodle} />
+                  </div>
+                </div>
+              </div>
+            </Container>
+          </ThemeProvider>
+        </div>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
 export default App;
 
-
-/* ----------------------------- helper function ----------------------------
-
-// //function to build a short list of casts to listen to on the front page
-// // as of now just makes a list, no filter, impose a limit 6
-// //implement lazy loading ...
-const buildList = (state, filter) => {
-  return new Promise((resolve, reject) => {
-    if (!playlist) return [];
-    resolve(playlist);
-  }).catch((e) => console.log(e.message));
-};
-
-const playNextSong = (list) => {
-  // needs to alter the list and set the playlist state
-  const newList = list.filter((article, index) => {
-    if (index) return article;
-  });
-  console.log("when the song is over -> ", newList);
-  setPlaylist(newList);
-};
-*/

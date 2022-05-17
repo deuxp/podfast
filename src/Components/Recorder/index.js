@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useRecorder } from "../../hooks/useRecorder";
+import { UserContext } from "../../App";
 import UploadBanner from "../UploadBanner";
 
 import Container from "@mui/material/Container";
@@ -21,8 +22,9 @@ import Select from "@mui/material/Select";
 import { ConstructionOutlined } from "@mui/icons-material";
 
 const MicRecorder = require("mic-recorder-to-mp3");
-
 function Recorder({ categories }) {
+  // const userObject = useContext(UserContext);
+
   const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -48,6 +50,10 @@ function Recorder({ categories }) {
     tag,
     handleChange,
   } = useRecorder(defaultRecorderState);
+
+  // useEffect(() => {
+  //   console.log("\t\t\t\tafter the login: ", userObject);
+  // }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */

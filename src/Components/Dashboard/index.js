@@ -5,6 +5,11 @@ import { Container } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
 
+import { useLocation } from "react-router-dom";
+import { UserContext } from "../../App";
+import { useContext } from "react";
+
+
 function Dashboard({ setDashboard }) {
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
@@ -18,6 +23,8 @@ function Dashboard({ setDashboard }) {
       userMiniCasts: newCasts,
     }));
   };
+
+  const userObject = useContext(UserContext);
 
   useEffect(() => {
     Promise.all([axios.get(GET_URL_USER_MINICASTS), axios.get(GET_URL_TAGS)])
@@ -33,6 +40,12 @@ function Dashboard({ setDashboard }) {
       });
   }, []);
 
+
+  const usersMinicasts = (casts, session_id) => {
+    return casts.filter((cast) => session_id === cast.user_id);
+  };
+
+
   useEffect(() => {
     setDashboard(true);
   },[]);
@@ -41,7 +54,7 @@ function Dashboard({ setDashboard }) {
     <Container maxWidth="sm">
       <Recorder categories={data.categories} />
       <DashCastList
-        userMiniCasts={data.userMiniCasts}
+        userMiniCasts={usersMinicasts(data.userMiniCasts, userObject.id)}
         setUserMiniCasts={setUserMiniCasts}
       />
     </Container>
