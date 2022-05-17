@@ -1,9 +1,7 @@
-import { useState, useRef } from "react";
 import "./Nav.scss";
 import Login from "../Login";
-
+import { useUserAuth } from "../../hooks/useUserAuth";
 import Dialog from "@mui/material/Dialog";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,20 +10,19 @@ import Button from "@mui/material/Button";
 import { Avatar } from "@mui/material";
 
 export default function Nav() {
-  const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleClickOpen = (e) => {
-    setOpen(true);
-  };
-  const handleClickClose = (e) => {
-    setOpen(false);
-  };
-  const handleLogin = (e) => {
-    console.log("handle user auth");
-    setOpen(false);
-  };
+  const {
+    open,
+    register,
+    setRegister,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleClickOpen,
+    handleClickClose,
+    handleLogin,
+    handleRegister,
+  } = useUserAuth();
 
   return (
     <Box sx={{ width: 1 }}>
@@ -51,6 +48,9 @@ export default function Nav() {
               email={email}
               setEmail={setEmail}
               handleLogin={handleLogin}
+              handleRegister={handleRegister}
+              setRegister={setRegister}
+              register={register}
             />
           </Dialog>
         </Toolbar>

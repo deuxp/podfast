@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import LockIcon from "@mui/icons-material/Lock";
+import Typography from "@mui/material/Typography";
 
 function Login({
   handleClickClose,
@@ -14,6 +15,9 @@ function Login({
   email,
   setEmail,
   handleLogin,
+  handleRegister,
+  setRegister,
+  register,
 }) {
   return (
     <>
@@ -26,7 +30,8 @@ function Login({
         }}
       >
         <LockIcon />
-        <DialogTitle>Login</DialogTitle>
+        {!register && <DialogTitle>Login</DialogTitle>}
+        {register && <DialogTitle>Register</DialogTitle>}
         <DialogContent>
           <TextField
             autoFocus
@@ -47,12 +52,28 @@ function Login({
             label="Password"
             type="password"
             autoComplete="current-password"
-            sx={{ padding: "0.5rem" }}
+            sx={{ padding: "0.5rem 0rem 0.5rem 0.5rem" }}
           />
         </DialogContent>
+        {!register && (
+          <em>
+            <u>
+              <Typography
+                onClick={() => setRegister(true)}
+                sx={{
+                  color: "blue",
+                  "&:hover": { color: "red", cursor: "pointer" },
+                }}
+              >
+                Register
+              </Typography>
+            </u>
+          </em>
+        )}
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
-          <Button onClick={handleLogin}>Login</Button>
+          {!register && <Button onClick={handleLogin}>Login</Button>}
+          {register && <Button onClick={handleRegister}>Register</Button>}
         </DialogActions>
       </Box>
     </>
