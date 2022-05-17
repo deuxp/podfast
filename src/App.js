@@ -69,13 +69,12 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setPlaylist(res.data)
+        console.log(res.data)
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
-
 
   const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
@@ -106,7 +105,7 @@ function App() {
                     onChange={setCurrentCast}
                     setDashboard={setDashboard} />} />
                   <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />} />
-                  <Route path="/minicasts/:id" element={<DynamicMinicast minicasts={playlist}
+                  <Route path="/minicasts/:id" element={<DynamicMinicast 
                     onChange={setCurrentCast} />} />
                 </Routes>
               </section>
@@ -154,7 +153,7 @@ function App() {
                               to={`/minicasts/${index}`}
                               primary={item.title}
                               button={false}
-                              key={index}
+                              key={item.id}
                             />
                           })}
                         </ul>
