@@ -23,7 +23,7 @@ import { ConstructionOutlined } from "@mui/icons-material";
 
 const MicRecorder = require("mic-recorder-to-mp3");
 function Recorder({ categories }) {
-  const userObject = useContext(UserContext);
+  // const userObject = useContext(UserContext);
 
   const defaultRecorderState = {
     file: null,
@@ -51,9 +51,9 @@ function Recorder({ categories }) {
     handleChange,
   } = useRecorder(defaultRecorderState);
 
-  useEffect(() => {
-    console.log("\t\t\t\tafter the login: ", userObject);
-  }, []);
+  // useEffect(() => {
+  //   console.log("\t\t\t\tafter the login: ", userObject);
+  // }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */
