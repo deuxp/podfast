@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar } from "@mui/material";
+import SearchBar from "../SearchBar";
 
 export default function Nav() {
   const {
@@ -36,6 +37,7 @@ export default function Nav() {
           >
             PodFast
           </Typography>
+          <SearchBar />
           <Button variant="outlined" onClick={handleClickOpen}>
             <Avatar src="" onClick={handleClickOpen} />
           </Button>
