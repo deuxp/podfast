@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar } from "@mui/material";
 
-export default function Nav() {
+export default function Nav({ setUserID }) {
   const {
     open,
     register,
@@ -51,6 +51,7 @@ export default function Nav() {
               handleRegister={handleRegister}
               setRegister={setRegister}
               register={register}
+              setUserSession={setUserID}
             />
           </Dialog>
         </Toolbar>
