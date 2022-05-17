@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import LockIcon from "@mui/icons-material/Lock";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 
 function Login({
   handleClickClose,
@@ -18,7 +19,32 @@ function Login({
   handleRegister,
   setRegister,
   register,
+  setUserSession,
 }) {
+  const setSession = () => {
+    axios
+      .post("http://localhost:8080/users/login", { email, password })
+      .then((data) => {
+        const user = data;
+        setUserSession(user.data.user);
+      })
+      .then(() => {
+        handleClickClose();
+      })
+      .catch((e) =>
+        console.log("something happened with the post login", e?.message)
+      );
+  };
+
+  const setSession2 = async () => {
+    try {
+      const userOb = await handleLogin();
+      setUserSession(userOb.data.user);
+    } catch (err) {
+      console.log("error in login post", err?.message);
+    }
+  };
+
   return (
     <>
       <Box
@@ -72,7 +98,7 @@ function Login({
         )}
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
-          {!register && <Button onClick={handleLogin}>Login</Button>}
+          {!register && <Button onClick={() => setSession2()}>Login</Button>}
           {register && <Button onClick={handleRegister}>Register</Button>}
         </DialogActions>
       </Box>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export function useUserAuth() {
   const [open, setOpen] = useState(false);
@@ -13,9 +14,16 @@ export function useUserAuth() {
     setOpen(false);
     setRegister(false);
   };
-  const handleLogin = (e) => {
+
+  //returns the user object after veification
+  const handleLogin = async (e) => {
     console.log("handle user auth");
-    setOpen(false);
+    const verifiedUser = await axios.post("http://localhost:8080/users/login", {
+      email,
+      password,
+    });
+    handleClickClose();
+    return verifiedUser;
   };
 
   const handleRegister = (e) => {
