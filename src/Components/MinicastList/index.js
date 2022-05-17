@@ -2,10 +2,9 @@ import Minicast from "../Minicast";
 
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 function MinicastList(props) {
-  const location = useLocation();
+  let location = useLocation();
   useEffect(() => {
     // console.log(location.pathname);
     props.setDashboard(false);
@@ -15,6 +14,7 @@ function MinicastList(props) {
     return (
       <Minicast
         key={index}
+        id={index}
         title={minicast.title}
         description={minicast.description}
         audio_link={minicast.audio_link}

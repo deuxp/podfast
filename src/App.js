@@ -7,15 +7,15 @@ import Poodle from "../src/assets/PoodleGraphic.png"
 import "./App.scss";
 /****************************** React Router *********************************** */
 import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
-import { StaticRouter } from 'react-router-dom/server';
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
+import ListItemLink from "./Components/ListItemLink";
 /************************** MUI Components***************************************** */
-import ListItemIcon from '@mui/material/ListItemIcon';
+
 import {
   Box,
   Toolbar,
@@ -58,7 +58,6 @@ function App() {
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
   /* ---------------------------- Menu state  ---------------------------- */
-  const [selectedIndex, setSelectedIndex] = useState();
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
@@ -70,33 +69,12 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setPlaylist(res.data)
+        console.log(res.data)
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
-  function ListItemLink(props) {
-    const { icon, primary, to, button } = props;
-
-    const renderLink = React.useMemo(
-      () =>
-        React.forwardRef(function Link(itemProps, ref) {
-          return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
-        }),
-      [to],
-    );
-
-    return (
-      <li>
-        <ListItem button={button} component={renderLink}>
-          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-          <ListItemText primary={primary} />
-        </ListItem>
-      </li>
-    );
-  }
-
 
   const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
@@ -111,28 +89,28 @@ function App() {
           <Nav />
 
           <Container>
-            <div className="main-grid">
-              <div className="player-box">
+            <main className="main-grid">
+              <section className="player-box">
                 <Player
                   playlist={playlist}
                   autoplay={autoplay}
                   currentCast={currentCast}
                   onEnded={() => setCurrentCast(currentCast + 1)}
                 />
-              </div>
-              {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
-              <div className="main-box">
+              </section>
+              {/***new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***/}
+              <section className="main-box">
                 <Routes>
                   <Route path="*" element={<MinicastList minicasts={playlist}
                     onChange={setCurrentCast}
                     setDashboard={setDashboard} />} />
                   <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />} />
-                  <Route path="/minicasts/:id" element={<DynamicMinicast minicasts={playlist}
+                  <Route path="/minicasts/:id" element={<DynamicMinicast 
                     onChange={setCurrentCast} />} />
                 </Routes>
-              </div>
+              </section>
 
-              <div className="side-bar">
+              <section className="side-menu">
                 <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
                   <Toolbar />
                   <List>
@@ -175,7 +153,7 @@ function App() {
                               to={`/minicasts/${index}`}
                               primary={item.title}
                               button={false}
-                              key={index}
+                              key={item.id}
                             />
                           })}
                         </ul>
@@ -189,8 +167,8 @@ function App() {
                 <div>
                   <img src={Poodle} />
                 </div>
-              </div>
-            </div>
+              </section>
+            </main>
           </Container>
         </ThemeProvider>
       </div>
