@@ -21,22 +21,7 @@ function Login({
   register,
   setUserSession,
 }) {
-  const setSession = () => {
-    axios
-      .post("http://localhost:8080/users/login", { email, password })
-      .then((data) => {
-        const user = data;
-        setUserSession(user.data.user);
-      })
-      .then(() => {
-        handleClickClose();
-      })
-      .catch((e) =>
-        console.log("something happened with the post login", e?.message)
-      );
-  };
-
-  const setSession2 = async () => {
+  const setSession = async () => {
     try {
       const userOb = await handleLogin();
       setUserSession(userOb.data.user);
@@ -98,7 +83,7 @@ function Login({
         )}
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
-          {!register && <Button onClick={() => setSession2()}>Login</Button>}
+          {!register && <Button onClick={() => setSession()}>Login</Button>}
           {register && <Button onClick={handleRegister}>Register</Button>}
         </DialogActions>
       </Box>
