@@ -1,13 +1,22 @@
 import * as React from "react";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 /*************************Poodle Logo Pic*************************** */
-import Poodle from "../src/assets/PoodleGraphic.png"
+import Poodle from "../src/assets/PoodleGraphic.png";
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
-import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
-import { StaticRouter } from 'react-router-dom/server';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  MemoryRouter,
+  useLocation,
+  Link as RouterLink,
+} from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
@@ -15,7 +24,7 @@ import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
 /************************** MUI Components***************************************** */
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemIcon from "@mui/material/ListItemIcon";
 import {
   Box,
   Toolbar,
@@ -30,9 +39,10 @@ import {
   Collapse,
   ListItem,
   Switch,
-  Container
-} from './mui';
+  Container,
+} from "./mui";
 
+export const UserContext = React.createContext();
 
 const theme = createTheme({
   palette: {
@@ -51,7 +61,6 @@ const theme = createTheme({
   },
 });
 
-
 function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
   const [currentCast, setCurrentCast] = useState([0]);
@@ -64,12 +73,12 @@ function App() {
 
   const GET_URL = "http://localhost:8080/minicasts";
 
-  // initial get from the server 
+  // initial get from the server
   useEffect(() => {
     axios
       .get(GET_URL)
       .then((res) => {
-        setPlaylist(res.data)
+        setPlaylist(res.data);
       })
       .catch((e) => {
         console.log(e.message);
@@ -82,9 +91,11 @@ function App() {
     const renderLink = React.useMemo(
       () =>
         React.forwardRef(function Link(itemProps, ref) {
-          return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
+          return (
+            <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
+          );
         }),
-      [to],
+      [to]
     );
 
     return (
@@ -97,109 +108,141 @@ function App() {
     );
   }
 
-
-  const handleAutoPlaySwitch = event => {
+  const handleAutoPlaySwitch = (event) => {
     setAutoplay(event.target.checked);
-  }
+  };
 
   return (
+    <UserContext.Provider value={"I am accessing the user context!!"}>
+      <BrowserRouter>
+        <div className="App">
+          <ThemeProvider theme={theme}>
+            <Nav />
 
-    <BrowserRouter>
-      <div className="App">
+            <Container>
+              <div className="main-grid">
+                <div className="player-box">
+                  <Player
+                    playlist={playlist}
+                    autoplay={autoplay}
+                    currentCast={currentCast}
+                    onEnded={() => setCurrentCast(currentCast + 1)}
+                  />
+                </div>
+                {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
+                <div className="main-box">
+                  <Routes>
+                    <Route
+                      path="*"
+                      element={
+                        <MinicastList
+                          minicasts={playlist}
+                          onChange={setCurrentCast}
+                          setDashboard={setDashboard}
+                        />
+                      }
+                    />
+                    <Route
+                      exact
+                      path="/dashboard"
+                      element={<Dashboard setDashboard={setDashboard} />}
+                    />
+                    <Route
+                      path="/minicasts/:id"
+                      element={
+                        <DynamicMinicast
+                          minicasts={playlist}
+                          onChange={setCurrentCast}
+                        />
+                      }
+                    />
+                  </Routes>
+                </div>
 
-        <ThemeProvider theme={theme}>
-          <Nav />
+                <div className="side-bar">
+                  <Box
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    <Toolbar />
+                    <List>
+                      <ListItem>
+                        <ListItemText
+                          id="switch-list-label-autoplay"
+                          primary="Autoplay"
+                        />
+                        <Switch
+                          checked={autoplay}
+                          onChange={handleAutoPlaySwitch}
+                          inputProps={{ "aria-label": "controlled" }}
+                        />
+                      </ListItem>
+                      <Divider />
 
-          <Container>
-            <div className="main-grid">
-              <div className="player-box">
-                <Player
-                  playlist={playlist}
-                  autoplay={autoplay}
-                  currentCast={currentCast}
-                  onEnded={() => setCurrentCast(currentCast + 1)}
-                />
-              </div>
-              {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
-              <div className="main-box">
-                <Routes>
-                  <Route path="*" element={<MinicastList minicasts={playlist}
-                    onChange={setCurrentCast}
-                    setDashboard={setDashboard} />} />
-                  <Route exact path="/dashboard" element={<Dashboard setDashboard={setDashboard} />} />
-                  <Route path="/minicasts/:id" element={<DynamicMinicast minicasts={playlist}
-                    onChange={setCurrentCast} />} />
-                </Routes>
-              </div>
-
-              <div className="side-bar">
-                <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}    >
-                  <Toolbar />
-                  <List>
-
-                    <ListItem>
-                      <ListItemText id="switch-list-label-autoplay" primary="Autoplay" />
-                      <Switch
-                        checked={autoplay}
-                        onChange={handleAutoPlaySwitch}
-                        inputProps={{ 'aria-label': 'controlled' }}
+                      <ListItemLink
+                        to="/minicasts"
+                        primary="Home"
+                        icon={null}
+                        button={true}
+                        key="Home"
                       />
-                    </ListItem>
-                    <Divider />
 
-                    <ListItemLink
-                      to="/minicasts"
-                      primary="Home"
-                      icon={null}
-                      button={true}
-                      key="Home"
-                    />
+                      <ListItemLink
+                        to="/dashboard"
+                        primary="Dashboard"
+                        icon={null}
+                        button={true}
+                        key="Dashboard"
+                      />
 
-                    <ListItemLink
-                      to="/dashboard"
-                      primary="Dashboard"
-                      icon={null}
-                      button={true}
-                      key="Dashboard"
-                    />
-
-                    <Divider />
-                    {!dashboard ? (<><ListItemButton onClick={() => setOpen(!open)}>
-                      <ListItemText primary="Playlist" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                      <Collapse in={open} unmountOnExit>
-                        <ul>
-                          {playlist.map((item, index) => {
-                            return <ListItemLink
-                              to={`/minicasts/${index}`}
-                              primary={item.title}
-                              button={false}
-                              key={index}
-                            />
-                          })}
-                        </ul>
-                      </Collapse>
-                      <ListItemButton>
-                        <ListItemText primary="Favorites" />
-                      </ListItemButton> </>) : ""}
-                    <Divider />
-                  </List>
-                </Box>
-                <div>
-                  <img src={Poodle} />
+                      <Divider />
+                      {!dashboard ? (
+                        <>
+                          <ListItemButton onClick={() => setOpen(!open)}>
+                            <ListItemText primary="Playlist" />
+                            {open ? <ExpandLess /> : <ExpandMore />}
+                          </ListItemButton>
+                          <Collapse in={open} unmountOnExit>
+                            <ul>
+                              {playlist.map((item, index) => {
+                                return (
+                                  <ListItemLink
+                                    to={`/minicasts/${index}`}
+                                    primary={item.title}
+                                    button={false}
+                                    key={index}
+                                  />
+                                );
+                              })}
+                            </ul>
+                          </Collapse>
+                          <ListItemButton>
+                            <ListItemText primary="Favorites" />
+                          </ListItemButton>{" "}
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <Divider />
+                    </List>
+                  </Box>
+                  <div>
+                    <img src={Poodle} />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Container>
-        </ThemeProvider>
-      </div>
-    </BrowserRouter>
+            </Container>
+          </ThemeProvider>
+        </div>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
 export default App;
-
 
 /* ----------------------------- helper function ----------------------------
 
