@@ -71,6 +71,8 @@ function App() {
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
+  const [userID, setUserID] = useState("1");
+
   const GET_URL = "http://localhost:8080/minicasts";
 
   // initial get from the server
@@ -113,11 +115,11 @@ function App() {
   };
 
   return (
-    <UserContext.Provider value={"I am accessing the user context!!"}>
+    <UserContext.Provider value={userID}>
       <BrowserRouter>
         <div className="App">
           <ThemeProvider theme={theme}>
-            <Nav />
+            <Nav setUserID={setUserID} />
 
             <Container>
               <div className="main-grid">
