@@ -8,7 +8,7 @@ import Poodle from "../src/assets/PoodleGraphic.png";
 import "./App.scss";
 /****************************** React Router *********************************** */
 
-import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
@@ -18,7 +18,6 @@ import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
 import ListItemLink from "./Components/ListItemLink";
 /************************** MUI Components***************************************** */
-import ListItemIcon from "@mui/material/ListItemIcon";
 
 import {
   Box,
@@ -58,7 +57,7 @@ const theme = createTheme({
 
 function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
-  const [currentCast, setCurrentCast] = useState([0]);
+  const [currentCast, setCurrentCast] = useState();
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
   /* ---------------------------- Menu state  ---------------------------- */
@@ -84,35 +83,13 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setPlaylist(res.data);
+        setCurrentCast(playlist[0]);
+        
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
-
-  function ListItemLink(props) {
-    const { icon, primary, to, button } = props;
-
-    const renderLink = React.useMemo(
-      () =>
-        React.forwardRef(function Link(itemProps, ref) {
-          return (
-            <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
-          );
-        }),
-      [to]
-    );
-
-    return (
-      <li>
-        <ListItem button={button} component={renderLink}>
-          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-          <ListItemText primary={primary} />
-        </ListItem>
-      </li>
-    );
-  }
 
   const handleAutoPlaySwitch = (event) => {
     setAutoplay(event.target.checked);
@@ -133,7 +110,7 @@ function App() {
                     playlist={playlist}
                     autoplay={autoplay}
                     currentCast={currentCast}
-                    onEnded={() => setCurrentCast(currentCast + 1)}
+                    setCurrentCast={setCurrentCast}
                   />
                 </div>
                 {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
@@ -217,10 +194,10 @@ function App() {
                               {playlist.map((item, index) => {
                                 return (
                                   <ListItemLink
-                                    to={`/minicasts/${index}`}
+                                    to={`/minicasts/${item.id}`}
                                     primary={item.title}
                                     button={false}
-                                    key={index}
+                                    key={item.id}
                                   />
                                 );
                               })}
