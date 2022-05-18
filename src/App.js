@@ -7,24 +7,19 @@ import Poodle from "../src/assets/PoodleGraphic.png";
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  NavLink,
-  MemoryRouter,
-  useLocation,
-  Link as RouterLink,
-} from "react-router-dom";
-import { StaticRouter } from "react-router-dom/server";
+
+import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
+
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
+import ListItemLink from "./Components/ListItemLink";
 /************************** MUI Components***************************************** */
 import ListItemIcon from "@mui/material/ListItemIcon";
+
 import {
   Box,
   Toolbar,
@@ -67,7 +62,6 @@ function App() {
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
   /* ---------------------------- Menu state  ---------------------------- */
-  const [selectedIndex, setSelectedIndex] = useState();
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
@@ -95,6 +89,7 @@ function App() {
         console.log(e.message);
       });
   }, []);
+
 
   function ListItemLink(props) {
     const { icon, primary, to, button } = props;
@@ -130,6 +125,7 @@ function App() {
           <ThemeProvider theme={theme}>
             <Nav setUserID={setUserID} />
 
+
             <Container>
               <div className="main-grid">
                 <div className="player-box">
@@ -162,7 +158,6 @@ function App() {
                       path="/minicasts/:id"
                       element={
                         <DynamicMinicast
-                          minicasts={playlist}
                           onChange={setCurrentCast}
                         />
                       }
@@ -208,6 +203,7 @@ function App() {
                         button={true}
                         key="Dashboard"
                       />
+
 
                       <Divider />
                       {!dashboard ? (
@@ -255,24 +251,3 @@ function App() {
 
 export default App;
 
-/* ----------------------------- helper function ----------------------------
-
-// //function to build a short list of casts to listen to on the front page
-// // as of now just makes a list, no filter, impose a limit 6
-// //implement lazy loading ...
-const buildList = (state, filter) => {
-  return new Promise((resolve, reject) => {
-    if (!playlist) return [];
-    resolve(playlist);
-  }).catch((e) => console.log(e.message));
-};
-
-const playNextSong = (list) => {
-  // needs to alter the list and set the playlist state
-  const newList = list.filter((article, index) => {
-    if (index) return article;
-  });
-  console.log("when the song is over -> ", newList);
-  setPlaylist(newList);
-};
-*/

@@ -4,9 +4,11 @@ import axios from "axios";
 import { Container, useColorScheme } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
+
 import { useLocation } from "react-router-dom";
 import { UserContext } from "../../App";
 import { useContext } from "react";
+
 
 function Dashboard({ setDashboard }) {
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
@@ -38,14 +40,15 @@ function Dashboard({ setDashboard }) {
       });
   }, []);
 
+
   const usersMinicasts = (casts, session_id) => {
     return casts.filter((cast) => session_id === cast.user_id);
   };
 
-  const location = useLocation();
+
   useEffect(() => {
     setDashboard(true);
-  }, [location]);
+  },[]);
 
   return (
     <Container maxWidth="sm">
