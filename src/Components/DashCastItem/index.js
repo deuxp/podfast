@@ -1,17 +1,36 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function DashCastItem({ cast, updateCasts }) {
   //TODO (a) build the article (b) destroy button (c) confirmation
 
   const { title, description, audio_link, banner_link, id } = cast;
+  const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDeletePost = () => {
     console.log("+++ post deleting +++");
-    // setOpen(true);
     axios
       .delete(`http://localhost:8080/minicasts/${id}/destroy`)
       .then((response) => {
@@ -22,6 +41,9 @@ function DashCastItem({ cast, updateCasts }) {
       })
       .then(() => {
         updateCasts(id);
+      })
+      .then(() => {
+        handleClose();
       })
       .catch((e) => {
         console.log(e.message);
@@ -118,13 +140,34 @@ function DashCastItem({ cast, updateCasts }) {
 
       <Button
         variant="contained"
-        onClick={() => handleClick()}
+        onClick={() => handleClickOpen()}
         sx={{ margin: "0.3rem" }}
       >
         delete post
       </Button>
       <br />
       <audio controls={true} src={audio_link} controlsList="nodownload"></audio>
+
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+        sx={{ backgroundColor: "#e8431e" }}
+      >
+        <DialogTitle>{"Are You Sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            <strong>Deleting</strong> this minicast is a{" "}
+            <strong>permanent</strong> action and cannot be undone!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleDeletePost}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 
