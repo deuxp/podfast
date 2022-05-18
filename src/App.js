@@ -222,10 +222,10 @@ function App() {
                               {playlist.map((item, index) => {
                                 return (
                                   <ListItemLink
-                                    to={`/minicasts/${index}`}
+                                    to={`/minicasts/${item.id}`}
                                     primary={item.title}
                                     button={false}
-                                    key={index}
+                                    key={item.id}
                                   />
                                 );
                               })}
