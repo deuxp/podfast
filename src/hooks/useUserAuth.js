@@ -7,13 +7,20 @@ export function useUserAuth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loggedIn, setLoggedIn] = useState(true);
 
-  const handleClickOpen = (e) => {
+  const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClickClose = (e) => {
+  const handleClickClose = () => {
     setOpen(false);
     setRegister(false);
+  };
+
+  const handleLogout = () => {
+    console.log("\t\tLogging out!");
+    localStorage.removeItem("minicastUser");
+    setLoggedIn(false);
   };
 
   //returns the user object after veification
@@ -33,6 +40,7 @@ export function useUserAuth() {
       if (data?.user) {
         const { user } = data;
         localStorage.setItem("minicastUser", JSON.stringify(user));
+        setLoggedIn(true);
         return user;
       }
     } catch (err) {
@@ -40,7 +48,7 @@ export function useUserAuth() {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = () => {
     console.log("handle create new user");
     setOpen(false);
     setRegister(false);
@@ -59,5 +67,7 @@ export function useUserAuth() {
     handleLogin,
     handleRegister,
     errorMessage,
+    handleLogout,
+    loggedIn,
   };
 }
