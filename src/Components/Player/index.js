@@ -1,12 +1,5 @@
 function Player({ playlist, currentCast, autoplay,  setCurrentCast }) {
 
-  const playsSelectedCast = (list, index) => {
-    if (list[index]) {
-      return list[index].audio_link;
-    }
-    return "";
-  };
-
   const nextCast = (currentCast, playlist) => {
     // if I don't have this logic, the app crashes
     if (!currentCast) {
@@ -23,9 +16,7 @@ function Player({ playlist, currentCast, autoplay,  setCurrentCast }) {
     if (playlist[index+1]) {
       return playlist[index+1]
     }
-    // if no further casts, then can repeat the last one
-    else
-     {return currentCast;}
+   
   }
   
   let next = nextCast(currentCast, playlist);
