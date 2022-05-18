@@ -71,9 +71,18 @@ function App() {
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
-  const [userID, setUserID] = useState("1");
+  const [userID, setUserID] = useState(""); // default
 
   const GET_URL = "http://localhost:8080/minicasts";
+
+  // sets the user session from local storage on refresh
+  useEffect(() => {
+    const userString = localStorage.getItem("minicastUser");
+    if (userString) {
+      const user = JSON.parse(userString);
+      setUserID(user);
+    }
+  }, []);
 
   // initial get from the server
   useEffect(() => {
