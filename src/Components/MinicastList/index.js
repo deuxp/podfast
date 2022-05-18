@@ -14,7 +14,7 @@ function MinicastList(props) {
     return (
       <Minicast
         key={index}
-        id={index}
+        id={minicast.id}
         title={minicast.title}
         description={minicast.description}
         audio_link={minicast.audio_link}
