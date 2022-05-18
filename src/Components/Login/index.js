@@ -82,7 +82,6 @@ function Login({
             sx={{ padding: "0.5rem 0rem 0.5rem 0.5rem" }}
           />
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
           {!register && <Button onClick={() => setSession()}>Login</Button>}
