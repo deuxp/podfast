@@ -1,10 +1,9 @@
 import Minicast from "../Minicast";
 import { useEffect } from "react";
+import CreatorShow from "../CreatorShow";
 
 function MinicastList(props) {
-  
   useEffect(() => {
-    // console.log(location.pathname);
     props.setDashboard(false);
   });
 
@@ -24,7 +23,11 @@ function MinicastList(props) {
     );
   });
 
-  return <ul>{MinicastArray}</ul>;
+  return (
+    <>
+      <ul>{MinicastArray}</ul>
+    </>
+  );
 }
 
 export default MinicastList;
