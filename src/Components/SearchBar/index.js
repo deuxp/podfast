@@ -17,6 +17,7 @@ export default function SearchBar(props) {
     "news",
     "science",
     "trailers",
+    "travel"
   ];
 
   const filterData = (query, data) => {
