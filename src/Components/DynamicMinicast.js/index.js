@@ -11,7 +11,7 @@ function DynamicMinicast(props) {
 
   const [minicast, setMinicast] = useState([])
 
-  const GET_URL = `http://localhost:8080/minicasts/`;
+  const GET_URL = `http://localhost:8080/minicasts/${id}`;
 
   // get from the server 
   // unfortunately have to get all minicasts as the id refers to the order in which they come from the server 
@@ -20,12 +20,13 @@ function DynamicMinicast(props) {
     axios
       .get(GET_URL)
       .then((res) => {
-        setMinicast(res.data[id])
+        console.log(res.data)
+        setMinicast(res.data[0])
       })
       .catch((e) => {
         console.log(e.message);
       });
-  }, [id]);
+  }, [GET_URL]);
   
 
   return (
