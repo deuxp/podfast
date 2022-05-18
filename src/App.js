@@ -8,7 +8,7 @@ import Poodle from "../src/assets/PoodleGraphic.png";
 import "./App.scss";
 /****************************** React Router *********************************** */
 
-import { BrowserRouter, Routes, Route, NavLink, MemoryRouter, useLocation, Link as RouterLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
@@ -18,7 +18,6 @@ import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
 import ListItemLink from "./Components/ListItemLink";
 /************************** MUI Components***************************************** */
-import ListItemIcon from "@mui/material/ListItemIcon";
 
 import {
   Box,
@@ -91,37 +90,10 @@ function App() {
         console.log(e.message);
       });
   }, []);
- 
-
-  function ListItemLink(props) {
-    const { icon, primary, to, button } = props;
-
-    const renderLink = React.useMemo(
-      () =>
-        React.forwardRef(function Link(itemProps, ref) {
-          return (
-            <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
-          );
-        }),
-      [to]
-    );
-
-    return (
-      <li>
-        <ListItem button={button} component={renderLink}>
-          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-          <ListItemText primary={primary} />
-        </ListItem>
-      </li>
-    );
-  }
 
   const handleAutoPlaySwitch = (event) => {
     setAutoplay(event.target.checked);
   };
-
-  
-  
 
   return (
     <UserContext.Provider value={userID}>
