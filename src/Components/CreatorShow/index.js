@@ -15,6 +15,7 @@ const Img = styled("img")({
 });
 
 function CreatorShow() {
+  // for testing - viewable user should be passed in as a prop
   const user = useContext(UserContext);
 
   useEffect(() => {
