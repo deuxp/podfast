@@ -22,6 +22,7 @@ export default function Nav({ setUserID }) {
     handleClickClose,
     handleLogin,
     handleRegister,
+    errorMessage,
   } = useUserAuth();
 
   return (
@@ -52,6 +53,7 @@ export default function Nav({ setUserID }) {
               setRegister={setRegister}
               register={register}
               setUserSession={setUserID}
+              errorMessage={errorMessage}
             />
           </Dialog>
         </Toolbar>
