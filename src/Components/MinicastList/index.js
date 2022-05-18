@@ -20,7 +20,7 @@ function MinicastList(props) {
         audio_link={minicast.audio_link}
         banner_link={minicast.banner_link}
         avatar_link={minicast.avatar_link}
-        setCurrentCast={() => props.onChange(index)}
+        setCurrentCast={() => props.onChange(minicast)}
         handle={minicast.handle}
       />
     );
