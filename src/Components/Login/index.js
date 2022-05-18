@@ -20,6 +20,7 @@ function Login({
   setRegister,
   register,
   setUserSession,
+  errorMessage,
 }) {
   const setSession = async () => {
     try {
@@ -43,6 +44,21 @@ function Login({
         <LockIcon />
         {!register && <DialogTitle>Login</DialogTitle>}
         {register && <DialogTitle>Register</DialogTitle>}
+        {!register && (
+          <em>
+            <u>
+              <Typography
+                onClick={() => setRegister(true)}
+                sx={{
+                  color: "blue",
+                  "&:hover": { color: "red", cursor: "pointer" },
+                }}
+              >
+                register!
+              </Typography>
+            </u>
+          </em>
+        )}
         <DialogContent>
           <TextField
             autoFocus
@@ -66,26 +82,13 @@ function Login({
             sx={{ padding: "0.5rem 0rem 0.5rem 0.5rem" }}
           />
         </DialogContent>
-        {!register && (
-          <em>
-            <u>
-              <Typography
-                onClick={() => setRegister(true)}
-                sx={{
-                  color: "blue",
-                  "&:hover": { color: "red", cursor: "pointer" },
-                }}
-              >
-                Register
-              </Typography>
-            </u>
-          </em>
-        )}
+
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
           {!register && <Button onClick={() => setSession()}>Login</Button>}
           {register && <Button onClick={handleRegister}>Register</Button>}
         </DialogActions>
+        <p style={{ color: "red" }}>{errorMessage}</p>
       </Box>
     </>
   );
