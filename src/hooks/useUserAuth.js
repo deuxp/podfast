@@ -6,6 +6,7 @@ export function useUserAuth() {
   const [register, setRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClickOpen = (e) => {
     setOpen(true);
@@ -23,8 +24,12 @@ export function useUserAuth() {
         email,
         password,
       });
+
+      if (!data || !data?.user) {
+        setErrorMessage("invalid login credentials");
+        return;
+      }
       handleClickClose();
-      // console.log("+++++++++++++++++++", data);
       if (data?.user) {
         const { user } = data;
         localStorage.setItem("minicastUser", JSON.stringify(user));
@@ -53,5 +58,6 @@ export function useUserAuth() {
     handleClickClose,
     handleLogin,
     handleRegister,
+    errorMessage,
   };
 }

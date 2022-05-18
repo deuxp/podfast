@@ -9,7 +9,6 @@ import { useLocation } from "react-router-dom";
 import { UserContext } from "../../App";
 import { useContext } from "react";
 
-
 function Dashboard({ setDashboard }) {
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
@@ -40,21 +39,19 @@ function Dashboard({ setDashboard }) {
       });
   }, []);
 
-
   const usersMinicasts = (casts, session_id) => {
     return casts.filter((cast) => session_id === cast.user_id);
   };
 
-
   useEffect(() => {
     setDashboard(true);
-  },[]);
+  }, []);
 
   return (
     <Container maxWidth="sm">
       <Recorder categories={data.categories} />
       <DashCastList
-        userMiniCasts={usersMinicasts(data.userMiniCasts, user.id)}
+        userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
         setUserMiniCasts={setUserMiniCasts}
       />
     </Container>
