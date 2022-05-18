@@ -23,8 +23,8 @@ function Login({
 }) {
   const setSession = async () => {
     try {
-      const userOb = await handleLogin();
-      setUserSession(userOb.data.user);
+      const user = await handleLogin();
+      setUserSession(user);
     } catch (err) {
       console.log("error in login post", err?.message);
     }
