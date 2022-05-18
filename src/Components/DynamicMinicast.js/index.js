@@ -20,7 +20,6 @@ function DynamicMinicast(props) {
     axios
       .get(GET_URL)
       .then((res) => {
-        console.log(res.data)
         setMinicast(res.data[0])
       })
       .catch((e) => {
