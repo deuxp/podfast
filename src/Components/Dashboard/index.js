@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Container } from "@mui/material";
+import { Container, useColorScheme } from "@mui/material";
 import Recorder from "../Recorder";
 import DashCastList from "../DashCastList";
 import { useLocation } from "react-router-dom";
@@ -22,7 +22,7 @@ function Dashboard({ setDashboard }) {
     }));
   };
 
-  const userObject = useContext(UserContext);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     Promise.all([axios.get(GET_URL_USER_MINICASTS), axios.get(GET_URL_TAGS)])
@@ -51,7 +51,7 @@ function Dashboard({ setDashboard }) {
     <Container maxWidth="sm">
       <Recorder categories={data.categories} />
       <DashCastList
-        userMiniCasts={usersMinicasts(data.userMiniCasts, userObject.id)}
+        userMiniCasts={usersMinicasts(data.userMiniCasts, user.id)}
         setUserMiniCasts={setUserMiniCasts}
       />
     </Container>
