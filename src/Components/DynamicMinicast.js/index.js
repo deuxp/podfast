@@ -29,7 +29,7 @@ function DynamicMinicast(props) {
   
 
   return (
-    <Minicast key={minicast.id} id={id} title={minicast.title} description={minicast.description} audio_link={minicast.audio_link} banner_link={minicast.banner_link} avatar_link={minicast.avatar_link} setCurrentCast={props.onChange(id) } handle={minicast.handle} /> 
+    <Minicast key={minicast.id} id={id} title={minicast.title} description={minicast.description} audio_link={minicast.audio_link} banner_link={minicast.banner_link} avatar_link={minicast.avatar_link} setCurrentCast={props.onChange(minicast) } handle={minicast.handle} /> 
     )
   
 };
