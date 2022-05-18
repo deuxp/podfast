@@ -51,9 +51,11 @@ function Recorder({ categories }) {
     handleChange,
   } = useRecorder(defaultRecorderState);
 
-  // useEffect(() => {
-  //   console.log("\t\t\t\tafter the login: ", userObject);
-  // }, []);
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(save.file);
+    };
+  }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                                 THE RENDER                                 */
