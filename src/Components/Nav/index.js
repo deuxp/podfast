@@ -1,5 +1,7 @@
 import "./Nav.scss";
-import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../App";
+
 import Login from "../Login";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import Dialog from "@mui/material/Dialog";
@@ -12,6 +14,8 @@ import { Avatar } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Nav({ setUserID }) {
+  const user = useContext(UserContext);
+
   const {
     open,
     register,
@@ -48,7 +52,7 @@ export default function Nav({ setUserID }) {
           </Typography>
 
           <Button variant="outlined" onClick={handleClickOpen}>
-            <Avatar src="" onClick={handleClickOpen} />
+            <Avatar src={user?.avatar_link} onClick={handleClickOpen} />
           </Button>
 
           {loggedIn && (
