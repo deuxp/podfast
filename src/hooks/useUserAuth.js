@@ -18,12 +18,21 @@ export function useUserAuth() {
   //returns the user object after veification
   const handleLogin = async (e) => {
     console.log("handle user auth");
-    const verifiedUser = await axios.post("http://localhost:8080/users/login", {
-      email,
-      password,
-    });
-    handleClickClose();
-    return verifiedUser;
+    try {
+      const { data } = await axios.post("http://localhost:8080/users/login", {
+        email,
+        password,
+      });
+      handleClickClose();
+      // console.log("+++++++++++++++++++", data);
+      if (data?.user) {
+        const { user } = data;
+        localStorage.setItem("minicastUser", JSON.stringify(user));
+        return user;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleRegister = (e) => {
