@@ -58,7 +58,7 @@ const theme = createTheme({
 
 function App() {
   const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
-  const [currentCast, setCurrentCast] = useState([0]);
+  const [currentCast, setCurrentCast] = useState();
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true); // needs
   /* ---------------------------- Menu state  ---------------------------- */
@@ -84,12 +84,14 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setPlaylist(res.data);
+        setCurrentCast(playlist[0]);
+        
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, []);
-
+ 
 
   function ListItemLink(props) {
     const { icon, primary, to, button } = props;
@@ -118,6 +120,9 @@ function App() {
     setAutoplay(event.target.checked);
   };
 
+  
+  
+
   return (
     <UserContext.Provider value={userID}>
       <BrowserRouter>
@@ -133,7 +138,7 @@ function App() {
                     playlist={playlist}
                     autoplay={autoplay}
                     currentCast={currentCast}
-                    onEnded={() => setCurrentCast(currentCast + 1)}
+                    setCurrentCast={setCurrentCast}
                   />
                 </div>
                 {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
