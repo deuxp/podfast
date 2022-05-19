@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useState, useEffect } from "react";
 
 function Minicast(props) {
-  const { handleFaceClick, user_id, creatorID, handle, avatar_link } = props;
+  const { handleFaceClick, user_id } = props;
   const [copiedText, setCopiedText] = useState("");
   // give for URL as shown in browser
   let currentURL = window.location.href;
@@ -29,10 +29,6 @@ function Minicast(props) {
       setCopiedText("");
     }, 2000);
   }, [copiedText]);
-
-  // useEffect(() => {
-  //   console.log("this is the stupid object that I have to work with", props);
-  // });
 
   return (
     <Card sx={{ maxWidth: 700, m: "1rem" }} variant="outlined">
