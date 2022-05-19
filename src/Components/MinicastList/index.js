@@ -19,7 +19,7 @@ function MinicastList(props) {
       console.log("handled the face click");
       setCreatorID(creator);
     } catch (err) {
-      console.log(err);
+      console.log("Error in handleFaceClick()", err);
     }
   };
 
