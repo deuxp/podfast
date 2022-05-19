@@ -19,8 +19,8 @@ function Minicast(props) {
   let currentURL = window.location.href;
   // need to make sure the link to be copied starts with the form http://localhost:XXXX/minicasts
   // sometimes the current url can be http://localhost:XXXX/minicasts/0 for example
-  const index = currentURL.indexOf("/minicasts")
-  currentURL = currentURL.slice(0, index + 10)
+  const index = currentURL.indexOf("/localhost")
+  currentURL = currentURL.slice(0, index + 15) + "/minicasts"
 
   let linkURL = `${currentURL}/${props.id}`
 
@@ -73,7 +73,6 @@ function Minicast(props) {
       minicast_id: props.id,
       fave: !fave
     };
-
     axios
       .post(POST_URL, sendData)
       .then((response) => {
