@@ -1,11 +1,8 @@
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
-import { UserContext } from "../../App";
-import { useContext, useEffect } from "react";
 
 const Img = styled("img")({
   margin: "auto",
@@ -14,15 +11,8 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-function CreatorShow() {
-  // for testing - viewable user should be passed in as a prop
-  const user = useContext(UserContext);
-
-  useEffect(() => {
-    console.log("\t\tuser object ", user);
-  }, []);
-
-  const date = Date(user.created_at);
+function CreatorShow({ creator }) {
+  const date = Date(creator.created_at);
 
   return (
     <>
@@ -35,7 +25,7 @@ function CreatorShow() {
           flexGrow: 1,
           ml: "55px",
           mr: "16px",
-          mt: 1,
+          mt: 2,
           backgroundColor: "rgba(208, 179, 255, 1)",
         }}
       >
@@ -44,7 +34,7 @@ function CreatorShow() {
             <ButtonBase sx={{ width: 128, height: 128 }}>
               <Img
                 alt="Avatar"
-                src={user.avatar_link}
+                src={creator.avatar_link}
                 sx={{
                   transform: "scale(4)",
                   borderRadius: "30px",
@@ -57,10 +47,10 @@ function CreatorShow() {
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  {`${user.first_name} ${user.last_name}`}
+                  {`${creator.first_name} ${creator.last_name}`}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  @{user.handle}
+                  @{creator.handle}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   Creator since {date}
@@ -68,7 +58,7 @@ function CreatorShow() {
               </Grid>
               <Grid item>
                 <Typography sx={{ cursor: "pointer" }} variant="body2">
-                  {user.about_me}
+                  {creator.about_me}
                 </Typography>
               </Grid>
             </Grid>

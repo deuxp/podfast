@@ -52,7 +52,14 @@ export default function Nav({ setUserID }) {
           </Typography>
 
           <Button variant="outlined" onClick={handleClickOpen}>
-            <Avatar src={user?.avatar_link} onClick={handleClickOpen} />
+            <Avatar
+              src={user?.avatar_link}
+              onClick={handleClickOpen}
+              sx={{
+                border: "solid rgba(0, 255, 240, 1)",
+                "&:hover": { transition: "0.2s", transform: "scale(1.15)" },
+              }}
+            />
           </Button>
 
           {loggedIn && (

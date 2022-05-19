@@ -57,15 +57,18 @@ const theme = createTheme({
 });
 
 function App() {
-  const [playlist, setPlaylist] = useState([]); // gonna be a static list moving forward
+  const [playlist, setPlaylist] = useState([]);
   const [currentCast, setCurrentCast] = useState();
   /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true); // needs
+  const [dashboard, setDashboard] = useState(true);
   /* ---------------------------- Menu state  ---------------------------- */
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
-  const [userID, setUserID] = useState(""); // default
+  // current logged in user as object
+  const [userID, setUserID] = useState("");
+  // id of current selected user face
+  const [creatorID, setCreatorID] = useState("");
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -85,7 +88,6 @@ function App() {
       .then((res) => {
         setPlaylist(res.data);
         setCurrentCast(playlist[0]);
-        
       })
       .catch((e) => {
         console.log(e.message);
@@ -96,14 +98,12 @@ function App() {
     setAutoplay(event.target.checked);
   };
 
- 
   return (
     <UserContext.Provider value={userID}>
       <BrowserRouter>
         <div className="App">
           <ThemeProvider theme={theme}>
             <Nav setUserID={setUserID} />
-
 
             <Container>
               <div className="main-grid">
@@ -118,11 +118,11 @@ function App() {
                 {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
                 <div className="main-box">
                   <Routes>
-                  <Route
+                    <Route
                       path="/minicasts/:id"
                       element={
                         <DynamicMinicast
-                        minicasts={playlist}
+                          minicasts={playlist}
                           onChange={setCurrentCast}
                         />
                       }
@@ -134,6 +134,8 @@ function App() {
                           minicasts={playlist}
                           onChange={setCurrentCast}
                           setDashboard={setDashboard}
+                          setCreatorID={setCreatorID}
+                          creatorID={creatorID}
                         />
                       }
                     />
@@ -143,15 +145,28 @@ function App() {
                       element={<Dashboard setDashboard={setDashboard} />}
                     />
                     <Route
-                      path="/favourites"
+                      path="/minicasts/:id"
+                      element={<DynamicMinicast onChange={setCurrentCast} />}
+                    />
+                    <Route
+                      path="/users/:id/minicasts/"
                       element={
-                        <Faves
+                        <MinicastList
                           minicasts={playlist}
                           onChange={setCurrentCast}
+                          setDashboard={setDashboard}
+                          setCreatorID={setCreatorID}
+                          creatorID={creatorID}
                         />
                       }
                     />
-                   
+
+                    <Route
+                      path="/favourites"
+                      element={
+                        <Faves minicasts={playlist} onChange={setCurrentCast} />
+                      }
+                    />
                   </Routes>
                 </div>
 
@@ -178,22 +193,25 @@ function App() {
                       </ListItem>
                       <Divider />
 
-                      <ListItemLink
-                        to="/minicasts"
-                        primary="Home"
-                        icon={null}
-                        button={true}
-                        key="Home"
-                      />
+                      <div onClick={() => setCreatorID("")}>
+                        <ListItemLink
+                          to="/minicasts"
+                          primary="Home"
+                          icon={null}
+                          button={true}
+                          key="Home"
+                        />
+                      </div>
 
-                      <ListItemLink
-                        to="/dashboard"
-                        primary="Dashboard"
-                        icon={null}
-                        button={true}
-                        key="Dashboard"
-                      />
-
+                      <div onClick={() => setCreatorID("")}>
+                        <ListItemLink
+                          to="/dashboard"
+                          primary="Dashboard"
+                          icon={null}
+                          button={true}
+                          key="Dashboard"
+                        />
+                      </div>
 
                       <Divider />
                       {!dashboard ? (
@@ -204,7 +222,7 @@ function App() {
                           </ListItemButton>
                           <Collapse in={open} unmountOnExit>
                             <ul>
-                              {playlist.map((item, index ) => {
+                              {playlist.map((item, index) => {
                                 return (
                                   <ListItemLink
                                     to={`/minicasts/${item.id}`}
@@ -216,13 +234,15 @@ function App() {
                               })}
                             </ul>
                           </Collapse>
-                          {userID && (<ListItemLink
-                            to="/favourites"
-                            primary="Favourites"
-                            icon={null}
-                            button={true}
-                            key="Favourites"
-                      />)}
+                          {userID && (
+                            <ListItemLink
+                              to="/favourites"
+                              primary="Favourites"
+                              icon={null}
+                              button={true}
+                              key="Favourites"
+                            />
+                          )}
                         </>
                       ) : (
                         ""
@@ -244,4 +264,3 @@ function App() {
 }
 
 export default App;
-
