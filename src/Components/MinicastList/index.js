@@ -38,7 +38,7 @@ function MinicastList(props) {
   const MinicastArray = newCastList?.map((minicast, index) => {
     return (
       <Minicast
-        key={index}
+        key={minicast.id}
         id={minicast.id}
         title={minicast.title}
         description={minicast.description}

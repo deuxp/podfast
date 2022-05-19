@@ -13,6 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 /*************************Custom Components*************************** */
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
+import Faves from "./Components/Faves";
 import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
@@ -118,6 +119,15 @@ function App() {
                 <div className="main-box">
                   <Routes>
                     <Route
+                      path="/minicasts/:id"
+                      element={
+                        <DynamicMinicast
+                          minicasts={playlist}
+                          onChange={setCurrentCast}
+                        />
+                      }
+                    />
+                    <Route
                       path="*"
                       element={
                         <MinicastList
@@ -148,6 +158,13 @@ function App() {
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                         />
+                      }
+                    />
+
+                    <Route
+                      path="/favourites"
+                      element={
+                        <Faves minicasts={playlist} onChange={setCurrentCast} />
                       }
                     />
                   </Routes>
@@ -205,25 +222,27 @@ function App() {
                           </ListItemButton>
                           <Collapse in={open} unmountOnExit>
                             <ul>
-                              {playlist &&
-                                playlist.map((item, index) => {
-                                  return (
-                                    <ListItemLink
-                                      to={`/minicasts/${item.id}`}
-                                      primary={item.title}
-                                      button={false}
-                                      key={item.id}
-                                    />
-                                  );
-                                })}
+                              {playlist.map((item, index) => {
+                                return (
+                                  <ListItemLink
+                                    to={`/minicasts/${item.id}`}
+                                    primary={item.title}
+                                    button={false}
+                                    key={item.id}
+                                  />
+                                );
+                              })}
                             </ul>
                           </Collapse>
-
-                          <div onClick={() => setCreatorID("")}>
-                            <ListItemButton>
-                              <ListItemText primary="Favorites" />
-                            </ListItemButton>{" "}
-                          </div>
+                          {userID && (
+                            <ListItemLink
+                              to="/favourites"
+                              primary="Favourites"
+                              icon={null}
+                              button={true}
+                              key="Favourites"
+                            />
+                          )}
                         </>
                       ) : (
                         ""
