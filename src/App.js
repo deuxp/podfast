@@ -234,15 +234,17 @@ function App() {
                               })}
                             </ul>
                           </Collapse>
-                          {userID && (
-                            <ListItemLink
-                              to="/favourites"
-                              primary="Favourites"
-                              icon={null}
-                              button={true}
-                              key="Favourites"
-                            />
-                          )}
+                          <div onClick={() => setCreatorID("")}>
+                            {userID && (
+                              <ListItemLink
+                                to="/favourites"
+                                primary="Favourites"
+                                icon={null}
+                                button={true}
+                                key="Favourites"
+                              />
+                            )}
+                          </div>
                         </>
                       ) : (
                         ""
