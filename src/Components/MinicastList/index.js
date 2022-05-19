@@ -7,10 +7,10 @@ function MinicastList(props) {
     props.setDashboard(false);
   });
 
-  const MinicastArray = props.minicasts.map((minicast, index) => {
+  const MinicastArray = props.minicasts.map((minicast, _index) => {
     return (
       <Minicast
-        key={index}
+        key={minicast.id}
         id={minicast.id}
         title={minicast.title}
         description={minicast.description}

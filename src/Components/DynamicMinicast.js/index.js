@@ -1,12 +1,13 @@
 import Minicast from "../Minicast";
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 
 function DynamicMinicast(props) {
 
   let { id } = useParams();
+  
   // I believe I should GET the one minicast of interest from the data base rather than choosing index based on route parameter and passing all the playlists
 
   const [minicast, setMinicast] = useState([])
@@ -15,7 +16,7 @@ function DynamicMinicast(props) {
 
   // get from the server 
   // unfortunately have to get all minicasts as the id refers to the order in which they come from the server 
-  // will rewrite this hook to be reusable among different components
+  // will need to rewrite this hook to be reusable among different components
   useEffect(() => {
     axios
       .get(GET_URL)
@@ -26,12 +27,12 @@ function DynamicMinicast(props) {
         console.log(e.message);
       });
   }, [GET_URL]);
-  
+
 
   return (
-    <Minicast key={minicast.id} id={id} title={minicast.title} description={minicast.description} audio_link={minicast.audio_link} banner_link={minicast.banner_link} avatar_link={minicast.avatar_link} setCurrentCast={props.onChange(minicast) } handle={minicast.handle} /> 
-    )
-  
+    <Minicast key={id} id={id} title={minicast.title} description={minicast.description} audio_link={minicast.audio_link} banner_link={minicast.banner_link} avatar_link={minicast.avatar_link} setCurrentCast={props.onChange(minicast)} handle={minicast.handle} />
+  )
+
 };
 
 export default DynamicMinicast;
