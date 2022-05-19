@@ -46,7 +46,7 @@ function Minicast(props) {
             ></Avatar>
           }
           title={<Typography variant="h5">{props.title}</Typography>}
-          subheader={props.handle}
+          subheader={`@${props.handle}`}
         ></CardHeader>
         <CardMedia
           component="img"
