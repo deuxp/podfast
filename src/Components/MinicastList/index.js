@@ -8,8 +8,6 @@ function MinicastList(props) {
   const { creatorID, setCreatorID, minicasts } = props;
   const [newCastList, setNewCastList] = useState(minicasts);
 
-  console.log(minicasts);
-
   useEffect(() => {
     props.setDashboard(false);
   });
