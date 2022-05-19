@@ -1,11 +1,7 @@
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import {
-  ListItemText,
-  ListItemIcon,
-  ListItem,
-} from '../../mui';
+import { ListItemText, ListItemIcon, ListItem } from "../../mui";
 
 function ListItemLink(props) {
   const { icon, primary, to, button } = props;
@@ -15,7 +11,7 @@ function ListItemLink(props) {
       React.forwardRef(function Link(itemProps, ref) {
         return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
       }),
-    [to],
+    [to]
   );
 
   return (
