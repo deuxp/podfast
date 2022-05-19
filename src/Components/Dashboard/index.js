@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import axios from "axios";
 import { Container, useColorScheme } from "@mui/material";
 import Recorder from "../Recorder";
@@ -10,6 +10,8 @@ import { UserContext } from "../../App";
 import { useContext } from "react";
 
 function Dashboard({ setDashboard }) {
+  const [recording, setRecording] = useState(false);
+
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
   const [data, setData] = useState({
@@ -48,13 +50,16 @@ function Dashboard({ setDashboard }) {
   }, []);
 
   return (
-    <Container maxWidth="sm">
-      <Recorder categories={data.categories} />
-      <DashCastList
-        userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
-        setUserMiniCasts={setUserMiniCasts}
-      />
-    </Container>
+    <>
+      <Container maxWidth="sm">
+        <Recorder categories={data.categories} setRecording={setRecording} />
+        <DashCastList
+          userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
+          setUserMiniCasts={setUserMiniCasts}
+          recording={recording}
+        />
+      </Container>
+    </>
   );
 }
 

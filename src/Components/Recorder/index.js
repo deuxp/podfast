@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, memo } from "react";
 import { useRecorder } from "../../hooks/useRecorder";
 import { UserContext } from "../../App";
 import UploadBanner from "../UploadBanner";
@@ -19,10 +19,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { ConstructionOutlined } from "@mui/icons-material";
-
 const MicRecorder = require("mic-recorder-to-mp3");
-function Recorder({ categories }) {
+
+const Recorder = memo(({ categories, setRecording }) => {
   // const userObject = useContext(UserContext);
 
   const defaultRecorderState = {
@@ -50,6 +49,17 @@ function Recorder({ categories }) {
     tag,
     handleChange,
   } = useRecorder(defaultRecorderState);
+
+  const handleRecord = () => {
+    onRecord().then(() => {
+      setRecording(true);
+    });
+  };
+
+  const handleStop = () => {
+    onStop();
+    setRecording(false);
+  };
 
   useEffect(() => {
     return () => {
@@ -150,7 +160,7 @@ function Recorder({ categories }) {
           {mode !== "RECORD" && (
             <Fab
               aria-label="add"
-              onClick={() => onRecord()}
+              onClick={() => handleRecord()}
               sx={{
                 marginRight: "0.5rem",
                 backgroundColor: "rgba(0, 255, 240, 1)",
@@ -169,7 +179,7 @@ function Recorder({ categories }) {
 
           {mode !== "STOP" && (
             <Fab
-              onClick={() => onStop()}
+              onClick={() => handleStop()}
               aria-label="add"
               sx={{
                 color: "rgba(120, 38, 254, 1)",
@@ -238,7 +248,6 @@ function Recorder({ categories }) {
                 backgroundColor: "rgba(208, 179, 255, 1)",
                 color: "rgba(120, 38, 254, 1)",
                 transition: "0.3s",
-                // transition: "background-color 0.2s, box-shadow 0.1s",
                 "&:hover": {
                   backgroundColor: "rgba(226, 166, 255, 1)",
                   opacity: [0.9, 0.8, 0.7],
@@ -262,6 +271,6 @@ function Recorder({ categories }) {
       </Box>
     </>
   );
-}
+});
 
 export default Recorder;

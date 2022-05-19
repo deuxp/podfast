@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import Container from "@mui/material/Container";
 
-function DashCastList({ userMiniCasts, setUserMiniCasts }) {
+function DashCastList({ userMiniCasts, setUserMiniCasts, recording }) {
   const handleDeletedCasts = (id) => {
     const newList = userMiniCasts.filter((cast) => id !== cast.id);
     setUserMiniCasts(newList);
@@ -16,6 +16,11 @@ function DashCastList({ userMiniCasts, setUserMiniCasts }) {
   ));
   return (
     <Container maxWidth="md">
+      {recording && (
+        <h1 style={{ marginTop: "50px", color: "red", position: "relative" }}>
+          recording
+        </h1>
+      )}
       <h3> Your Minicasts:</h3>
       <Stack>{renderItem}</Stack>
     </Container>
