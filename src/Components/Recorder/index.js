@@ -68,7 +68,7 @@ function Recorder({ categories }) {
           marginLeft: "24px",
           borderRadius: "15px",
           border: "dashed 6px rgba(208, 179, 255, 1)",
-          width: "40vw",
+          marginRight: "10%",
           transition: "background-color 2s, box-shadow 0.5s",
           backgroundColor: "rgba(209, 150, 255, 1)",
           boxShadow: "5px 5px #383434",

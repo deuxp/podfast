@@ -54,7 +54,7 @@ function DashCastItem({ cast, updateCasts }) {
     <Box
       component="span"
       sx={{
-        width: "40vw",
+        width: "100%",
         marginLeft: "-10px",
         border: "dotted white",
         borderRadius: "10px",
