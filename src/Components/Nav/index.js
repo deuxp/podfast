@@ -40,7 +40,7 @@ export default function Nav({ setUserID }) {
 
   return (
     <Box sx={{ width: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar variant="dense">
           <Typography
             variant="h5"

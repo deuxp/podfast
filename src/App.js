@@ -172,13 +172,14 @@ function App() {
 
                 <div className="side-bar">
                   <Box
+                    style={{ position: "fixed" }}
                     sx={{
                       width: "100%",
                       maxWidth: 360,
                       bgcolor: "background.paper",
                     }}
                   >
-                    <Toolbar />
+                    {/* <Toolbar /> */}
                     <List>
                       <ListItem>
                         <ListItemText
@@ -251,10 +252,10 @@ function App() {
                       )}
                       <Divider />
                     </List>
+                    <div>
+                      <img src={Poodle} />
+                    </div>
                   </Box>
-                  <div>
-                    <img src={Poodle} />
-                  </div>
                 </div>
               </div>
             </Container>
