@@ -1,5 +1,6 @@
 import * as React from "react";
 import useStopwatch from "./hooks/useStopwatch";
+import RecTimer from "./Components/RecTimer";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -278,7 +279,7 @@ function App() {
                     </List>
                     <div>
                       <img src={Poodle} />
-                      {recording && <p>Recording</p>}
+                      {recording && <RecTimer time={time} />}
                     </div>
                   </Box>
                 </div>
