@@ -58,6 +58,7 @@ const theme = createTheme({
 
 function App() {
   const [playlist, setPlaylist] = useState([]);
+  const [allCasts, setAllCasts] = useState([]);
   const [currentCast, setCurrentCast] = useState();
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true);
@@ -87,6 +88,7 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setPlaylist(res.data);
+        setAllCasts(res.data);
         setCurrentCast(playlist[0]);
       })
       .catch((e) => {
@@ -131,7 +133,7 @@ function App() {
                       path="*"
                       element={
                         <MinicastList
-                          minicasts={playlist}
+                          minicasts={allCasts}
                           onChange={setCurrentCast}
                           setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
@@ -152,11 +154,12 @@ function App() {
                       path="/users/:id/minicasts/"
                       element={
                         <MinicastList
-                          minicasts={playlist}
+                          minicasts={allCasts}
                           onChange={setCurrentCast}
                           setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
+                          setPlaylist={setPlaylist}
                         />
                       }
                     />
@@ -164,7 +167,7 @@ function App() {
                     <Route
                       path="/favourites"
                       element={
-                        <Faves minicasts={playlist} onChange={setCurrentCast} />
+                        <Faves minicasts={playlist} onChange={setCurrentCast} setPlaylist={setPlaylist} />
                       }
                     />
                   </Routes>
