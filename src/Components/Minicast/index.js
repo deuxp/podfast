@@ -10,6 +10,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Tooltip from "@mui/material/Tooltip";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom"
 
 function Minicast(props) {
   const { handleFaceClick, user_id } = props;
@@ -89,6 +90,7 @@ function Minicast(props) {
       <CardActionArea onClick={props.setCurrentCast}>
         <CardHeader
           avatar={
+            <Link to ={`/users/${user_id}/minicasts`} >
             <Avatar
               src={props.avatar_link}
               onClick={() => handleFaceClick(user_id)}
@@ -97,7 +99,8 @@ function Minicast(props) {
                 zIndex: "999",
                 "&:hover": { transition: "0.2s", transform: "scale(1.3)" },
               }}
-            ></Avatar>
+            ></Avatar> 
+              </Link>
           }
           title={<Typography variant="h5">{props.title}</Typography>}
           subheader={`@${props.handle}`}
