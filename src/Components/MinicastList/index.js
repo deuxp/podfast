@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CreatorShow from "../CreatorShow";
+import { FilterAlt } from "@mui/icons-material";
 
 function MinicastList(props) {
-  const { creatorID, setCreatorID, minicasts } = props;
+  const { creatorID, setCreatorID, minicasts, setPlaylist } = props;
   const [newCastList, setNewCastList] = useState(minicasts);
 
   useEffect(() => {
@@ -27,9 +28,11 @@ function MinicastList(props) {
       const filteredArray = newCastList?.filter(
         (cast) => cast.user_id === creatorID
       );
-      setNewCastList(filteredArray);
+      setNewCastList(filteredArray)
+      setPlaylist(filteredArray);
     } else {
       setNewCastList(minicasts);
+      setPlaylist(minicasts);
     }
   }, [creatorID, minicasts]);
 
