@@ -10,6 +10,7 @@ import { useContext } from "react";
 
 function Dashboard({ setDashboard }) {
   const [recording, setRecording] = useState(false);
+  const [stop, setStop] = useState(false);
 
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
@@ -51,11 +52,17 @@ function Dashboard({ setDashboard }) {
   return (
     <>
       <Container maxWidth="sm">
-        <Recorder categories={data.categories} setRecording={setRecording} />
+        <Recorder
+          categories={data.categories}
+          setRecording={setRecording}
+          setStop={setStop}
+        />
         <DashCastList
           userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
           setUserMiniCasts={setUserMiniCasts}
           recording={recording}
+          stop={stop}
+          setStop={setStop}
         />
       </Container>
     </>

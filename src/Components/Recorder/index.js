@@ -21,7 +21,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 const MicRecorder = require("mic-recorder-to-mp3");
 
-const Recorder = memo(({ categories, setRecording }) => {
+const Recorder = memo(({ categories, setRecording, setStop }) => {
   // const userObject = useContext(UserContext);
 
   const defaultRecorderState = {
@@ -58,6 +58,7 @@ const Recorder = memo(({ categories, setRecording }) => {
   const handleStop = () => {
     onStop();
     setRecording(false);
+    setStop(true);
   };
 
   useEffect(() => {
