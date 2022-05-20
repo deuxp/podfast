@@ -1,14 +1,12 @@
-import React from "react";
-import { Container } from "@mui/material";
-import Recorder from "../Recorder";
-import DashCastList from "../DashCastList";
-
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { UserContext } from "../../App";
+import axios from "axios";
+import useStopwatch from "./useStopwatch";
+import { UserContext } from "../App";
 import { useContext } from "react";
 
-function Dashboard({ setDashboard }) {
+import React from "react";
+
+function useDashboardData() {
   const [recording, setRecording] = useState(false);
 
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
@@ -44,22 +42,14 @@ function Dashboard({ setDashboard }) {
     return casts.filter((cast) => session_id === cast.user_id);
   };
 
-  useEffect(() => {
-    setDashboard(true);
-  }, []);
-
-  return (
-    <>
-      <Container maxWidth="sm">
-        <Recorder categories={data.categories} setRecording={setRecording} />
-        <DashCastList
-          userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
-          setUserMiniCasts={setUserMiniCasts}
-          recording={recording}
-        />
-      </Container>
-    </>
-  );
+  return {
+    recording,
+    data,
+    setRecording,
+    user,
+    usersMinicasts,
+    setUserMiniCasts,
+  };
 }
 
-export default Dashboard;
+export default useDashboardData;

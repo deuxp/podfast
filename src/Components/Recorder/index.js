@@ -33,7 +33,6 @@ const Recorder = memo(({ categories, setRecording }) => {
   // useRecorder Hook
   const {
     save,
-    setSave,
     setBanner,
     title,
     setTitle,
@@ -72,7 +71,6 @@ const Recorder = memo(({ categories, setRecording }) => {
   /* -------------------------------------------------------------------------- */
   return (
     <>
-      <h2>Record a mini-cast</h2>
       <Box
         sx={{
           marginLeft: "24px",

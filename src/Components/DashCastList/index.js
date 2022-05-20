@@ -16,11 +16,7 @@ function DashCastList({ userMiniCasts, setUserMiniCasts, recording }) {
   ));
   return (
     <Container maxWidth="md">
-      {recording && (
-        <h1 style={{ marginTop: "50px", color: "red", position: "relative" }}>
-          recording
-        </h1>
-      )}
+      {recording && <h3>RECORDING!</h3>}
       <h3> Your Minicasts:</h3>
       <Stack>{renderItem}</Stack>
     </Container>
