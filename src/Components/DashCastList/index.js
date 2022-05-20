@@ -39,7 +39,7 @@ function DashCastList({
 
   return (
     <Container maxWidth="md">
-      {recording && <RecTimer time={time} />}
+      <div>{recording && <RecTimer time={time} />}</div>
       <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
         {" "}
         Your Minicasts:
