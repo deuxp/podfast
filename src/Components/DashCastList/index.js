@@ -15,8 +15,6 @@ function DashCastList({
   stop,
   setStop,
 }) {
-  const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
-
   const handleDeletedCasts = (id) => {
     const newList = userMiniCasts.filter((cast) => id !== cast.id);
     setUserMiniCasts(newList);
@@ -28,19 +26,20 @@ function DashCastList({
     </ListItem>
   ));
 
-  useEffect(() => {
-    if (recording) {
-      handleStart();
-    }
-    if (!recording && stop) {
-      handleReset();
-      setStop(false);
-    }
-  }, [recording, stop]);
+  // const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
+  // useEffect(() => {
+  //   if (recording) {
+  //     handleStart();
+  //   }
+  //   if (!recording && stop) {
+  //     handleReset();
+  //     setStop(false);
+  //   }
+  // }, [recording, stop]);
 
   return (
     <Container maxWidth="md">
-      <div className="rec-timer">{<RecTimer time={time} />}</div>
+      {/* <div className="rec-timer">{<RecTimer time={time} />}</div> */}
       {/* <div>{recording && <RecTimer time={time} />}</div> */}
       <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
         {" "}

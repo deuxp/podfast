@@ -8,9 +8,9 @@ import { useState, useEffect } from "react";
 import { UserContext } from "../../App";
 import { useContext } from "react";
 
-function Dashboard({ setDashboard, recording, setRecording }) {
+function Dashboard({ setDashboard, recording, setRecording, setStop }) {
   // const [recording, setRecording] = useState(false);
-  const [stop, setStop] = useState(false);
+  // const [stop, setStop] = useState(false);
 
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
@@ -61,8 +61,8 @@ function Dashboard({ setDashboard, recording, setRecording }) {
           userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
           setUserMiniCasts={setUserMiniCasts}
           recording={recording}
-          stop={stop}
-          setStop={setStop}
+          // stop={stop}
+          // setStop={setStop}
         />
       </Container>
     </>

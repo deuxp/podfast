@@ -1,4 +1,5 @@
 import * as React from "react";
+import useStopwatch from "./hooks/useStopwatch";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -65,13 +66,25 @@ function App() {
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
-  // recording notification
-  const [recording, setRecording] = useState(false);
-
   // current logged in user as object
   const [userID, setUserID] = useState("");
   // id of current selected user face
   const [creatorID, setCreatorID] = useState("");
+
+  // recording notification
+  const [recording, setRecording] = useState(false);
+  const [stop, setStop] = useState(false);
+
+  const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
+  useEffect(() => {
+    if (recording) {
+      handleStart();
+    }
+    if (!recording && stop) {
+      handleReset();
+      setStop(false);
+    }
+  }, [recording, stop]);
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -150,6 +163,7 @@ function App() {
                           setDashboard={setDashboard}
                           recording={recording}
                           setRecording={setRecording}
+                          setStop={setStop}
                         />
                       }
                     />
