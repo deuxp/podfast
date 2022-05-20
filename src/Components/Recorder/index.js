@@ -78,7 +78,10 @@ const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
   /* -------------------------------------------------------------------------- */
   return (
     <>
-      <Typography variant="h4" sx={{ ml: 5 }}>
+      <Typography
+        variant="h4"
+        sx={{ ml: 5, mb: 2, fontFamily: "'Cairo', sans-serif" }}
+      >
         Record A Minicast
       </Typography>
       <Box

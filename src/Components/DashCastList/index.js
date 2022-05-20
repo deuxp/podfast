@@ -19,7 +19,10 @@ function DashCastList({ userMiniCasts, setUserMiniCasts }) {
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
+      <Typography
+        variant="h5"
+        sx={{ ml: 2, mt: 3, fontFamily: "'Cairo', sans-serif" }}
+      >
         {" "}
         Your Minicasts:
       </Typography>

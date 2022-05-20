@@ -46,7 +46,7 @@ export default function Nav({ setUserID }) {
             variant="h5"
             color="inherit"
             component="div"
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, fontFamily: "'Cairo', sans-serif" }}
           >
             PodFast
           </Typography>
