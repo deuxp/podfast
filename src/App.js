@@ -278,9 +278,11 @@ function App() {
                       )}
                       <Divider />
                     </List>
-                    <div>
-                      <img src={Poodle} />
-                      {!hidden && <RecTimer time={time} />}
+                    <div className="poodle">
+                      <img style={{ padding: "0.5rem" }} src={Poodle} />
+                      <span className="timer-container">
+                        {!hidden && <RecTimer time={time} />}
+                      </span>
                     </div>
                   </Box>
                 </div>
