@@ -2,6 +2,7 @@ import DashCastItem from "../DashCastItem";
 import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import RecTimer from "../RecTimer";
 import { useEffect } from "react";
 import useStopwatch from "../../hooks/useStopwatch";
@@ -39,7 +40,10 @@ function DashCastList({
   return (
     <Container maxWidth="md">
       {recording && <RecTimer time={time} />}
-      <h3> Your Minicasts:</h3>
+      <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
+        {" "}
+        Your Minicasts:
+      </Typography>
       <Stack>{renderItem}</Stack>
     </Container>
   );
