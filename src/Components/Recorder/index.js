@@ -19,6 +19,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Typography } from "@mui/material";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 const Recorder = memo(({ categories, setRecording, setStop }) => {
@@ -72,6 +73,9 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
   /* -------------------------------------------------------------------------- */
   return (
     <>
+      <Typography variant="h4" sx={{ ml: 5 }}>
+        Record A Minicast
+      </Typography>
       <Box
         sx={{
           marginLeft: "24px",
