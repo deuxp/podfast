@@ -8,8 +8,8 @@ import { useState, useEffect } from "react";
 import { UserContext } from "../../App";
 import { useContext } from "react";
 
-function Dashboard({ setDashboard }) {
-  const [recording, setRecording] = useState(false);
+function Dashboard({ setDashboard, recording, setRecording }) {
+  // const [recording, setRecording] = useState(false);
   const [stop, setStop] = useState(false);
 
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";

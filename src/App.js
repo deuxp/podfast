@@ -65,6 +65,9 @@ function App() {
   const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
+  // recording notification
+  const [recording, setRecording] = useState(false);
+
   // current logged in user as object
   const [userID, setUserID] = useState("");
   // id of current selected user face
@@ -142,7 +145,13 @@ function App() {
                     <Route
                       exact
                       path="/dashboard"
-                      element={<Dashboard setDashboard={setDashboard} />}
+                      element={
+                        <Dashboard
+                          setDashboard={setDashboard}
+                          recording={recording}
+                          setRecording={setRecording}
+                        />
+                      }
                     />
                     <Route
                       path="/minicasts/:id"
@@ -255,6 +264,7 @@ function App() {
                     </List>
                     <div>
                       <img src={Poodle} />
+                      {recording && <p>Recording</p>}
                     </div>
                   </Box>
                 </div>
