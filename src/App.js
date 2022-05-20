@@ -75,6 +75,7 @@ function App() {
   // recording notification
   const [recording, setRecording] = useState(false);
   const [stop, setStop] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
   useEffect(() => {
@@ -83,11 +84,7 @@ function App() {
       handleStart();
     }
     if (!recording && stop) {
-      // setStop(false);
       handlePauseRestart();
-    }
-
-    if (!recording && !stop) {
     }
   }, [recording, stop]);
 
@@ -169,6 +166,7 @@ function App() {
                           recording={recording}
                           setRecording={setRecording}
                           setStop={setStop}
+                          setHidden={setHidden}
                         />
                       }
                     />
@@ -283,7 +281,7 @@ function App() {
                     </List>
                     <div>
                       <img src={Poodle} />
-                      {<RecTimer time={time} />}
+                      {!hidden && <RecTimer time={time} />}
                     </div>
                   </Box>
                 </div>

@@ -22,7 +22,7 @@ import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 const MicRecorder = require("mic-recorder-to-mp3");
 
-const Recorder = memo(({ categories, setRecording, setStop }) => {
+const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
   // const userObject = useContext(UserContext);
 
   const defaultRecorderState = {
@@ -53,6 +53,7 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
   const handleRecord = () => {
     onRecord().then(() => {
       setRecording(true);
+      setHidden(false);
     });
   };
 
@@ -65,7 +66,8 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
   const handlePost = () => {
     onPost();
     setRecording(false);
-    // need another state to render hidden
+    setStop(false);
+    setHidden(true);
   };
 
   // collect memory leak on unMount
@@ -229,7 +231,7 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
             </Fab>
           }
 
-          {
+          {/* {
             <Fab
               aria-label="add"
               onClick={() => onPause()}
@@ -248,7 +250,7 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
             >
               <PausePresentationIcon />
             </Fab>
-          }
+          } */}
 
           {
             <Button

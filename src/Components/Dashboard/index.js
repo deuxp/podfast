@@ -8,7 +8,13 @@ import { useState, useEffect } from "react";
 import { UserContext } from "../../App";
 import { useContext } from "react";
 
-function Dashboard({ setDashboard, recording, setRecording, setStop }) {
+function Dashboard({
+  setDashboard,
+  recording,
+  setRecording,
+  setStop,
+  setHidden,
+}) {
   // const [recording, setRecording] = useState(false);
   // const [stop, setStop] = useState(false);
 
@@ -56,6 +62,7 @@ function Dashboard({ setDashboard, recording, setRecording, setStop }) {
           categories={data.categories}
           setRecording={setRecording}
           setStop={setStop}
+          setHidden={setHidden}
         />
         <DashCastList
           userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
