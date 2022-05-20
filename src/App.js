@@ -138,6 +138,7 @@ function App() {
                           setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
+                          setPlaylist={setPlaylist}
                         />
                       }
                     />
