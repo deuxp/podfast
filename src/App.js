@@ -289,7 +289,7 @@ function App() {
                     <div className="poodle">
                       <img
                         id="poodle-icon"
-                        className={recording && "rotate"}
+                        className={recording ? "rotate" : undefined}
                         style={{ padding: "0.5rem" }}
                         src={Poodle}
                       />
