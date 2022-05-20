@@ -165,7 +165,7 @@ function App() {
                     />
 
                     <Route
-                      path="/favourites"
+                      path="users/:id/favourites"
                       element={
                         <Faves minicasts={playlist} onChange={setCurrentCast} setPlaylist={setPlaylist} />
                       }
@@ -241,7 +241,7 @@ function App() {
                           <div onClick={() => setCreatorID("")}>
                             {userID && (
                               <ListItemLink
-                                to="/favourites"
+                                to={`/users/${userID?.id}/favourites`}
                                 primary="Favourites"
                                 icon={null}
                                 button={true}
