@@ -32,6 +32,7 @@ function MinicastList(props) {
       setPlaylist(filteredArray);
     } else {
       setNewCastList(minicasts);
+      setPlaylist(minicasts);
     }
   }, [creatorID, minicasts]);
 
