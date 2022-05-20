@@ -3,18 +3,9 @@ import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import RecTimer from "../RecTimer";
-import { useEffect } from "react";
-import useStopwatch from "../../hooks/useStopwatch";
 import "./DashCastList.scss";
 
-function DashCastList({
-  userMiniCasts,
-  setUserMiniCasts,
-  recording,
-  stop,
-  setStop,
-}) {
+function DashCastList({ userMiniCasts, setUserMiniCasts }) {
   const handleDeletedCasts = (id) => {
     const newList = userMiniCasts.filter((cast) => id !== cast.id);
     setUserMiniCasts(newList);
@@ -26,21 +17,8 @@ function DashCastList({
     </ListItem>
   ));
 
-  // const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
-  // useEffect(() => {
-  //   if (recording) {
-  //     handleStart();
-  //   }
-  //   if (!recording && stop) {
-  //     handleReset();
-  //     setStop(false);
-  //   }
-  // }, [recording, stop]);
-
   return (
     <Container maxWidth="md">
-      {/* <div className="rec-timer">{<RecTimer time={time} />}</div> */}
-      {/* <div>{recording && <RecTimer time={time} />}</div> */}
       <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
         {" "}
         Your Minicasts:

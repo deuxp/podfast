@@ -1,6 +1,5 @@
-import { useContext, useEffect, memo } from "react";
+import { useEffect, memo } from "react";
 import { useRecorder } from "../../hooks/useRecorder";
-import { UserContext } from "../../App";
 import UploadBanner from "../UploadBanner";
 
 import Container from "@mui/material/Container";
@@ -9,7 +8,6 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Fab from "@mui/material/Fab";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
@@ -23,8 +21,6 @@ import { Typography } from "@mui/material";
 const MicRecorder = require("mic-recorder-to-mp3");
 
 const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
-  // const userObject = useContext(UserContext);
-
   const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -231,27 +227,6 @@ const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
             </Fab>
           }
 
-          {/* {
-            <Fab
-              aria-label="add"
-              onClick={() => onPause()}
-              sx={{
-                marginRight: "0.5rem",
-                color: "rgba(120, 38, 254, 1)",
-                backgroundColor: "rgba(0, 255, 240, 1)",
-                border: "solid rgba(147, 246, 223, 1)",
-                transition: "background-color 0.2s, box-shadow 0.1s",
-                "&:hover": {
-                  backgroundColor: "rgba(226, 166, 255, 1)",
-                  opacity: [0.9, 0.8, 0.7],
-                  boxShadow: "5px 5px #383434",
-                },
-              }}
-            >
-              <PausePresentationIcon />
-            </Fab>
-          } */}
-
           {
             <Button
               onClick={() => handlePost()}
@@ -276,7 +251,6 @@ const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={open}
-          // onClick={handleBackdrop}
         >
           <CircularProgress color="inherit" />
         </Backdrop>

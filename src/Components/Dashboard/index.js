@@ -15,9 +15,6 @@ function Dashboard({
   setStop,
   setHidden,
 }) {
-  // const [recording, setRecording] = useState(false);
-  // const [stop, setStop] = useState(false);
-
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
   const [data, setData] = useState({
@@ -68,8 +65,6 @@ function Dashboard({
           userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
           setUserMiniCasts={setUserMiniCasts}
           recording={recording}
-          // stop={stop}
-          // setStop={setStop}
         />
       </Container>
     </>

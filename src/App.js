@@ -163,7 +163,6 @@ function App() {
                       element={
                         <Dashboard
                           setDashboard={setDashboard}
-                          recording={recording}
                           setRecording={setRecording}
                           setStop={setStop}
                           setHidden={setHidden}

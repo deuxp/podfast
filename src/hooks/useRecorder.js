@@ -101,7 +101,6 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- PLAY ---------------------------------- */
   const onPlay = () => {
-    // const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
   };
 
