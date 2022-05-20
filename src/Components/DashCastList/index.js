@@ -2,6 +2,8 @@ import DashCastItem from "../DashCastItem";
 import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import "./DashCastList.scss";
 
 function DashCastList({ userMiniCasts, setUserMiniCasts }) {
   const handleDeletedCasts = (id) => {
@@ -14,9 +16,13 @@ function DashCastList({ userMiniCasts, setUserMiniCasts }) {
       <DashCastItem cast={cast} updateCasts={handleDeletedCasts} />
     </ListItem>
   ));
+
   return (
     <Container maxWidth="md">
-      <h3> Your Minicasts:</h3>
+      <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
+        {" "}
+        Your Minicasts:
+      </Typography>
       <Stack>{renderItem}</Stack>
     </Container>
   );

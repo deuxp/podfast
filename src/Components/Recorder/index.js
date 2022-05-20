@@ -1,6 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useEffect, memo } from "react";
 import { useRecorder } from "../../hooks/useRecorder";
-import { UserContext } from "../../App";
 import UploadBanner from "../UploadBanner";
 
 import Container from "@mui/material/Container";
@@ -9,7 +8,6 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Fab from "@mui/material/Fab";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import PausePresentationIcon from "@mui/icons-material/PausePresentation";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
@@ -19,12 +17,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { ConstructionOutlined } from "@mui/icons-material";
-
+import { Typography } from "@mui/material";
 const MicRecorder = require("mic-recorder-to-mp3");
-function Recorder({ categories }) {
-  // const userObject = useContext(UserContext);
 
+const Recorder = memo(({ categories, setRecording, setStop, setHidden }) => {
   const defaultRecorderState = {
     file: null,
     playback: new Audio(""), // URL.createObjectURL(file) // arg
@@ -34,7 +30,6 @@ function Recorder({ categories }) {
   // useRecorder Hook
   const {
     save,
-    setSave,
     setBanner,
     title,
     setTitle,
@@ -51,6 +46,27 @@ function Recorder({ categories }) {
     handleChange,
   } = useRecorder(defaultRecorderState);
 
+  const handleRecord = () => {
+    onRecord().then(() => {
+      setRecording(true);
+      setHidden(false);
+    });
+  };
+
+  const handleStop = () => {
+    onStop();
+    setRecording(false);
+    setStop(true);
+  };
+
+  const handlePost = () => {
+    onPost();
+    setRecording(false);
+    setStop(false);
+    setHidden(true);
+  };
+
+  // collect memory leak on unMount
   useEffect(() => {
     return () => {
       URL.revokeObjectURL(save.file);
@@ -62,13 +78,15 @@ function Recorder({ categories }) {
   /* -------------------------------------------------------------------------- */
   return (
     <>
-      <h2>Record a mini-cast</h2>
+      <Typography variant="h4" sx={{ ml: 5 }}>
+        Record A Minicast
+      </Typography>
       <Box
         sx={{
           marginLeft: "24px",
           borderRadius: "15px",
           border: "dashed 6px rgba(208, 179, 255, 1)",
-          width: "40vw",
+          marginRight: "10%",
           transition: "background-color 2s, box-shadow 0.5s",
           backgroundColor: "rgba(209, 150, 255, 1)",
           boxShadow: "5px 5px #383434",
@@ -150,7 +168,7 @@ function Recorder({ categories }) {
           {mode !== "RECORD" && (
             <Fab
               aria-label="add"
-              onClick={() => onRecord()}
+              onClick={() => handleRecord()}
               sx={{
                 marginRight: "0.5rem",
                 backgroundColor: "rgba(0, 255, 240, 1)",
@@ -169,7 +187,7 @@ function Recorder({ categories }) {
 
           {mode !== "STOP" && (
             <Fab
-              onClick={() => onStop()}
+              onClick={() => handleStop()}
               aria-label="add"
               sx={{
                 color: "rgba(120, 38, 254, 1)",
@@ -210,35 +228,13 @@ function Recorder({ categories }) {
           }
 
           {
-            <Fab
-              aria-label="add"
-              onClick={() => onPause()}
-              sx={{
-                marginRight: "0.5rem",
-                color: "rgba(120, 38, 254, 1)",
-                backgroundColor: "rgba(0, 255, 240, 1)",
-                border: "solid rgba(147, 246, 223, 1)",
-                transition: "background-color 0.2s, box-shadow 0.1s",
-                "&:hover": {
-                  backgroundColor: "rgba(226, 166, 255, 1)",
-                  opacity: [0.9, 0.8, 0.7],
-                  boxShadow: "5px 5px #383434",
-                },
-              }}
-            >
-              <PausePresentationIcon />
-            </Fab>
-          }
-
-          {
             <Button
-              onClick={() => onPost()}
+              onClick={() => handlePost()}
               variant={save.file ? "outlined" : "disabled"}
               sx={{
                 backgroundColor: "rgba(208, 179, 255, 1)",
                 color: "rgba(120, 38, 254, 1)",
                 transition: "0.3s",
-                // transition: "background-color 0.2s, box-shadow 0.1s",
                 "&:hover": {
                   backgroundColor: "rgba(226, 166, 255, 1)",
                   opacity: [0.9, 0.8, 0.7],
@@ -255,13 +251,12 @@ function Recorder({ categories }) {
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={open}
-          // onClick={handleBackdrop}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
       </Box>
     </>
   );
-}
+});
 
 export default Recorder;

@@ -21,17 +21,20 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: red;
 }
 
 .App {
-  margin-top: 70px
+  margin-top: 70px;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
-/*
-.main-container {
-  display: flex;
-  flex-direction: row;
-  margin: 0px 2rem;
+.poodle {
+display: flex;
+align-items: center;
 }
-
-*/
+.timer-container {
+ padding: 1rem; 
+//  margin-left: 1rem;
+}

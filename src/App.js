@@ -1,4 +1,6 @@
 import * as React from "react";
+import useStopwatch from "./hooks/useStopwatch";
+import RecTimer from "./Components/RecTimer";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -70,6 +72,22 @@ function App() {
   const [userID, setUserID] = useState("");
   // id of current selected user face
   const [creatorID, setCreatorID] = useState("");
+
+  // recording notification
+  const [recording, setRecording] = useState(false);
+  const [stop, setStop] = useState(false);
+  const [hidden, setHidden] = useState(true);
+
+  const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
+  useEffect(() => {
+    if (recording) {
+      handleReset();
+      handleStart();
+    }
+    if (!recording && stop) {
+      handlePauseRestart();
+    }
+  }, [recording, stop]);
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -145,7 +163,14 @@ function App() {
                     <Route
                       exact
                       path="/dashboard"
-                      element={<Dashboard setDashboard={setDashboard} />}
+                      element={
+                        <Dashboard
+                          setDashboard={setDashboard}
+                          setRecording={setRecording}
+                          setStop={setStop}
+                          setHidden={setHidden}
+                        />
+                      }
                     />
                     <Route
                       path="/minicasts/:id"
@@ -180,7 +205,8 @@ function App() {
                     sx={{
                       width: "100%",
                       maxWidth: 360,
-                      bgcolor: "background.paper",
+                      // bgcolor: "background.paper",
+                      bgcolor: "transparent",
                     }}
                   >
                     {/* <Toolbar /> */}
@@ -256,8 +282,11 @@ function App() {
                       )}
                       <Divider />
                     </List>
-                    <div>
-                      <img src={Poodle} />
+                    <div className="poodle">
+                      <img style={{ padding: "0.5rem" }} src={Poodle} />
+                      <span className="timer-container">
+                        {!hidden && <RecTimer time={time} />}
+                      </span>
                     </div>
                   </Box>
                 </div>

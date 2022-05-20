@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import app from "../fireBase-config";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
-import { getSuggestedQuery } from "@testing-library/react";
 import { UserContext } from "../App";
 import { useContext } from "react";
 const MicRecorder = require("mic-recorder-to-mp3");
@@ -44,18 +43,31 @@ export function useRecorder(initialState) {
 
   /* --------------------------------- RECORD --------------------------------- */
   const onRecord = () => {
-    recorder
-      .start()
-      .then(() => {
-        console.log("the recorder has started");
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    return new Promise((resolve, reject) => {
+      recorder
+        .start()
+        .then(() => {
+          console.log("the recorder has started");
+        })
+        .then(() => {
+          resolve("it has begun");
+        })
+        .catch((e) => {
+          console.error(e);
+          reject(e);
+        });
+    });
   };
 
   /* ---------------------------------- STOP ---------------------------------- */
   const onStop = () => {
+    if (!recorder.activeStream) {
+      console.log("this is paused");
+      // pause logic
+      save.playback.pause();
+
+      return;
+    }
     try {
       recorder
         .stop()
@@ -89,7 +101,6 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- PLAY ---------------------------------- */
   const onPlay = () => {
-    // const player = new Audio(URL.createObjectURL(save.file));
     save.playback.play();
   };
 
