@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import RecTimer from "../RecTimer";
 import { useEffect } from "react";
 import useStopwatch from "../../hooks/useStopwatch";
+import "./DashCastList.scss";
 
 function DashCastList({
   userMiniCasts,
@@ -39,7 +40,8 @@ function DashCastList({
 
   return (
     <Container maxWidth="md">
-      <div>{recording && <RecTimer time={time} />}</div>
+      <div className="rec-timer">{<RecTimer time={time} />}</div>
+      {/* <div>{recording && <RecTimer time={time} />}</div> */}
       <Typography variant="h5" sx={{ ml: 2, mt: 3 }}>
         {" "}
         Your Minicasts:
