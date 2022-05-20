@@ -193,7 +193,11 @@ function App() {
                     <Route
                       path="users/:id/favourites"
                       element={
-                        <Faves minicasts={playlist} onChange={setCurrentCast} setPlaylist={setPlaylist} />
+                        <Faves
+                          minicasts={playlist}
+                          onChange={setCurrentCast}
+                          setPlaylist={setPlaylist}
+                        />
                       }
                     />
                   </Routes>
@@ -283,7 +287,12 @@ function App() {
                       <Divider />
                     </List>
                     <div className="poodle">
-                      <img style={{ padding: "0.5rem" }} src={Poodle} />
+                      <img
+                        id="poodle-icon"
+                        className={recording && "rotate"}
+                        style={{ padding: "0.5rem" }}
+                        src={Poodle}
+                      />
                       <span className="timer-container">
                         {!hidden && <RecTimer time={time} />}
                       </span>
