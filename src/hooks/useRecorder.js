@@ -61,6 +61,13 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- STOP ---------------------------------- */
   const onStop = () => {
+    if (!recorder.activeStream) {
+      console.log("this is paused");
+      // pause logic
+      save.playback.pause();
+
+      return;
+    }
     try {
       recorder
         .stop()

@@ -62,6 +62,13 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
     setStop(true);
   };
 
+  const handlePost = () => {
+    onPost();
+    setRecording(false);
+    // need another state to render hidden
+  };
+
+  // collect memory leak on unMount
   useEffect(() => {
     return () => {
       URL.revokeObjectURL(save.file);
@@ -245,7 +252,7 @@ const Recorder = memo(({ categories, setRecording, setStop }) => {
 
           {
             <Button
-              onClick={() => onPost()}
+              onClick={() => handlePost()}
               variant={save.file ? "outlined" : "disabled"}
               sx={{
                 backgroundColor: "rgba(208, 179, 255, 1)",

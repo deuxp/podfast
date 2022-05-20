@@ -79,11 +79,15 @@ function App() {
   const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
   useEffect(() => {
     if (recording) {
+      handleReset();
       handleStart();
     }
     if (!recording && stop) {
-      handleReset();
-      setStop(false);
+      // setStop(false);
+      handlePauseRestart();
+    }
+
+    if (!recording && !stop) {
     }
   }, [recording, stop]);
 
@@ -279,7 +283,7 @@ function App() {
                     </List>
                     <div>
                       <img src={Poodle} />
-                      {recording && <RecTimer time={time} />}
+                      {<RecTimer time={time} />}
                     </div>
                   </Box>
                 </div>
