@@ -33,8 +33,24 @@
 .poodle {
 display: flex;
 align-items: center;
+margin-top: 5px;
 }
 .timer-container {
  padding: 1rem; 
-//  margin-left: 1rem;
+}
+#poodle-icon {
+  background: transparent;
+}
+
+.rotate {
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
