@@ -77,6 +77,8 @@ function App() {
   const [recording, setRecording] = useState(false);
   const [stop, setStop] = useState(false);
   const [hidden, setHidden] = useState(true);
+  const [audition, setAudition] = useState(false);
+  const [auditionTimer, setAuditionTimer] = useState(0);
 
   const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
   useEffect(() => {
@@ -88,6 +90,21 @@ function App() {
       handlePauseRestart();
     }
   }, [recording, stop]);
+
+  useEffect(() => {
+    let interval;
+
+    if (audition) {
+      interval = setInterval(() => {
+        if (auditionTimer !== time) {
+          setAuditionTimer((timer) => timer + 10);
+        }
+        setAudition((prev) => false);
+        setAuditionTimer(0);
+      }, 10);
+    }
+    return () => clearInterval(interval);
+  }, [audition]);
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -169,6 +186,8 @@ function App() {
                           setRecording={setRecording}
                           setStop={setStop}
                           setHidden={setHidden}
+                          setAudition={setAudition}
+                          setAuditionTimer={setAuditionTimer}
                         />
                       }
                     />
@@ -296,6 +315,10 @@ function App() {
                       <span className="timer-container">
                         {!hidden && <RecTimer time={time} />}
                       </span>
+                      <br />
+                      <h3>
+                        audtitiontimer: {auditionTimer} {time}
+                      </h3>
                     </div>
                   </Box>
                 </div>

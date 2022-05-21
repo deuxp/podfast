@@ -101,6 +101,8 @@ export function useRecorder(initialState) {
 
   /* ---------------------------------- PLAY ---------------------------------- */
   const onPlay = () => {
+    console.log("~~~~~~~~~~~~>", save.playback.controlsList);
+    // console.log("~~~~~~~~~~~~>", save.playback.duration);
     save.playback.play();
   };
 

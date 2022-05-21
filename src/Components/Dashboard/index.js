@@ -14,6 +14,8 @@ function Dashboard({
   setRecording,
   setStop,
   setHidden,
+  setAudition,
+  setAuditionTimer,
 }) {
   const GET_URL_USER_MINICASTS = "http://localhost:8080/users/dashboard";
   const GET_URL_TAGS = "http://localhost:8080/minicasts/tags";
@@ -60,6 +62,8 @@ function Dashboard({
           setRecording={setRecording}
           setStop={setStop}
           setHidden={setHidden}
+          setAudition={setAudition}
+          setAuditionTimer={setAuditionTimer}
         />
         <DashCastList
           userMiniCasts={usersMinicasts(data.userMiniCasts, user?.id)}
