@@ -24,16 +24,11 @@ import ListItemLink from "./Components/ListItemLink";
 
 import {
   Box,
-  Toolbar,
   ThemeProvider,
   createTheme,
   List,
   Divider,
-  ListItemButton,
   ListItemText,
-  ExpandLess,
-  ExpandMore,
-  Collapse,
   ListItem,
   Switch,
   Container,
@@ -62,10 +57,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [allCasts, setAllCasts] = useState([]);
   const [currentCast, setCurrentCast] = useState();
-  /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true);
   /* ---------------------------- Menu state  ---------------------------- */
-  const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
   // current logged in user as object
@@ -118,6 +110,20 @@ function App() {
     setAutoplay(event.target.checked);
   };
 
+  // need to getAllCasts when clicking Home as they could have changed
+  // for example, deleting a post on Dashboard and then going Home
+  const getAllCasts = () => {
+    axios
+      .get(GET_URL)
+      .then((res) => {
+        setAllCasts(res.data);
+        setCurrentCast(playlist[0]);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+
   return (
     <UserContext.Provider value={userID}>
       <BrowserRouter>
@@ -140,12 +146,7 @@ function App() {
                   <Routes>
                     <Route
                       path="/minicasts/:id"
-                      element={
-                        <DynamicMinicast
-                          minicasts={playlist}
-                          onChange={setCurrentCast}
-                        />
-                      }
+                      element={<DynamicMinicast onChange={setCurrentCast} />}
                     />
                     <Route
                       path="*"
@@ -153,7 +154,6 @@ function App() {
                         <MinicastList
                           minicasts={allCasts}
                           onChange={setCurrentCast}
-                          setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
@@ -165,7 +165,6 @@ function App() {
                       path="/dashboard"
                       element={
                         <Dashboard
-                          setDashboard={setDashboard}
                           setRecording={setRecording}
                           setStop={setStop}
                           setHidden={setHidden}
@@ -182,7 +181,6 @@ function App() {
                         <MinicastList
                           minicasts={allCasts}
                           onChange={setCurrentCast}
-                          setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
@@ -213,7 +211,6 @@ function App() {
                       bgcolor: "transparent",
                     }}
                   >
-                    {/* <Toolbar /> */}
                     <List>
                       <ListItem>
                         <ListItemText
@@ -226,9 +223,13 @@ function App() {
                           inputProps={{ "aria-label": "controlled" }}
                         />
                       </ListItem>
-                      <Divider />
 
-                      <div onClick={() => setCreatorID("")}>
+                      <div
+                        onClick={() => {
+                          setCreatorID("");
+                          getAllCasts();
+                        }}
+                      >
                         <ListItemLink
                           to="/minicasts"
                           primary="Home"
@@ -238,6 +239,8 @@ function App() {
                         />
                       </div>
 
+                      <Divider />
+
                       <div onClick={() => setCreatorID("")}>
                         <ListItemLink
                           to="/dashboard"
@@ -245,45 +248,21 @@ function App() {
                           icon={null}
                           button={true}
                           key="Dashboard"
+                          disabled={userID ? false : true }
                         />
                       </div>
 
-                      <Divider />
-                      {!dashboard ? (
-                        <>
-                          <ListItemButton onClick={() => setOpen(!open)}>
-                            <ListItemText primary="Playlist" />
-                            {open ? <ExpandLess /> : <ExpandMore />}
-                          </ListItemButton>
-                          <Collapse in={open} unmountOnExit>
-                            <ul>
-                              {playlist.map((item, index) => {
-                                return (
-                                  <ListItemLink
-                                    to={`/minicasts/${item.id}`}
-                                    primary={item.title}
-                                    button={false}
-                                    key={item.id}
-                                  />
-                                );
-                              })}
-                            </ul>
-                          </Collapse>
-                          <div onClick={() => setCreatorID("")}>
-                            {userID && (
-                              <ListItemLink
-                                to={`/users/${userID?.id}/favourites`}
-                                primary="Favourites"
-                                icon={null}
-                                button={true}
-                                key="Favourites"
-                              />
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        ""
-                      )}
+                      <div onClick={() => setCreatorID("")}>
+                        <ListItemLink
+                          to={`/users/${userID?.id}/favourites`}
+                          primary="Favourites"
+                          icon={null}
+                          button={true}
+                          key="Favourites"
+                          disabled={userID ? false : true }
+                        />
+                      </div>
+
                       <Divider />
                     </List>
                     <div className="poodle">
