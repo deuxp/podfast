@@ -1,13 +1,8 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import { Avatar, CardActionArea, CardHeader, Grid, Box } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import LinkToAvatar from "../LinkToAvatar";
 import FavouriteButton from "../FavouriteButton";
 import CopyToClipboardButton from "../CopyToClipboardButton";
@@ -36,14 +31,6 @@ function Minicast(props) {
   currentURL = currentURL.slice(0, index + 15) + "/minicasts";
 
   let linkURL = `${currentURL}/${props.id}`;
-
-  // // copiedText needs to be reset after user copies to Clipboard, in case they wish to copy the link again from same cast
-  // // added artificial delay so it does not reset right away and user can be told "Link Copied!"
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setCopiedText("");
-  //   }, 2000);
-  // }, [copiedText]);
 
   let POST_URL = "";
   let GET_URL = "";
@@ -77,7 +64,7 @@ function Minicast(props) {
       .catch((e) => {
         console.log(e.message);
       });
-  }, [user]);
+  }, [user, GET_URL]);
 
   const onPost = async () => {
     const sendData = {
@@ -97,23 +84,16 @@ function Minicast(props) {
 
   /* ---------------------------- CSS Declarations ---------------------------- */
 
-  const article__item = {
-    color: "gray",
-  };
   const article__container = {
     backgroundImage: `url(${banner_link})`,
-    borderBottom: "1px dashed #f0f3f4",
     padding: "0.5rem",
     marginBottom: "1rem",
+    borderRadius: "5px",
   };
 
   return (
     <>
-      <Grid
-        container
-        sx={article__container}
-        // onClick={() => setCurrentCast(id)}
-      >
+      <Grid container sx={article__container}>
         <Box
           sx={{
             backgroundColor: "rgba(255, 255, 255, .8)",
