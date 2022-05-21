@@ -67,7 +67,6 @@ function DashCastItem({ cast, updateCasts }) {
     >
       <Box
         sx={{
-          backgroundColor: "white",
           margin: "0.5rem",
           padding: "0.3rem",
           borderRadius: "9px",

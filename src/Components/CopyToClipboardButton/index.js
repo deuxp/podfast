@@ -27,14 +27,3 @@ function CopyToClipboardButton({ linkURL }) {
 }
 
 export default CopyToClipboardButton;
-
-{
-  /* <CopyToClipboard text={linkURL} onCopy={() => setCopiedText(linkURL)}>
-            <Tooltip
-              title={copiedText === linkURL ? "Link Copied!" : linkURL}
-              placement="bottom"
-            >
-              <Button size="small">Copy Link</Button>
-            </Tooltip>
-          </CopyToClipboard> */
-}
