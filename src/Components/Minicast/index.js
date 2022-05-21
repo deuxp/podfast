@@ -14,6 +14,7 @@ import CopyToClipboardButton from "../CopyToClipboardButton";
 
 function Minicast(props) {
   const {
+    id,
     handleFaceClick,
     user_id,
     avatar_link,
@@ -107,7 +108,11 @@ function Minicast(props) {
 
   return (
     <>
-      <Grid container sx={article__container}>
+      <Grid
+        container
+        sx={article__container}
+        // onClick={() => setCurrentCast(id)}
+      >
         <Box
           sx={{
             backgroundColor: "rgba(255, 255, 255, .8)",
@@ -125,7 +130,15 @@ function Minicast(props) {
             />
           </Grid>
 
-          <Grid item xs container direction="column" pl={0} pt={1}>
+          <Grid
+            item
+            xs
+            container
+            direction="column"
+            pl={0}
+            pt={1}
+            onClick={() => setCurrentCast(id)}
+          >
             <Box>
               <Typography variant="h5" component="div" sx={{ color: "black" }}>
                 {title}
@@ -138,10 +151,12 @@ function Minicast(props) {
         </Box>
 
         <Box
+          onClick={() => setCurrentCast(id)}
           sx={{
             minHeight: "60px",
             backgroundColor: "rgba(255, 255, 255, .8)",
             borderRadius: "0 0 5px 5px",
+            width: "100%",
           }}
         >
           <Typography p={2} sx={{ color: "black" }}>
@@ -150,6 +165,7 @@ function Minicast(props) {
         </Box>
 
         <Box
+          onClick={() => setCurrentCast(id)}
           p={2}
           sx={{
             display: "flex",
