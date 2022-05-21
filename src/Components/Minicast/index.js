@@ -104,6 +104,7 @@ function Minicast(props) {
     backgroundImage: `url(${banner_link})`,
     borderBottom: "1px dashed #f0f3f4",
     padding: "0.5rem",
+    marginBottom: "1rem",
   };
 
   return (
