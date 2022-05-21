@@ -57,8 +57,6 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [allCasts, setAllCasts] = useState([]);
   const [currentCast, setCurrentCast] = useState();
-  /* ---------------------------- Dashboard toggle ---------------------------- */
-  const [dashboard, setDashboard] = useState(true);
   /* ---------------------------- Menu state  ---------------------------- */
   const [autoplay, setAutoplay] = useState(false);
 
@@ -156,7 +154,6 @@ function App() {
                         <MinicastList
                           minicasts={allCasts}
                           onChange={setCurrentCast}
-                          setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
@@ -168,7 +165,6 @@ function App() {
                       path="/dashboard"
                       element={
                         <Dashboard
-                          setDashboard={setDashboard}
                           setRecording={setRecording}
                           setStop={setStop}
                           setHidden={setHidden}
@@ -185,7 +181,6 @@ function App() {
                         <MinicastList
                           minicasts={allCasts}
                           onChange={setCurrentCast}
-                          setDashboard={setDashboard}
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
