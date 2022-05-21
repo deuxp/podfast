@@ -101,7 +101,8 @@ function Minicast(props) {
   };
   const article__container = {
     backgroundImage: `url(${banner_link})`,
-    // minHeight: "200px",
+    borderBottom: "1px dashed #f0f3f4",
+    padding: "0.5rem",
   };
 
   return (
@@ -109,7 +110,8 @@ function Minicast(props) {
       <Grid container sx={article__container}>
         <Box
           sx={{
-            backgroundColor: "#fe8a5e",
+            backgroundColor: "rgba(255, 255, 255, .8)",
+            borderRadius: "5px 5px 0 0",
             width: "100%",
             display: "flex",
             flexDirection: "row",
@@ -123,22 +125,28 @@ function Minicast(props) {
             />
           </Grid>
 
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" pl={0} pt={1}>
-              <Box>
-                <Typography variant="h5" component="div">
-                  {title}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography>@{handle}</Typography>
-              </Box>
-            </Grid>
+          <Grid item xs container direction="column" pl={0} pt={1}>
+            <Box>
+              <Typography variant="h5" component="div" sx={{ color: "black" }}>
+                {title}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography sx={{ color: "black" }}>@{handle}</Typography>
+            </Box>
           </Grid>
         </Box>
 
-        <Box sx={{ minHeight: "60px" }}>
-          <Typography p={2}>{description}</Typography>
+        <Box
+          sx={{
+            minHeight: "60px",
+            backgroundColor: "rgba(255, 255, 255, .8)",
+            borderRadius: "0 0 5px 5px",
+          }}
+        >
+          <Typography p={2} sx={{ color: "black" }}>
+            {description}
+          </Typography>
         </Box>
 
         <Box
@@ -146,16 +154,20 @@ function Minicast(props) {
           sx={{
             display: "flex",
             width: "100%",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
           }}
         >
-          <FavouriteButton
-            user={user}
-            fave={fave}
-            handleClick={() => onPost()}
-          />
+          <div style={{ opacity: "0.8" }}>
+            <FavouriteButton
+              user={user}
+              fave={fave}
+              handleClick={() => onPost()}
+            />
+          </div>
 
-          <CopyToClipboardButton linkURL={linkURL} />
+          <div style={{ opacity: "0.8" }}>
+            <CopyToClipboardButton linkURL={linkURL} />
+          </div>
         </Box>
       </Grid>
     </>
