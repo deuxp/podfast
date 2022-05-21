@@ -9,9 +9,6 @@ function MinicastList(props) {
   const { creatorID, setCreatorID, minicasts, setPlaylist } = props;
   const [newCastList, setNewCastList] = useState(minicasts);
 
-  useEffect(() => {
-    props.setDashboard(false);
-  });
 
   const handleFaceClick = (creator) => {
     try {
