@@ -24,16 +24,11 @@ import ListItemLink from "./Components/ListItemLink";
 
 import {
   Box,
-  Toolbar,
   ThemeProvider,
   createTheme,
   List,
   Divider,
-  ListItemButton,
   ListItemText,
-  ExpandLess,
-  ExpandMore,
-  Collapse,
   ListItem,
   Switch,
   Container,
@@ -65,7 +60,6 @@ function App() {
   /* ---------------------------- Dashboard toggle ---------------------------- */
   const [dashboard, setDashboard] = useState(true);
   /* ---------------------------- Menu state  ---------------------------- */
-  const [open, setOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
 
   // current logged in user as object
@@ -259,6 +253,7 @@ function App() {
                           icon={null}
                           button={true}
                           key="Dashboard"
+                          disabled={userID ? false : true }
                         />
                       </div>
 
@@ -269,6 +264,7 @@ function App() {
                           icon={null}
                           button={true}
                           key="Favourites"
+                          disabled={userID ? false : true }
                         />
                       </div>
 
