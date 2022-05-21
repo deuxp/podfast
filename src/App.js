@@ -154,11 +154,7 @@ function App() {
                   <Routes>
                     <Route
                       path="/minicasts/:id"
-                      element={
-                        <DynamicMinicast
-                          onChange={setCurrentCast}
-                        />
-                      }
+                      element={<DynamicMinicast onChange={setCurrentCast} />}
                     />
                     <Route
                       path="*"
@@ -226,7 +222,6 @@ function App() {
                       bgcolor: "transparent",
                     }}
                   >
-                    {/* <Toolbar /> */}
                     <List>
                       <ListItem>
                         <ListItemText
@@ -239,7 +234,6 @@ function App() {
                           inputProps={{ "aria-label": "controlled" }}
                         />
                       </ListItem>
-                      <Divider />
 
                       <div
                         onClick={() => {
@@ -256,6 +250,8 @@ function App() {
                         />
                       </div>
 
+                      <Divider />
+
                       <div onClick={() => setCreatorID("")}>
                         <ListItemLink
                           to="/dashboard"
@@ -266,42 +262,16 @@ function App() {
                         />
                       </div>
 
-                      <Divider />
-                      {!dashboard ? (
-                        <>
-                          <ListItemButton onClick={() => setOpen(!open)}>
-                            <ListItemText primary="Playlist" />
-                            {open ? <ExpandLess /> : <ExpandMore />}
-                          </ListItemButton>
-                          <Collapse in={open} unmountOnExit>
-                            <ul>
-                              {playlist.map((item, index) => {
-                                return (
-                                  <ListItemLink
-                                    to={`/minicasts/${item.id}`}
-                                    primary={item.title}
-                                    button={false}
-                                    key={item.id}
-                                  />
-                                );
-                              })}
-                            </ul>
-                          </Collapse>
-                          <div onClick={() => setCreatorID("")}>
-                            {userID && (
-                              <ListItemLink
-                                to={`/users/${userID?.id}/favourites`}
-                                primary="Favourites"
-                                icon={null}
-                                button={true}
-                                key="Favourites"
-                              />
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        ""
-                      )}
+                      <div onClick={() => setCreatorID("")}>
+                        <ListItemLink
+                          to={`/users/${userID?.id}/favourites`}
+                          primary="Favourites"
+                          icon={null}
+                          button={true}
+                          key="Favourites"
+                        />
+                      </div>
+
                       <Divider />
                     </List>
                     <div className="poodle">
