@@ -1,6 +1,4 @@
 import * as React from "react";
-import useStopwatch from "./hooks/useStopwatch";
-import RecTimer from "./Components/RecTimer";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -13,6 +11,7 @@ import "./App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /*************************Custom Components*************************** */
+import Cassette from "./Components/Cassette";
 import Player from "./Components/Player";
 import MinicastList from "./Components/MinicastList";
 import Faves from "./Components/Faves";
@@ -69,17 +68,6 @@ function App() {
   const [recording, setRecording] = useState(false);
   const [stop, setStop] = useState(false);
   const [hidden, setHidden] = useState(true);
-
-  const { time, handleStart, handlePauseRestart, handleReset } = useStopwatch();
-  useEffect(() => {
-    if (recording) {
-      handleReset();
-      handleStart();
-    }
-    if (!recording && stop) {
-      handlePauseRestart();
-    }
-  }, [recording, stop]);
 
   const GET_URL = "http://localhost:8080/minicasts";
 
@@ -272,7 +260,9 @@ function App() {
                         src={Poodle}
                       />
                       <span className="timer-container">
-                        {!hidden && <RecTimer time={time} />}
+                        {!hidden && (
+                          <Cassette recording={recording} stop={stop} />
+                        )}
                       </span>
                     </div>
                   </Box>
