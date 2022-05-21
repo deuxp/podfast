@@ -9,7 +9,6 @@ import { UserContext } from "../../App";
 import { useContext } from "react";
 
 function Dashboard({
-  setDashboard,
   recording,
   setRecording,
   setStop,
@@ -48,9 +47,6 @@ function Dashboard({
     return casts.filter((cast) => session_id === cast.user_id);
   };
 
-  useEffect(() => {
-    setDashboard(true);
-  }, []);
 
   return (
     <>
