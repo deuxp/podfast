@@ -154,7 +154,7 @@ function DashCastItem({ cast, updateCasts }) {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
-        sx={{ backgroundColor: "#e8431e" }}
+        // sx={{ backgroundColor: "#e8431e" }}
       >
         <DialogTitle>{"Are You Sure?"}</DialogTitle>
         <DialogContent>
