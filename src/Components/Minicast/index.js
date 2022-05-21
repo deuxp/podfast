@@ -106,62 +106,6 @@ function Minicast(props) {
 
   return (
     <>
-      <Card sx={{ maxWidth: 700, m: "1rem" }} variant="outlined">
-        <CardActionArea
-          onClick={setCurrentCast}
-          sx={{ backgroundImage: `url(${banner_link})` }}
-        >
-          <CardHeader
-            avatar={
-              <Link to={`/users/${user_id}/minicasts`}>
-                <Avatar
-                  src={avatar_link}
-                  onClick={() => handleFaceClick(user_id)}
-                  sx={{
-                    border: "solid #6811d8",
-                    zIndex: "999",
-                    "&:hover": { transition: "0.2s", transform: "scale(1.3)" },
-                  }}
-                ></Avatar>
-              </Link>
-            }
-            title={<Typography variant="h5">{props.title}</Typography>}
-            subheader={`@${props.handle}`}
-          ></CardHeader>
-          {/* <CardMedia
-            component="img"
-            alt="banner background"
-            height="140"
-            sx={{ opacity: "0" }}
-            image={props.banner_link}
-          /> */}
-        </CardActionArea>
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {props.description}
-          </Typography>
-        </CardContent>
-        <CardActions sx={{ justifyContent: "space-between" }}>
-          {user && (
-            <Button size="small" onClick={() => onPost()}>
-              {fave ? "Remove from Favorites" : "Add to Favorites"}
-            </Button>
-          )}
-          {!user && <Button></Button>}
-          {/* <CopyToClipboard text={linkURL} onCopy={() => setCopiedText(linkURL)}>
-            <Tooltip
-              title={copiedText === linkURL ? "Link Copied!" : linkURL}
-              placement="bottom"
-            >
-              <Button size="small">Copy Link</Button>
-            </Tooltip>
-          </CopyToClipboard> */}
-        </CardActions>
-      </Card>
-      {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-      {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-      {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-
       <Grid container sx={article__container}>
         <Box
           sx={{
@@ -193,27 +137,25 @@ function Minicast(props) {
           </Grid>
         </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Box sx={{ minHeight: "50px" }}>
-            <Typography p={2}>{description}</Typography>
-          </Box>
+        <Box sx={{ minHeight: "60px" }}>
+          <Typography p={2}>{description}</Typography>
+        </Box>
 
-          <Box
-            p={2}
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-around",
-            }}
-          >
-            <FavouriteButton
-              user={user}
-              fave={fave}
-              handleClick={() => onPost()}
-            />
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-around",
+          }}
+        >
+          <FavouriteButton
+            user={user}
+            fave={fave}
+            handleClick={() => onPost()}
+          />
 
-            <CopyToClipboardButton linkURL={linkURL} />
-          </Box>
+          <CopyToClipboardButton linkURL={linkURL} />
         </Box>
       </Grid>
     </>
