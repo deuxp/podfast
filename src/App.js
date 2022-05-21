@@ -118,6 +118,20 @@ function App() {
     setAutoplay(event.target.checked);
   };
 
+  // need to getAllCasts when clicking Home as they could have changed
+  // for example, deleting a post on Dashboard and then going Home
+  const getAllCasts = () => {
+    axios
+      .get(GET_URL)
+      .then((res) => {
+        setAllCasts(res.data);
+        setCurrentCast(playlist[0]);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+
   return (
     <UserContext.Provider value={userID}>
       <BrowserRouter>
@@ -142,7 +156,6 @@ function App() {
                       path="/minicasts/:id"
                       element={
                         <DynamicMinicast
-                          minicasts={playlist}
                           onChange={setCurrentCast}
                         />
                       }
@@ -228,7 +241,12 @@ function App() {
                       </ListItem>
                       <Divider />
 
-                      <div onClick={() => setCreatorID("")}>
+                      <div
+                        onClick={() => {
+                          setCreatorID("");
+                          getAllCasts();
+                        }}
+                      >
                         <ListItemLink
                           to="/minicasts"
                           primary="Home"
