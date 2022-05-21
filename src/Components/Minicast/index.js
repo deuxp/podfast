@@ -1,6 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import LinkToAvatar from "../LinkToAvatar";
@@ -118,7 +118,7 @@ function Minicast(props) {
             direction="column"
             pl={0}
             pt={1}
-            onClick={() => setCurrentCast(id)}
+            // onClick={() => setCurrentCast(id)}
           >
             <Box>
               <Typography variant="h5" component="div" sx={{ color: "black" }}>
@@ -132,7 +132,7 @@ function Minicast(props) {
         </Box>
 
         <Box
-          onClick={() => setCurrentCast(id)}
+          // onClick={() => setCurrentCast(id)}
           sx={{
             minHeight: "60px",
             backgroundColor: "rgba(255, 255, 255, .8)",
@@ -146,7 +146,7 @@ function Minicast(props) {
         </Box>
 
         <Box
-          onClick={() => setCurrentCast(id)}
+          // onClick={() => setCurrentCast(id)}
           p={2}
           sx={{
             display: "flex",
@@ -154,16 +154,23 @@ function Minicast(props) {
             justifyContent: "space-between",
           }}
         >
-          <div style={{ opacity: "0.8" }}>
-            <FavouriteButton
-              user={user}
-              fave={fave}
-              handleClick={() => onPost()}
-            />
-          </div>
+          <div style={{ display: "flex", alignItems: "flex-end" }}>
+            <div style={{ opacity: "0.8", paddingRight: "1rem" }}>
+              <FavouriteButton
+                user={user}
+                fave={fave}
+                handleClick={() => onPost()}
+              />
+            </div>
 
-          <div style={{ opacity: "0.8" }}>
-            <CopyToClipboardButton linkURL={linkURL} />
+            <div style={{ opacity: "0.8", paddingRight: "1rem" }}>
+              <CopyToClipboardButton linkURL={linkURL} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-end" }}>
+            <Button variant="contained" onClick={() => setCurrentCast(id)}>
+              Add to Player
+            </Button>
           </div>
         </Box>
       </Grid>

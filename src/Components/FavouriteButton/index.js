@@ -17,11 +17,3 @@ function FavouriteButton({ user, fave, handleClick }) {
 }
 
 export default FavouriteButton;
-
-// // old
-// {user && (
-//   <Button size="small" onClick={() => onPost()}>
-//     {fave ? "Remove from Favorites" : "Add to Favorites"}
-//   </Button>
-// )}
-// {!user && <Button></Button>}
