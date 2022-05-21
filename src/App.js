@@ -133,14 +133,6 @@ function App() {
 
             <Container>
               <div className="main-grid">
-                <div className="player-box">
-                  <Player
-                    playlist={playlist}
-                    autoplay={autoplay}
-                    currentCast={currentCast}
-                    setCurrentCast={setCurrentCast}
-                  />
-                </div>
                 {/*****new React Routing logic to toggle between minicasts, dashboard, and individual minicasts***** */}
                 <div className="main-box">
                   <Routes>
@@ -207,10 +199,17 @@ function App() {
                     sx={{
                       width: "100%",
                       maxWidth: 360,
-                      // bgcolor: "background.paper",
                       bgcolor: "transparent",
                     }}
                   >
+                    <div className="player-box">
+                      <Player
+                        playlist={playlist}
+                        autoplay={autoplay}
+                        currentCast={currentCast}
+                        setCurrentCast={setCurrentCast}
+                      />
+                    </div>
                     <List>
                       <ListItem>
                         <ListItemText
@@ -248,7 +247,7 @@ function App() {
                           icon={null}
                           button={true}
                           key="Dashboard"
-                          disabled={userID ? false : true }
+                          disabled={userID ? false : true}
                         />
                       </div>
 
@@ -259,7 +258,7 @@ function App() {
                           icon={null}
                           button={true}
                           key="Favourites"
-                          disabled={userID ? false : true }
+                          disabled={userID ? false : true}
                         />
                       </div>
 

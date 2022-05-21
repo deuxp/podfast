@@ -3,12 +3,10 @@ import { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CreatorShow from "../CreatorShow";
-import { FilterAlt } from "@mui/icons-material";
 
 function MinicastList(props) {
   const { creatorID, setCreatorID, minicasts, setPlaylist } = props;
   const [newCastList, setNewCastList] = useState(minicasts);
-
 
   const handleFaceClick = (creator) => {
     try {
@@ -25,7 +23,7 @@ function MinicastList(props) {
       const filteredArray = newCastList?.filter(
         (cast) => cast.user_id === creatorID
       );
-      setNewCastList(filteredArray)
+      setNewCastList(filteredArray);
       setPlaylist(filteredArray);
     } else {
       setNewCastList(minicasts);
@@ -62,7 +60,7 @@ function MinicastList(props) {
           </Typography>
         </Box>
       )}
-      <ul>{MinicastArray}</ul>
+      <ul style={{ marginTop: 0 }}>{MinicastArray}</ul>
     </>
   );
 }
