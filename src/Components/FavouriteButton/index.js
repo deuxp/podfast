@@ -1,11 +1,27 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 function FavouriteButton({ user, fave, handleClick }) {
   const renderedButton = (
-    <Button variant="contained" size="small" onClick={handleClick}>
-      {fave ? "Remove from Favorites" : "Add to Favorites"}
-    </Button>
+    <Box
+      // variant="contained"
+      // size="small"
+      onClick={handleClick}
+      sx={{
+        color: "rgba(255,255,255, 1)",
+        display: "flex",
+        backgroundColor: "rgba(104,17,216, .9)",
+        padding: "0.3rem",
+        borderRadius: "10px",
+        border: "2px solid rgb(226,165,254)",
+        transition: "0.2s",
+        "&:hover": { transform: "scale(1.3)" },
+      }}
+    >
+      {fave ? <StarIcon /> : <StarBorderIcon />}
+    </Box>
   );
 
   return (
