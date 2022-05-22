@@ -79,9 +79,7 @@ function Faves({ minicasts, onChange, setPlaylist, creatorID, setCreatorID }) {
             href="/minicasts"
             sx={{ color: "black", fontFamily: "'Cairo', sans-serif" }}
           >
-            <Link href="/minicasts" underline="hover">
               No Favorites in queue!
-            </Link>
           </Typography>
         </Box>
       )}
