@@ -4,6 +4,7 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
   const nextCast = (currentCast, playlist) => {
     // if I don't have this logic, the app crashes
     if (!currentCast) return {};
+    if (!autoplay) return currentCast;
     const i = playlist.findIndex((track) => track.id === currentCast.id);
     return playlist[i + 1];
   };
