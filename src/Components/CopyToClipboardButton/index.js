@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Button, Tooltip } from "@mui/material";
+import { Button, Tooltip, Box } from "@mui/material";
+import CopyAllIcon from "@mui/icons-material/CopyAll";
 
 function CopyToClipboardButton({ linkURL }) {
   const [copiedText, setCopiedText] = useState("");
@@ -18,9 +19,20 @@ function CopyToClipboardButton({ linkURL }) {
         title={copiedText === linkURL ? "Link Copied!" : linkURL}
         placement="bottom"
       >
-        <Button variant="contained" size="small">
-          Copy Link
-        </Button>
+        <Box
+          sx={{
+            color: "rgba(255,255,255, 1)",
+            display: "flex",
+            backgroundColor: "rgba(104,17,216, .9)",
+            padding: "0.3rem",
+            borderRadius: "10px",
+            border: "2px solid rgb(226,165,254)",
+            transition: "0.2s",
+            "&:hover": { transform: "scale(1.3)" },
+          }}
+        >
+          <CopyAllIcon />
+        </Box>
       </Tooltip>
     </CopyToClipboard>
   );

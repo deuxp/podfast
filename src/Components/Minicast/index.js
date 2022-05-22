@@ -6,6 +6,8 @@ import axios from "axios";
 import LinkToAvatar from "../LinkToAvatar";
 import FavouriteButton from "../FavouriteButton";
 import CopyToClipboardButton from "../CopyToClipboardButton";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import CopyAllIcon from "@mui/icons-material/CopyAll";
 
 function Minicast(props) {
   const {
@@ -159,7 +161,7 @@ function Minicast(props) {
           }}
         >
           <div style={{ display: "flex", alignItems: "flex-end" }}>
-            <div style={{ opacity: "0.8", paddingRight: "1rem" }}>
+            <div style={{ opacity: "1", paddingRight: "1rem" }}>
               <FavouriteButton
                 user={user}
                 fave={fave}
@@ -167,14 +169,33 @@ function Minicast(props) {
               />
             </div>
 
-            <div style={{ opacity: "0.8", paddingRight: "1rem" }}>
+            <div style={{ opacity: "1", paddingRight: "1rem" }}>
               <CopyToClipboardButton linkURL={linkURL} />
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "flex-end" }}>
-            <Button variant="contained" onClick={() => setCurrentCast(id)}>
-              Add to Player
-            </Button>
+            <Box
+              // variant="contained"
+              onClick={() => setCurrentCast(id)}
+              sx={{
+                color: "rgba(255,255,255, 1)",
+                display: "flex",
+                backgroundColor: "rgba(104,17,216, .9)",
+                padding: "0.5rem",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                borderRadius: "10px",
+                transition: "0.2s",
+                border: "2px solid rgb(226,165,254)",
+                "&:hover": {
+                  transform: "scale(1.3)",
+                  backgroundColor: "rgb(1,255,239)",
+                  color: "rgba(104,17,216, .9)",
+                },
+              }}
+            >
+              <PlayCircleOutlineIcon />
+            </Box>
           </div>
         </Box>
       </Grid>

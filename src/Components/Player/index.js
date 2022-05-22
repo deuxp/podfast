@@ -41,6 +41,7 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
           controlsList="nodownload noplaybackrate"
           autoPlay={autoplay}
           src={currentCast?.audio_link}
+          onLoadedData={(e) => e.target.play()}
           onEnded={() => setCurrentCast(next)}
         ></audio>
       </div>
