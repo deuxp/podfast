@@ -56,6 +56,7 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [allCasts, setAllCasts] = useState([]);
   const [currentCast, setCurrentCast] = useState();
+  const [track, setTrack] = useState(0);
   /* ---------------------------- Menu state  ---------------------------- */
   const [autoplay, setAutoplay] = useState(false);
 
@@ -201,6 +202,8 @@ function App() {
                         autoplay={autoplay}
                         currentCast={currentCast}
                         setCurrentCast={setCurrentCast}
+                        track={track}
+                        setTrack={setTrack}
                       />
                     </div>
                     <List>

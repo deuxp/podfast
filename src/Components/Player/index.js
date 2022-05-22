@@ -1,6 +1,13 @@
 import { Typography } from "@mui/material";
 
-function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
+function Player({
+  playlist,
+  currentCast,
+  autoplay,
+  setCurrentCast,
+  track,
+  setTrack,
+}) {
   const nextCast = (currentCast, playlist) => {
     // if I don't have this logic, the app crashes
     if (!currentCast) {
@@ -23,10 +30,17 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
 
   let next = nextCast(currentCast, playlist);
 
+  const handleNextTrack = (index) => {
+    console.log("~~~> the next track number: ", index + 1);
+    console.log("~~~> autoplay is: ", autoplay);
+
+    setTrack((track) => track + 1);
+  };
+
   return (
     <div
       style={{
-        backgroundImage: `url(${currentCast?.banner_link})`,
+        backgroundImage: `url(${playlist[track]?.banner_link})`,
         boxShadow: "inset 0 0 0 1000px rgba(255,255,255,.6)",
         backgroundColor: "#6811d8",
         width: "100%",
@@ -44,18 +58,20 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
         pl={1}
         sx={{ fontFamily: "'Cairo', sans-serif" }}
       >
-        {currentCast ? currentCast.title : "Title"}
+        {playlist[track] ? playlist[track]?.title : "Title"}
       </Typography>
       <Typography pl={1} pb={3}>
-        @{currentCast ? currentCast.handle : "creator"}
+        @{playlist[track] ? playlist[track]?.handle : "creator"}
       </Typography>
       <div style={{ backgroundColor: "#f0f3f4" }}>
         <audio
           controls
           controlsList="nodownload noplaybackrate"
           autoPlay={autoplay}
-          src={currentCast?.audio_link}
-          onEnded={() => setCurrentCast(next)}
+          src={playlist[track]?.audio_link}
+          // src={currentCast?.audio_link}
+          onEnded={() => handleNextTrack(track)}
+          // onEnded={() => setCurrentCast(next)}
         ></audio>
       </div>
     </div>
