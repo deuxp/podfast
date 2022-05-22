@@ -15,12 +15,13 @@
   grid-column-end: 4;
   grid-row-start: 1;
   grid-row-end: 3;
+  min-width: 600px;
 }
 
-.side-menu {
+.side-bar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  min-width: 350px;
 }
 
 .App {
