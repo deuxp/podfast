@@ -30,7 +30,7 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
         pl={1}
         sx={{ fontFamily: "'Cairo', sans-serif" }}
       >
-        {currentCast ? currentCast.title : "Title"}
+        {currentCast ? currentCast.title : "Welcome!"}
       </Typography>
       <Typography pl={1} pb={3}>
         @{currentCast ? currentCast.handle : "creator"}
