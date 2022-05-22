@@ -38,6 +38,8 @@ function CreatorShow({ creator }) {
                 sx={{
                   transform: "scale(4)",
                   borderRadius: "30px",
+                  maxHeight: "30px",
+                  maxWidth: "30px",
                   border: "solid #6811d8",
                 }}
               />
