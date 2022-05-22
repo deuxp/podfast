@@ -57,6 +57,20 @@ function CreatorShow({ creator }) {
                 <Typography variant="caption" color="text.secondary">
                   Creator since {date}
                 </Typography>
+                <br />
+                {creator && (
+                  <>
+                    <Typography variant="caption" color="text.secondary">
+                      <a href={creator.twitter_link || ""}>@Twitter</a>
+                    </Typography>
+                    <br />
+                  </>
+                )}
+                {creator && (
+                  <Typography variant="caption" color="text.secondary">
+                    <a href={creator.facebook_link || ""}>@Facebook</a>
+                  </Typography>
+                )}
               </Grid>
               <Grid item>
                 <Typography sx={{ cursor: "pointer" }} variant="body2">
