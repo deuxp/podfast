@@ -36,8 +36,10 @@ function CreatorShow({ creator }) {
                 alt="Avatar"
                 src={creator.avatar_link}
                 sx={{
-                  transform: "scale(4)",
+                  transform: "scale(3)",
                   borderRadius: "30px",
+                  maxHeight: "40px",
+                  maxWidth: "40px",
                   border: "solid #6811d8",
                 }}
               />
