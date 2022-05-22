@@ -10,9 +10,9 @@ function FavouriteButton({ user, fave, handleClick }) {
       // size="small"
       onClick={handleClick}
       sx={{
-        color: "rgba(255,255,255, 1)",
+        color: fave ? "rgba(104,17,216, .9)" : "rgba(255,255,255, 1)",
         display: "flex",
-        backgroundColor: "rgba(104,17,216, .9)",
+        backgroundColor: fave ? "rgb(1,255,239)" : "rgba(104,17,216, .9)",
         padding: "0.3rem",
         borderRadius: "10px",
         border: "2px solid rgb(226,165,254)",
