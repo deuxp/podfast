@@ -61,14 +61,14 @@ function CreatorShow({ creator }) {
                 {creator && (
                   <>
                     <Typography variant="caption" color="text.secondary">
-                      <a href={creator.twitter_link}>@Twitter</a>
+                      <a href={creator.twitter_link || ""}>@Twitter</a>
                     </Typography>
                     <br />
                   </>
                 )}
                 {creator && (
                   <Typography variant="caption" color="text.secondary">
-                    <a href={creator.facebook_link}>@Facebook</a>
+                    <a href={creator.facebook_link || ""}>@Facebook</a>
                   </Typography>
                 )}
               </Grid>
