@@ -121,7 +121,11 @@ function Minicast(props) {
             // onClick={() => setCurrentCast(id)}
           >
             <Box>
-              <Typography variant="h5" component="div" sx={{ color: "black" }}>
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ color: "black", fontFamily: "'Cairo', sans-serif" }}
+              >
                 {title}
               </Typography>
             </Box>
