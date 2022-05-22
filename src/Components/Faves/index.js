@@ -1,6 +1,9 @@
 import Minicast from "../Minicast";
 import axios from "axios";
 import { useEffect } from "react";
+import { Box } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 function Faves({ minicasts, onChange, setPlaylist, creatorID, setCreatorID }) {
   let GET_URL = "";
@@ -59,10 +62,29 @@ function Faves({ minicasts, onChange, setPlaylist, creatorID, setCreatorID }) {
       />
     );
   });
-
   return (
     <>
-      <ul>{MinicastArray}</ul>
+      {MinicastArray && <ul>{MinicastArray}</ul>}
+      {MinicastArray.length === 0 && (
+        <Box
+          sx={{
+            width: "80%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="div"
+            href="/minicasts"
+            sx={{ color: "black", fontFamily: "'Cairo', sans-serif" }}
+          >
+            <Link href="/minicasts" underline="hover">
+              No Favorites in queue!
+            </Link>
+          </Typography>
+        </Box>
+      )}
     </>
   );
 }
