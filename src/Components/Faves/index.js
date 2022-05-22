@@ -2,7 +2,7 @@ import Minicast from "../Minicast";
 import axios from "axios";
 import { useEffect } from "react";
 
-function Faves({ minicasts, onChange, setPlaylist }) {
+function Faves({ minicasts, onChange, setPlaylist, creatorID, setCreatorID }) {
   let GET_URL = "";
 
   let user = true;
@@ -14,6 +14,15 @@ function Faves({ minicasts, onChange, setPlaylist }) {
   } else {
     user = false;
   }
+
+  const handleFaceClick = (creator) => {
+    try {
+      console.log("handled the face click");
+      setCreatorID(creator);
+    } catch (err) {
+      console.log("Error in handleFaceClick()", err);
+    }
+  };
 
   useEffect(() => {
     // don't make requests if no user!
@@ -43,6 +52,10 @@ function Faves({ minicasts, onChange, setPlaylist }) {
         avatar_link={minicast.avatar_link}
         setCurrentCast={() => onChange(minicast)}
         handle={minicast.handle}
+        user_id={minicast.user_id}
+        handleFaceClick={handleFaceClick}
+        // add these props to faves
+        creatorID={creatorID || ""}
       />
     );
   });

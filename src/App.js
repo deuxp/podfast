@@ -126,12 +126,14 @@ function App() {
                   <Routes>
                     <Route
                       path="/minicasts/:id"
+                      // element={<DynamicMinicast />}
                       element={<DynamicMinicast onChange={setCurrentCast} />}
                     />
                     <Route
                       path="*"
                       element={
                         <MinicastList
+                          // minicasts={playlist}
                           minicasts={allCasts}
                           onChange={setCurrentCast}
                           setCreatorID={setCreatorID}
@@ -153,6 +155,7 @@ function App() {
                     />
                     <Route
                       path="/minicasts/:id"
+                      // element={<DynamicMinicast />}
                       element={<DynamicMinicast onChange={setCurrentCast} />}
                     />
                     <Route
@@ -172,6 +175,8 @@ function App() {
                       path="users/:id/favourites"
                       element={
                         <Faves
+                          creatorID={creatorID}
+                          setCreatorID={setCreatorID}
                           minicasts={playlist}
                           onChange={setCurrentCast}
                           setPlaylist={setPlaylist}
