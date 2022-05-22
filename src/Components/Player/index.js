@@ -1,13 +1,6 @@
 import { Typography } from "@mui/material";
 
-function Player({
-  playlist,
-  currentCast,
-  autoplay,
-  setCurrentCast,
-  track,
-  setTrack,
-}) {
+function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
   const nextCast = (currentCast, playlist) => {
     // if I don't have this logic, the app crashes
     if (!currentCast) return {};
