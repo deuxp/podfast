@@ -87,7 +87,7 @@ function App() {
       .then((res) => {
         setPlaylist(res.data);
         setAllCasts(res.data);
-        setCurrentCast(playlist[0]);
+        // setCurrentCast(playlist[0]);
       })
       .catch((e) => {
         console.log(e.message);
@@ -105,7 +105,7 @@ function App() {
       .get(GET_URL)
       .then((res) => {
         setAllCasts(res.data);
-        setCurrentCast(playlist[0]);
+        // setCurrentCast(playlist[0]);
       })
       .catch((e) => {
         console.log(e.message);
