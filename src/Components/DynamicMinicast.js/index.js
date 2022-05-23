@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 function DynamicMinicast(props) {
+  const { handleFaceClick, creatorID, current } = props;
   let { id } = useParams();
 
   // I believe I should GET the one minicast of interest from the data base rather than choosing index based on route parameter and passing all the playlists
@@ -27,17 +28,23 @@ function DynamicMinicast(props) {
   }, [GET_URL]);
 
   return (
-    <Minicast
-      key={id}
-      id={id}
-      title={minicast.title}
-      description={minicast.description}
-      audio_link={minicast.audio_link}
-      banner_link={minicast.banner_link}
-      avatar_link={minicast.avatar_link}
-      setCurrentCast={props.onChange(minicast)}
-      handle={minicast.handle}
-    />
+    <ul style={{ marginTop: 0 }}>
+      <Minicast
+        key={id}
+        id={id}
+        title={minicast.title}
+        description={minicast.description}
+        audio_link={minicast.audio_link}
+        banner_link={minicast.banner_link}
+        avatar_link={minicast.avatar_link}
+        setCurrentCast={() => props.onChange(minicast)}
+        handle={minicast.handle}
+        user_id={minicast.user_id}
+        handleFaceClick={handleFaceClick}
+        creatorID={creatorID || ""}
+        selected={current?.id === minicast.id}
+      />
+    </ul>
   );
 }
 
