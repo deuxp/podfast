@@ -131,7 +131,14 @@ function App() {
                   <Routes>
                     <Route
                       path="/minicasts/:id"
-                      element={<DynamicMinicast onChange={setCurrentCast} />}
+                      element={
+                        <DynamicMinicast
+                          onChange={setCurrentCast}
+                          current={currentCast}
+                          handleFaceCLick={setCreatorID}
+                          creatorID={creatorID}
+                        />
+                      }
                     />
                     <Route
                       path="*"
