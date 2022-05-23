@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import CreatorShow from "../CreatorShow";
 
 function MinicastList(props) {
-  const { creatorID, setCreatorID, minicasts, setPlaylist } = props;
+  const { creatorID, setCreatorID, minicasts, setPlaylist, current } = props;
   const [newCastList, setNewCastList] = useState(minicasts);
 
   const handleFaceClick = (creator) => {
@@ -46,6 +46,7 @@ function MinicastList(props) {
         user_id={minicast.user_id}
         handleFaceClick={handleFaceClick}
         creatorID={creatorID || ""}
+        selected={current?.id === minicast.id}
       />
     );
   });

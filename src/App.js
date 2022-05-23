@@ -69,6 +69,11 @@ function App() {
   const [stop, setStop] = useState(false);
   const [hidden, setHidden] = useState(true);
 
+  const handleMenuChange = () => {
+    setCreatorID("");
+    setHidden(true);
+  };
+
   const GET_URL = "http://localhost:8080/minicasts";
 
   // sets the user session from local storage on refresh
@@ -126,7 +131,14 @@ function App() {
                   <Routes>
                     <Route
                       path="/minicasts/:id"
-                      element={<DynamicMinicast onChange={setCurrentCast} />}
+                      element={
+                        <DynamicMinicast
+                          onChange={setCurrentCast}
+                          current={currentCast}
+                          handleFaceCLick={setCreatorID}
+                          creatorID={creatorID}
+                        />
+                      }
                     />
                     <Route
                       path="*"
@@ -137,6 +149,7 @@ function App() {
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
+                          current={currentCast}
                         />
                       }
                     />
@@ -215,7 +228,8 @@ function App() {
 
                       <div
                         onClick={() => {
-                          setCreatorID("");
+                          // setCreatorID("");
+                          handleMenuChange();
                           getAllCasts();
                         }}
                       >
@@ -241,7 +255,8 @@ function App() {
                         />
                       </div>
 
-                      <div onClick={() => setCreatorID("")}>
+                      <div onClick={() => handleMenuChange()}>
+                        {/* <div onClick={() => setCreatorID("")}> */}
                         <ListItemLink
                           to={`/users/${userID?.id}/favourites`}
                           primary="Favourites"
