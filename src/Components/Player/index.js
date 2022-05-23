@@ -9,7 +9,6 @@ function Player({ playlist, currentCast, autoplay, setCurrentCast }) {
     return playlist[i + 1];
   };
   let next = nextCast(currentCast, playlist);
-  console.log(currentCast);
   return (
     <div
       style={{

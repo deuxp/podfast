@@ -137,6 +137,7 @@ function App() {
                           setCreatorID={setCreatorID}
                           creatorID={creatorID}
                           setPlaylist={setPlaylist}
+                          current={currentCast}
                         />
                       }
                     />

@@ -85,12 +85,15 @@ function Minicast(props) {
   };
 
   /* ---------------------------- CSS Declarations ---------------------------- */
-
   const article__container = {
     backgroundImage: `url(${banner_link})`,
+    backgroundColor: "rgba(1,255,239, .5)",
     padding: "0.5rem",
-    marginBottom: "1rem",
+    marginBottom: props.selected ? "1.9rem" : "1rem",
     borderRadius: "5px",
+    transition: "0.2s",
+    boxShadow: props.selected ? "12px 12px 13px 1px rgba(0, 0, 0, 0.6)" : "",
+    transform: props.selected ? "scale(1.05)" : "",
   };
 
   return (
