@@ -69,6 +69,11 @@ function App() {
   const [stop, setStop] = useState(false);
   const [hidden, setHidden] = useState(true);
 
+  const handleMenuChange = () => {
+    setCreatorID("");
+    setHidden(true);
+  };
+
   const GET_URL = "http://localhost:8080/minicasts";
 
   // sets the user session from local storage on refresh
@@ -216,7 +221,8 @@ function App() {
 
                       <div
                         onClick={() => {
-                          setCreatorID("");
+                          // setCreatorID("");
+                          handleMenuChange();
                           getAllCasts();
                         }}
                       >
@@ -242,7 +248,8 @@ function App() {
                         />
                       </div>
 
-                      <div onClick={() => setCreatorID("")}>
+                      <div onClick={() => handleMenuChange()}>
+                        {/* <div onClick={() => setCreatorID("")}> */}
                         <ListItemLink
                           to={`/users/${userID?.id}/favourites`}
                           primary="Favourites"
