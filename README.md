@@ -50,7 +50,7 @@ root
 
 # API server
 
-Podfast also utilizes the [Podfast API server](https://github.com/deuxp/podfast-API) which needs to be cloned to its own directory.
+Podfast also utilizes the [Podfast API server](https://github.com/deuxp/podfast-API) which needs to be cloned and running in its own directory.
 
 # Run locally
 
@@ -60,8 +60,6 @@ $ npm start
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-You will also need the [Podfast server](https://github.com/deuxp/podfast-API) running in its own directory. Follow the directions available in its README.
 
 ### _Dependencies_:
 
