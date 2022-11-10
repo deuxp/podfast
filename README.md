@@ -3,6 +3,8 @@
 A publishing platform for short podcasts called minicasts.
 Users can record and share short audio snippets recorded right in the browser and post it to the minicast public feed.
 
+Users may also favourite other minicasts as well as create a share-able link.
+
 \***\*This is a Demo app that runs locally. For educations purposes only**.
 
 > _"Want to find great podcasters but don't have the time to invest? PodFast! It is a podcast publishing platform for short (up to 45 seconds) minicasts. Find your next fave minicaster, or become a minicaster and create your own!"_
