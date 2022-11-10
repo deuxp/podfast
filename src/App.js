@@ -1,36 +1,36 @@
 import * as React from "react";
 
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 /*************************Poodle Logo Pic*************************** */
 import Poodle from "../src/assets/PoodleGraphic.png";
 /****************************** CSS *********************************** */
 import "./App.scss";
 /****************************** React Router *********************************** */
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 /*************************Custom Components*************************** */
 import Cassette from "./Components/Cassette";
-import Player from "./Components/Player";
-import MinicastList from "./Components/MinicastList";
-import Faves from "./Components/Faves";
-import Nav from "./Components/Nav";
 import Dashboard from "./Components/Dashboard";
 import DynamicMinicast from "./Components/DynamicMinicast.js";
+import Faves from "./Components/Faves";
 import ListItemLink from "./Components/ListItemLink";
+import MinicastList from "./Components/MinicastList";
+import Nav from "./Components/Nav";
+import Player from "./Components/Player";
 /************************** MUI Components***************************************** */
 
 import {
   Box,
-  ThemeProvider,
-  createTheme,
-  List,
-  Divider,
-  ListItemText,
-  ListItem,
-  Switch,
   Container,
+  createTheme,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Switch,
+  ThemeProvider,
 } from "./mui";
 
 export const UserContext = React.createContext();
@@ -85,21 +85,48 @@ function App() {
     }
   }, []);
 
-  // initial get from the server
+  /** Helper for the initial Page-load fetch
+   * @returns fetched audio feed data as a Promise.
+   */
+  const getData = async url => {
+    const data = await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return data.json();
+  };
+
+  // initial GET from the server
   useEffect(() => {
-    axios
-      .get(GET_URL)
-      .then((res) => {
-        setPlaylist(res.data);
-        setAllCasts(res.data);
-        // setCurrentCast(playlist[0]);
+    getData(GET_URL)
+      .then(data => {
+        setPlaylist(data);
+        setAllCasts(data);
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch(err => {
+        console.log("Page load fetch error: ", err);
       });
   }, []);
 
-  const handleAutoPlaySwitch = (event) => {
+  // useEffect(() => {
+  //   axios
+  //     .get(GET_URL)
+  //     .then(res => {
+  //       setPlaylist(res.data);
+  //       setAllCasts(res.data);
+  //       console.log("fetch: ", res);
+  //       // setCurrentCast(playlist[0]);
+  //     })
+  //     .catch(e => {
+  //       console.log(e.message);
+  //     });
+  // }, []);
+
+  const handleAutoPlaySwitch = event => {
     setAutoplay(event.target.checked);
   };
 
@@ -108,11 +135,11 @@ function App() {
   const getAllCasts = () => {
     axios
       .get(GET_URL)
-      .then((res) => {
+      .then(res => {
         setAllCasts(res.data);
         // setCurrentCast(playlist[0]);
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e.message);
       });
   };

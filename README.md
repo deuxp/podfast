@@ -1,23 +1,69 @@
 # Podfast
 
-## A publishing platform for short podcasts or just discover and listen to your favourite podcasters.
----
+A publishing platform for short podcasts called minicasts.
+Users can record and share short audio snippets recorded right in the browser and post it to the minicast public feed.
 
->Want to find great podcasters but don't have the time to invest? PodFast! It is a podcast publishing platform for short (5 minutes or less) podcasts. Find your next fave podcaster, or become a podcaster and create your own!
+\***\*This is a Demo app that runs locally. For educations purposes only**.
 
-## Available Scripts
+> _"Want to find great podcasters but don't have the time to invest? PodFast! It is a podcast publishing platform for short (up to 45 seconds) minicasts. Find your next fave minicaster, or become a minicaster and create your own!"_
 
-In the project directory, you can run:
+![animatied gif of app usage](public/podfast.gif)
 
-### `npm start`
+# Clone the repository
+
+```
+$ git clone https://github.com/deuxp/podfast
+```
+
+# Install Dependencies
+
+In the project directory run:
+
+```
+$ npm install
+```
+
+# Cloud Storage & Environment Variables
+
+When a minicast is created, the audiofile and the banner image are stored in a [Firebase storage bucket](https://firebase.google.com/). To link it to the app, create a `.env` file in the root of the project directory and paste in the following with your own Firebase Config keys:
+
+```
+REACT_APP_API_KEY="your keys here"
+REACT_APP_AUTH_DOMAIN="your keys here"
+REACT_APP_PROJECT_ID="your keys here"
+REACT_APP_STORAGE_BUCKET="your keys here"
+REACT_APP_MESSAGING_SENDER_ID="your keys here"
+REACT_APP_APP_ID="your keys here"
+REACT_APP_MEASUREMENT_ID="your keys here"
+```
+
+The file structure of the storage bucket should reflect the following:
+
+```
+root
+|_
+| \imgs
+|_
+  \minicasts
+
+```
+
+# API server
+
+Podfast also utilizes the [Podfast API server](https://github.com/deuxp/podfast-API) which needs to be cloned to its own directory.
+
+# Run locally
+
+```
+$ npm start
+```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 You will also need the [Podfast server](https://github.com/deuxp/podfast-API) running in its own directory. Follow the directions available in its README.
 
-
-## Dependencies
+### _Dependencies_:
 
 - React 18.1.0
 - Axios 0.27.2
@@ -25,5 +71,6 @@ You will also need the [Podfast server](https://github.com/deuxp/podfast-API) ru
 - React Router v6
 - Mic-recorder-to-mp3 2.2.2
 - MUI
+- UUID
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
